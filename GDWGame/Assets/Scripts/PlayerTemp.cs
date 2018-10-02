@@ -6,7 +6,7 @@ public class PlayerTemp : MonoBehaviour {
 
     int playerInt;
     Vector3 moveUp, moveDown, moveRight, moveLeft, playerPos;
-    float speed = 3.5f;
+    float speed = 5f;
     string doorStr = "Door";
 
     public RoomManager theRoomManager;
