@@ -36,13 +36,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4972444016411668}
-  - component: {fileID: 65249357624666056}
-  - component: {fileID: 65657662194977604}
   - component: {fileID: 65969821572209682}
   - component: {fileID: 65097913404290090}
   - component: {fileID: 65529368278472628}
   - component: {fileID: 65883026245927794}
-  - component: {fileID: 65738971662988010}
   m_Layer: 0
   m_Name: Corner Door - Room
   m_TagString: Door
@@ -70,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1474873394580684}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 65.1133, y: 185.4999, z: -54.040558}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4081274566604900}
@@ -131,18 +128,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.137, y: 1.202, z: 0.535}
   m_Center: {x: -0.933, y: 0.551, z: 0.7501}
---- !u!65 &65249357624666056
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1474873394580684}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 0.1, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65529368278472628
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -155,30 +140,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.155, y: 1.202, z: 0.519}
   m_Center: {x: -0.932, y: 0.55, z: -0.742}
---- !u!65 &65657662194977604
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1474873394580684}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 0.1, z: 2}
-  m_Center: {x: 0, y: 1.98, z: 0}
---- !u!65 &65738971662988010
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1474873394580684}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2.07077, z: 0.15100408}
-  m_Center: {x: 0, y: 0.98732436, z: -0.9230406}
 --- !u!65 &65883026245927794
 BoxCollider:
   m_ObjectHideFlags: 1

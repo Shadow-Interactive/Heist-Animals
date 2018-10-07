@@ -17,7 +17,7 @@ public class PlayerTemp : MonoBehaviour {
         moveDown.Set(speed, 0, 0);
         moveRight.Set(0, 0, speed);
         moveLeft.Set(0, 0, -speed);
-        playerInt = 5;
+        playerInt = 8;
     }
 
     // Update is called once per frame
