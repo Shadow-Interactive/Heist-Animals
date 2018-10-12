@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 136982943458133996}
   - component: {fileID: 114939359849314944}
   - component: {fileID: 54381242505459710}
+  - component: {fileID: 114000238256798782}
+  - component: {fileID: 114590194583177274}
   m_Layer: 0
   m_Name: Runner 1
   m_TagString: Untagged
@@ -43,7 +45,7 @@ GameObject:
   - component: {fileID: 81112510372578778}
   m_Layer: 0
   m_Name: Runner3rdPersonCam
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -257,6 +259,59 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1967756204824514}
   m_Enabled: 1
+--- !u!114 &114000238256798782
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297237473405666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 91
+    i1: 248
+    i2: 143
+    i3: 156
+    i4: 80
+    i5: 87
+    i6: 157
+    i7: 52
+    i8: 152
+    i9: 239
+    i10: 93
+    i11: 25
+    i12: 244
+    i13: 5
+    i14: 104
+    i15: 13
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &114590194583177274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297237473405666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.033333335
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114939359849314944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -272,6 +327,7 @@ MonoBehaviour:
   cameraTarget: {fileID: 4709627587319526}
   playerCam: {fileID: 4479982811538240}
   noDownWardForce: {fileID: 4533963925102656}
+  viewCam: {fileID: 20967917879580134}
   NoDownWardForceCam: {fileID: 20164830037640808}
 --- !u!136 &136982943458133996
 CapsuleCollider:

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 using UnityEngine;
 
-public class Movement : MonoBehaviour {
+public class Movement : NetworkBehaviour {
 
     //constraints for the camera y rotation
     private const float CAM_Y_MIN = -20.0f;
@@ -14,6 +15,7 @@ public class Movement : MonoBehaviour {
     public Transform cameraTarget;
     public Transform playerCam;
     public Transform noDownWardForce;
+    public Camera viewCam;
     public Camera NoDownWardForceCam;
 
     //private variables to gather mouse and keyboard input
@@ -27,10 +29,46 @@ public class Movement : MonoBehaviour {
 
         //lock cursor to the game window, specifically the center of the window
         Cursor.lockState = CursorLockMode.Locked;
-  
+        //setup players for local and connected clients
+        if (isLocalPlayer)
+        {
+            if (isServer)
+            {
+                gameObject.transform.position = new Vector3(0f, 0f, 0f);
+                gameObject.name = "Runner One";
+            }
+            else
+            {
+                gameObject.transform.position = new Vector3(2f, 0f, 0f);
+                gameObject.name = "Runner Two";
+            }
+        }
+        else
+        {
+            if (isServer)
+            {
+                gameObject.transform.position = new Vector3(0f, 0f, 0f);
+                gameObject.name = "Runner Two";
+            }
+            else
+            {
+                gameObject.transform.position = new Vector3(2f, 0f, 0f);
+                gameObject.name = "Runner One";
+            }
+        }
+
     }
 	// Update is called once per frame
 	void Update () {
+
+        //only update the local player, otherwise exit
+        if (!isLocalPlayer)
+        {
+            //don't want to override previous player cameras
+            viewCam.enabled = false;
+            NoDownWardForceCam.enabled = false;
+            return;
+        }
 
         //fill moveInput with keyboard input
         moveInput.x = Input.GetAxisRaw("Horizontal");
@@ -76,12 +114,13 @@ public class Movement : MonoBehaviour {
         Vector3 rayCastBehind = playerCam.transform.TransformDirection(Vector3.forward * -1);
         //variable for contact point of the raycast
         RaycastHit contact;
-
         //send out raycasts from behind the player to check if the ray is colliding with an object behind the player
-        if (Physics.Raycast(cameraTarget.TransformPoint(new Vector3(0,0,0)), rayCastBehind, out contact, 2.0f) && contact.transform != playerCam)
+        if (Physics.Raycast(cameraTarget.TransformPoint(new Vector3(0, 0, 0)), rayCastBehind, out contact, 2.0f) && contact.transform != playerCam)
         {
+            
             //situate the camera at point of contact to avoid camera clipping into objects
             playerCam.position = new Vector3(contact.point.x, contact.point.y, contact.point.z);
+            
         }
         
 	}
