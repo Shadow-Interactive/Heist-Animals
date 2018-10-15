@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Door
+  - Zap
+  - RunnerOne
+  - RunnerTwo
+  - RoomManager
   layers:
   - Default
   - TransparentFX

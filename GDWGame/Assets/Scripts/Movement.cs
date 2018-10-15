@@ -23,7 +23,9 @@ public class Movement : NetworkBehaviour {
     private Vector2 cameraLook;
 
     private Vector3 ray;
-    
+
+    [HideInInspector] public bool disableMovement = false;
+
     // Use this for initialization
     void Start () {
 
@@ -106,9 +108,10 @@ public class Movement : NetworkBehaviour {
         //y isn't needed for movement
         moveInDirectionOfCam.y = 0;
 
-        //set the velocity of the rigidbody
-        GetComponent<Rigidbody>().velocity = moveInDirectionOfCam * speed * Time.deltaTime;
-        print(GetComponent<Rigidbody>().velocity);
+        if (!disableMovement)
+            //set the velocity of the rigidbody
+            GetComponent<Rigidbody>().velocity = moveInDirectionOfCam * speed * Time.deltaTime;
+        //print(GetComponent<Rigidbody>().velocity);
 
         //create a vector outwards from behind the camera
         Vector3 rayCastBehind = playerCam.transform.TransformDirection(Vector3.forward * -1);
