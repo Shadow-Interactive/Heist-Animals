@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 
+using System.Runtime.InteropServices;
+
 public class Movement : NetworkBehaviour {
 
     //constraints for the camera y rotation
@@ -25,6 +27,20 @@ public class Movement : NetworkBehaviour {
     private Vector3 ray;
 
     [HideInInspector] public bool disableMovement = false;
+
+    const string dllName = "FMOD Controller";
+
+    [DllImport(dllName)]
+    public static extern void setListenerPos(float _x, float _y, float _z);
+
+    [DllImport(dllName)]
+    public static extern void setListenerVel(float _x, float _y, float _z);
+
+    [DllImport(dllName)]
+    public static extern void setListenerUp(float _x, float _y, float _z);
+
+    [DllImport(dllName)]
+    public static extern void setListenerForward(float _x, float _y, float _z);
 
     // Use this for initialization
     void Start () {
