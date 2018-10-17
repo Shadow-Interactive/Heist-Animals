@@ -17,6 +17,7 @@ public class PlayerLogic : MonoBehaviour {
     public GameObject Zapper;
     public Movement thePlayerMovement;
     RoomManager theRoomManager;
+    public GameObject lightningSprite;
 
     //private variables
     //strings
@@ -75,7 +76,7 @@ public class PlayerLogic : MonoBehaviour {
         //when the zaps run out, it takes time to refill
         if (zapperReload == true)
         {
-            zapperSlider.value += (0.3f * Time.deltaTime);
+            zapperSlider.value += (3 * Time.deltaTime);
 
             if (zapperSlider.value >= zapperAmount)
             {
@@ -95,6 +96,7 @@ public class PlayerLogic : MonoBehaviour {
             if (shockTimer >= 3)
             {
                 shockTrap = false;
+                lightningSprite.SetActive(false);
                 thePlayerMovement.disableMovement = shockTrap;
                 shockTimer = 0;
             }
@@ -116,6 +118,8 @@ public class PlayerLogic : MonoBehaviour {
         shockTrap = true;
         thePlayerMovement.disableMovement = shockTrap;
         shockAttempts++;
+        lightningSprite.SetActive(true);
+
         if (shockAttempts >= 3)
         {
             theRoomManager.Teleport(ref playerPosition, ref roomInt);
@@ -133,8 +137,6 @@ public class PlayerLogic : MonoBehaviour {
             zapHealth = 3;
         if (shockAttempts >= 3)
             shockAttempts = 0;
-
-        shockTimer = 0;
     }
 
     private void OnTriggerEnter(Collider other)
