@@ -9,6 +9,7 @@ TagManager:
   - RunnerOne
   - RunnerTwo
   - RoomManager
+  - thePlayer
   layers:
   - Default
   - TransparentFX

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 public class Movement : NetworkBehaviour {
 
     //constraints for the camera y rotation
-    private const float CAM_Y_MIN = -20.0f;
+    private const float CAM_Y_MIN = -80.0f;
     private const float CAM_Y_MAX = 80.0f;
     //player speed per second (expected 60 FPS)
     public float speed = 600.0f; //speed without time.Deltatime was 10
@@ -25,6 +25,8 @@ public class Movement : NetworkBehaviour {
     private Vector2 cameraLook;
 
     private Vector3 ray;
+    private bool mouseLock = true;
+    public bool spawnIn = false;
 
     [HideInInspector] public bool disableMovement = false;
 
@@ -52,26 +54,30 @@ public class Movement : NetworkBehaviour {
         {
             if (isServer)
             {
+               
                 gameObject.transform.position = new Vector3(0f, 0f, 0f);
-                gameObject.name = "Runner One";
+                gameObject.tag = "RunnerOne";
+
             }
             else
             {
-                gameObject.transform.position = new Vector3(2f, 0f, 0f);
-                gameObject.name = "Runner Two";
+                
+                gameObject.transform.position = new Vector3(2f, 1f, 0f);
+                gameObject.tag = "RunnerTwo";
+                
             }
         }
         else
         {
             if (isServer)
             {
-                gameObject.transform.position = new Vector3(0f, 0f, 0f);
-                gameObject.name = "Runner Two";
+                gameObject.transform.position = new Vector3(2f, 1f, 0f);
+                gameObject.tag = "RunnerTwo";
             }
             else
             {
-                gameObject.transform.position = new Vector3(2f, 0f, 0f);
-                gameObject.name = "Runner One";
+                gameObject.transform.position = new Vector3(0f, 0f, 0f);
+                gameObject.name = "RunnerOne";
             }
         }
 
@@ -79,6 +85,7 @@ public class Movement : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        
         //only update the local player, otherwise exit
         if (!isLocalPlayer)
         {
@@ -105,7 +112,7 @@ public class Movement : NetworkBehaviour {
         cameraLook.y = Mathf.Clamp(cameraLook.y, CAM_Y_MIN, CAM_Y_MAX);
 
         //create the rotation for camera
-        Quaternion cameraRotate = Quaternion.Euler(cameraLook.y, cameraLook.x, 0);
+        Quaternion cameraRotate = Quaternion.Euler(-cameraLook.y, cameraLook.x, 0);
         //create the rotation for the Y rotation only camera
         Quaternion cameraRotateOnlyY = Quaternion.Euler(0, cameraLook.x, 0);
         //update the position of the camera, using the player's position and camera rotation, alongside the distance from the camera to player
@@ -129,6 +136,15 @@ public class Movement : NetworkBehaviour {
             GetComponent<Rigidbody>().velocity = moveInDirectionOfCam * speed * Time.deltaTime;
         //print(GetComponent<Rigidbody>().velocity);
 
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            mouseLock = !mouseLock;
+        }
+
+        if (mouseLock)
+            Cursor.lockState = CursorLockMode.Locked;
+        else if (!mouseLock)
+            Cursor.lockState = CursorLockMode.None;
         //create a vector outwards from behind the camera
         Vector3 rayCastBehind = playerCam.transform.TransformDirection(Vector3.forward * -1);
         //variable for contact point of the raycast
@@ -143,9 +159,12 @@ public class Movement : NetworkBehaviour {
         }
         
 	}
-
-    void collision (Collision collision)
+    public void roleChose (Movement script)
     {
-        //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        script.spawnIn = !script.spawnIn;
+        this.spawnIn = script.spawnIn;
+        Debug.Log(spawnIn);
     }
 }
+
+    

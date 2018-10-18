@@ -39,11 +39,11 @@ public class SoundManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        update(Time.deltaTime, 0, true);
+        //update(Time.deltaTime, 0, true);
 	}
 
     void OnDestroy()
     {
-        cleanFMOD();
+        //cleanFMOD();
     }
 }

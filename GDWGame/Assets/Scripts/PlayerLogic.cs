@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class PlayerLogic : MonoBehaviour {
+public class PlayerLogic : NetworkBehaviour {
 
     //data that is shared
     [HideInInspector] public int roomInt;
@@ -43,6 +44,11 @@ public class PlayerLogic : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        if (!isLocalPlayer)
+        {
+            shockTrap = false;
+            return;
+        }
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
         KeyInputUpdate();
