@@ -11,6 +11,10 @@ public class OverSeerControl : NetworkBehaviour {
     private const float CAM_X_MIN = -40.0f;
     private const float CAM_X_MAX = 40.0f;
 
+    public float test;
+
+    private float zoomSpeed = 5.0f;
+
     public GameObject cam1;
     public GameObject cam2;
 
@@ -41,10 +45,16 @@ public class OverSeerControl : NetworkBehaviour {
             totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
         }
     }
+
+    void findFOV(int x)
+    {
+        test = totalCamera[x].GetComponentInChildren<Camera>().fieldOfView;
+        return;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         
         cameraLook.x += Input.GetAxis("Mouse X");
         cameraLook.y += Input.GetAxis("Mouse Y");
@@ -57,6 +67,7 @@ public class OverSeerControl : NetworkBehaviour {
 
         for (int i = 0; i < totalCamera.Count; i++)
         {
+            findFOV(i);
 
             if (Input.GetKeyUp(KeyCode.LeftArrow))
             {
@@ -105,6 +116,32 @@ public class OverSeerControl : NetworkBehaviour {
                     }
                 }
                 
+            }
+
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
+                {
+                    float temp = totalCamera[i].GetComponentInChildren<Camera>().fieldOfView;
+
+                    if(temp > 30)
+                        temp -= zoomSpeed * Time.deltaTime;
+
+                    totalCamera[i].GetComponentInChildren<Camera>().fieldOfView = temp;
+                }
+            }
+
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
+                {
+                    float temp = totalCamera[i].GetComponentInChildren<Camera>().fieldOfView;
+
+                    if (temp < 100)
+                        temp += zoomSpeed * Time.deltaTime;
+
+                    totalCamera[i].GetComponentInChildren<Camera>().fieldOfView = temp;
+                }
             }
 
             if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
