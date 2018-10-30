@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomScript : SharedInformation
+public class RoomScript : MonoBehaviour
 {
     public int roomTag;
-    public TypesOfTraps trapType;
+    public RoomTraps trapType;
     public RoomManager theManager;
 
     // Use this for initialization
@@ -14,23 +14,21 @@ public class RoomScript : SharedInformation
 
     }
 
-    public void uponEntering(ref int playerInt, ref bool shockTrap)
+    public bool uponEntering(ref int playerInt)
     {
         playerInt = roomTag;
         print("Player entered room #" + roomTag);
         //we can activate whatever traps or whatever else here
 
-        if (trapType == TypesOfTraps.SHOCK)
-        {
-            shockTrap = true;
-        }
+        if ((int)trapType == 2)
+            return false;
+
+        return true;
+
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void DeactivateTrap()
     {
-        if (other.CompareTag(strZap))
-        {
-            Destroy(other);
-        }
+        trapType = RoomTraps.NO_TRAP;
     }
 }

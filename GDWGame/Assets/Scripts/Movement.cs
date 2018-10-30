@@ -165,6 +165,11 @@ public class Movement : NetworkBehaviour {
         this.spawnIn = script.spawnIn;
         Debug.Log(spawnIn);
     }
+
+    public void SetCursor(bool newMouse)
+    {
+        mouseLock = newMouse;
+    }
 }
 
     

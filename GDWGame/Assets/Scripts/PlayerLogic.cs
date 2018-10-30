@@ -11,6 +11,7 @@ public class PlayerLogic : NetworkBehaviour {
     [HideInInspector] public string playerTag;
     [HideInInspector] public Vector3 playerPosition;
     [HideInInspector] public bool shockTrap = false;
+    [HideInInspector] public int numTreasures = 0;
 
     //data that is obtained
     public Slider zapperSlider;
@@ -19,10 +20,12 @@ public class PlayerLogic : NetworkBehaviour {
     public Movement thePlayerMovement;
     RoomManager theRoomManager;
     public GameObject lightningSprite;
+    OverSeerControl theOverSeer;
+    [HideInInspector] public Objective currentObjective;
 
     //private variables
     //strings
-    string doorStr = "Door", zapStr = "Zap";
+    string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
 
     //ints, floats and bools used in logic
     int zapperAmount = 3, zapHealth = 3, shockAttempts = 0;
@@ -145,6 +148,36 @@ public class PlayerLogic : NetworkBehaviour {
             shockAttempts = 0;
     }
 
+    void setTrap(RoomTraps theTrapTypes)
+    {
+        switch (theTrapTypes)
+        {
+            case RoomTraps.SHOCK:
+                ActivateShock();
+                break;
+            case RoomTraps.EMP:
+                //theOverSeer.setEMP(true);
+                //print(theOverSeer.getEMP());
+
+                break;
+        }
+    }
+
+    public void Scramble()
+    {
+        currentObjective = theRoomManager.Scramble(currentObjective);
+    }
+
+    public bool GetActivation()
+    {
+        return currentObjective.minigameActivated;
+    }
+
+    public void SetActivation(bool temp)
+    {
+        currentObjective.minigameActivated = temp;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(doorStr))
@@ -154,13 +187,12 @@ public class PlayerLogic : NetworkBehaviour {
             //JUST GIVE ME TIMEEEE
             if (roomInt != other.GetComponentInParent<RoomScript>().roomTag)
             {
-                other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt, ref shockTrap);
-                if (shockTrap == true && shockTimer == 0)
+                if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
                 {
-                    ActivateShock();
+                    setTrap(other.GetComponentInParent<RoomScript>().trapType);
                 }
             }
-          
+
         }
         else if (other.CompareTag(zapStr))
         {
@@ -175,7 +207,32 @@ public class PlayerLogic : NetworkBehaviour {
                     Restore();
                 }
             }
+
+            else if (other.CompareTag(treasureStr))
+            {
+                numTreasures++;
+                print("Treasure num" + numTreasures);
+            }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag(trapStr))
+        {
+            currentObjective = collision.gameObject.GetComponent<Objective>();
+            print(currentObjective.objTrapType);
+        }
+    }
+
+    public void SetMovement(bool movement)
+    {
+        thePlayerMovement.disableMovement = movement;
+    }
+
+    public void setCursor(bool activation)
+    {
+        thePlayerMovement.SetCursor(activation);
     }
 
 }

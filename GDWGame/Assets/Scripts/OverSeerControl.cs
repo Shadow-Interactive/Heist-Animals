@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class OverSeerControl : NetworkBehaviour {
@@ -20,7 +21,18 @@ public class OverSeerControl : NetworkBehaviour {
     private List<Vector3> ogRotation = new List<Vector3>();
 
     public bool camChoice = false;
-  
+
+    //for the trap
+    public GameObject screenBlocker;
+    bool EMP = false;
+    float empTimer = 0;
+
+    public Canvas trapCanvas;
+    RoomManager theRoomManager;
+    public Text txtPrefab;
+
+    string mouseX = "Mouse X", mouseY = "Mouse Y";
+
     // Use this for initialization
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -39,6 +51,13 @@ public class OverSeerControl : NetworkBehaviour {
         for (int i = 1; i < totalCamera.Count; i++)
         {
             totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+        }
+
+        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+
+        for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
+        {
+            AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i));
         }
     }
 	
@@ -78,10 +97,9 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         break;
                     }
-
                     //totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
-
                 }
+                trapCanvas.worldCamera = totalCamera[i].GetComponentInChildren<Camera>();
             }
 
             if (Input.GetKeyUp(KeyCode.RightArrow))
@@ -104,12 +122,24 @@ public class OverSeerControl : NetworkBehaviour {
                         break;
                     }
                 }
-                
+                trapCanvas.worldCamera = totalCamera[i].GetComponentInChildren<Camera>();
             }
 
             if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
             {
                 totalCamera[i].transform.eulerAngles = new Vector3(-cameraLook.y, ogRotation[i].y + cameraLook.x, 0);
+            }
+        }
+
+        if (EMP)
+        {
+            empTimer += Time.deltaTime;
+
+            if (empTimer > 10)
+            {
+                empTimer = 0;
+                EMP = false;
+                screenBlocker.SetActive(EMP);
             }
         }
     }
@@ -120,5 +150,25 @@ public class OverSeerControl : NetworkBehaviour {
         //script2.spawnIn = false;
         this.camChoice = script.camChoice;
         Debug.Log(camChoice);
+    }
+
+    public void setEMP(bool activeEMP)
+    {
+        EMP = activeEMP;
+        screenBlocker.SetActive(activeEMP);
+    }
+
+    public bool getEMP()
+    {
+        return EMP;
+    }
+
+    public void AddTrap(Vector3 trapPos, int[] theCode)
+    {
+        Text newObjTxt = GameObject.Instantiate(txtPrefab);
+        newObjTxt.transform.parent = trapCanvas.transform;
+        newObjTxt.transform.position = new Vector3(trapPos.x, 2, trapPos.z);
+
+        newObjTxt.text = (theCode[0] + " " + theCode[1] + " " + theCode[2] + " " + theCode[3]).ToString();
     }
 }
