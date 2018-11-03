@@ -1,21 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 
-public class CustomSpawn : NetworkLobbyManager {
-
+public class CustomSpawn : NetworkLobbyManager
+{
+    //these might not be needed anymore, leaving them for now
     public Movement runner;
     public OverSeerControl overseer;
-    public Transform Spawn;
-    private Transform Spawn2;
 
-    public override GameObject OnLobbyServerCreateLobbyPlayer(NetworkConnection conn, short playerControllerId)
+    //spawn position
+    public Transform Spawn;
+    
+
+    //prefab int
+    public int choice;
+    
+    void Start()
     {
-        return base.OnLobbyServerCreateLobbyPlayer(conn, playerControllerId);
+        //prefab choice init
+        choice = 0;
+        
     }
+   
     public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
     {
+        
         RegisterStartPosition(Spawn);
         RegisterStartPosition(Spawn);
         RegisterStartPosition(Spawn);
@@ -23,28 +35,46 @@ public class CustomSpawn : NetworkLobbyManager {
 
         GameObject _temp;
 
-        if (!overseer.camChoice)
+        if (conn.connectionId == 0)
         {
-            if (runner.spawnIn)
-            {
-                _temp = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Players/Runner 1"),
-                    startPositions[conn.connectionId].position,
-                    Quaternion.identity);
-
-                return _temp;
-            }
-            else
-                return null;
-            
-        }
-        else if (overseer.camChoice)
-        {
-            _temp = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Players/CameraManager"),
+            //Player 1: They can use the choice variable currently, easier for testing as they are the host
+            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[choice],
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
+
             return _temp;
         }
-        else
-            return null;
+        else if (conn.connectionId == 1)
+        {
+            //Player 2: They are coded to be a runner currently
+            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[0],
+                startPositions[conn.connectionId].position,
+                Quaternion.identity);
+
+            return _temp;
+            
+        }
+        else return null;
+    }
+
+    public void setRunnerRole()
+    {
+        //set prefab choice to 0
+        choice = 0;
+        
+    }
+
+    public void setOverseerRole()
+    {
+       //set prefab choice to 1
+        choice = 1;
+        
+    }
+
+    void Update()
+    {
+        //uncomment to check if choice is being updated
+        //Debug.Log(choice);
+            
     }
 }

@@ -1022,7 +1022,7 @@ MeshFilter:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1297237473405666}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 04f6c0100add8154b95238f4c8b25c26, type: 3}
 --- !u!54 &54381242505459710
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -3142,7 +3142,7 @@ MonoBehaviour:
   noDownWardForce: {fileID: 4533963925102656}
   viewCam: {fileID: 20967917879580134}
   NoDownWardForceCam: {fileID: 20164830037640808}
-  spawnIn: 1
+  spawnIn: 0
   disableMovement: 0
 --- !u!114 &114941161268634276
 MonoBehaviour:

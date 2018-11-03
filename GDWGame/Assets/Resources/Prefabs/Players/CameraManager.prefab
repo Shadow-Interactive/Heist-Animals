@@ -72,7 +72,6 @@ GameObject:
   - component: {fileID: 23984613199216206}
   - component: {fileID: 65204411442429824}
   - component: {fileID: 114622726052463468}
-  - component: {fileID: 114386879441554526}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -142,6 +141,7 @@ GameObject:
   - component: {fileID: 4129304160474892}
   - component: {fileID: 114389779897271646}
   - component: {fileID: 114805338434383150}
+  - component: {fileID: 114386879441554526}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: Untagged
@@ -160,8 +160,8 @@ GameObject:
   - component: {fileID: 33256463220940774}
   - component: {fileID: 23484325144793130}
   - component: {fileID: 65243469991584790}
-  - component: {fileID: 114874986282227082}
   - component: {fileID: 114557355537792432}
+  - component: {fileID: 114874986282227082}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -581,17 +581,17 @@ MonoBehaviour:
     height: 1
 --- !u!114 &114386879441554526
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198121535066558}
+  m_GameObject: {fileID: 1599972875405128}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.03448276
+  m_SendInterval: 0.033333335
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -655,7 +655,7 @@ MonoBehaviour:
   m_DynamicPixelsPerUnit: 1
 --- !u!114 &114557355537792432
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1619619529273794}
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_InterpolateMovement: 1
 --- !u!114 &114622726052463468
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1198121535066558}
@@ -738,16 +738,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6e3486f6ed48d40a992ba315fdc964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  test: 0
   cam1: {fileID: 1198121535066558}
   cam2: {fileID: 1619619529273794}
-  camChoice: 0
+  camChoice: 1
   screenBlocker: {fileID: 1190410017832892}
   trapCanvas: {fileID: 223423120977993404}
   txtPrefab: {fileID: 114487356540237604, guid: 97eac09c7259dd84b90a01f61d12303d,
     type: 2}
 --- !u!114 &114874986282227082
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1619619529273794}

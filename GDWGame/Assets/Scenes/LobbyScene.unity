@@ -534,6 +534,7 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1297237473405666, guid: 5bf88f9c50579d3498ef5d19f405680d, type: 2}
+  - {fileID: 1599972875405128, guid: 16c16237ba2289d4b886da1253e5af62, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -602,6 +603,10 @@ MonoBehaviour:
   runner: {fileID: 114939359849314944, guid: 5bf88f9c50579d3498ef5d19f405680d, type: 2}
   overseer: {fileID: 114805338434383150, guid: 16c16237ba2289d4b886da1253e5af62, type: 2}
   Spawn: {fileID: 4572195713969698, guid: eb00a210de8b3554aaf5cc124aa9715d, type: 2}
+  choice: 0
+  choice1: 0
+  runnerButton: {fileID: 0}
+  overseerButton: {fileID: 0}
 --- !u!1 &753434289
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +695,7 @@ GameObject:
   - component: {fileID: 927062746}
   - component: {fileID: 927062745}
   - component: {fileID: 927062744}
+  - component: {fileID: 927062747}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -755,19 +761,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114939359849314944, guid: 5bf88f9c50579d3498ef5d19f405680d,
-          type: 2}
-        m_MethodName: roleChose
-        m_Mode: 2
+      - m_Target: {fileID: 711665014}
+        m_MethodName: setRunnerRole
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 114939359849314944, guid: 5bf88f9c50579d3498ef5d19f405680d,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: Movement, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &927062745
@@ -804,6 +808,38 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 927062742}
   m_CullTransparentMesh: 0
+--- !u!114 &927062747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 927062742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!1 &951125040
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,6 +851,7 @@ GameObject:
   - component: {fileID: 951125044}
   - component: {fileID: 951125043}
   - component: {fileID: 951125042}
+  - component: {fileID: 951125045}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -880,14 +917,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114805338434383150, guid: 16c16237ba2289d4b886da1253e5af62,
-          type: 2}
-        m_MethodName: roleChose
-        m_Mode: 2
+      - m_Target: {fileID: 711665014}
+        m_MethodName: setOverseerRole
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 114805338434383150, guid: 16c16237ba2289d4b886da1253e5af62,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: OverSeerControl, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -929,6 +964,38 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 951125040}
   m_CullTransparentMesh: 0
+--- !u!114 &951125045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 951125040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!1 &1356819526
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,7 +1013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1356819527
 BoxCollider:
   m_ObjectHideFlags: 0

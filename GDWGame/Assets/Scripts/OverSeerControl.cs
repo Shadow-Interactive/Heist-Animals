@@ -24,7 +24,7 @@ public class OverSeerControl : NetworkBehaviour {
     private Vector2 cameraLook;
     private List<Vector3> ogRotation = new List<Vector3>();
 
-    public bool camChoice = false;
+    public bool camChoice = true;
 
     //for the trap
     public GameObject screenBlocker;
@@ -40,6 +40,9 @@ public class OverSeerControl : NetworkBehaviour {
     // Use this for initialization
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
+
+        cam1.transform.position = new Vector3(-12.591f, 3.0f, -4.65f);
+        cam2.transform.position = new Vector3(-17.47f, 3.0f, 17.7f);
 
         totalCamera.Add(cam1);
         totalCamera.Add(cam2);
@@ -74,6 +77,12 @@ public class OverSeerControl : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
         
+        if (!isLocalPlayer)
+        {
+            totalCamera[0].GetComponentInChildren<Camera>().enabled = false;
+            camChoice = false;
+            return;
+        }
         
         cameraLook.x += Input.GetAxis("Mouse X");
         cameraLook.y += Input.GetAxis("Mouse Y");

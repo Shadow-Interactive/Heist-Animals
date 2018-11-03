@@ -82,10 +82,10 @@ public class Movement : NetworkBehaviour {
         }
 
     }
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update() {
 
-        
+
         //only update the local player, otherwise exit
         if (!isLocalPlayer)
         {
@@ -103,7 +103,7 @@ public class Movement : NetworkBehaviour {
 
         //vector containing moveInput
         Vector3 playerControl = new Vector3(moveInput.x, 0, moveInput.y);
-        
+
         //fill cameraLook with mouse input
         cameraLook.x += Input.GetAxis("Mouse X");
         cameraLook.y += Input.GetAxis("Mouse Y");
@@ -116,15 +116,15 @@ public class Movement : NetworkBehaviour {
         //create the rotation for the Y rotation only camera
         Quaternion cameraRotateOnlyY = Quaternion.Euler(0, cameraLook.x, 0);
         //update the position of the camera, using the player's position and camera rotation, alongside the distance from the camera to player
-        playerCam.position = cameraTarget.position + cameraRotate * new Vector3(1,0,-2);
+        playerCam.position = cameraTarget.position + cameraRotate * new Vector3(1, 0, -2);
         //want the camera always looking at the player, since it's a 3rd person camera
         playerCam.LookAt(cameraTarget);
 
         //setup the Y rotation only camera to properly get line of sight for character movement and velocity
-        noDownWardForce.position = new Vector3(playerCam.position.x, cameraTarget.position.y, playerCam.position.z) + cameraRotateOnlyY * new Vector3(0, 0 ,0);
+        noDownWardForce.position = new Vector3(playerCam.position.x, cameraTarget.position.y, playerCam.position.z) + cameraRotateOnlyY * new Vector3(0, 0, 0);
         noDownWardForce.LookAt(cameraTarget);
 
-        
+
         //want the player to move in the forward direction of the Y rotation onlys camera (to avoid any downward force when camera is tilted), rather than just on it's local axis
         Vector3 moveInDirectionOfCam = NoDownWardForceCam.transform.TransformVector(playerControl);
         //gameObject.transform.Rotate(new Vector3(0, moveInDirectionOfCam.x, 0));
@@ -152,13 +152,13 @@ public class Movement : NetworkBehaviour {
         //send out raycasts from behind the player to check if the ray is colliding with an object behind the player
         if (Physics.Raycast(cameraTarget.TransformPoint(new Vector3(0, 0, 0)), rayCastBehind, out contact, 2.0f) && contact.transform != playerCam)
         {
-            
+
             //situate the camera at point of contact to avoid camera clipping into objects
             playerCam.position = new Vector3(contact.point.x, contact.point.y, contact.point.z);
-            
+
         }
-        
-	}
+
+    }
     public void roleChose (Movement script)
     {
         script.spawnIn = !script.spawnIn;
