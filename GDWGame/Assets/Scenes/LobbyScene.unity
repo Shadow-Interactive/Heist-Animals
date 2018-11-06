@@ -604,9 +604,6 @@ MonoBehaviour:
   overseer: {fileID: 114805338434383150, guid: 16c16237ba2289d4b886da1253e5af62, type: 2}
   Spawn: {fileID: 4572195713969698, guid: eb00a210de8b3554aaf5cc124aa9715d, type: 2}
   choice: 0
-  choice1: 0
-  runnerButton: {fileID: 0}
-  overseerButton: {fileID: 0}
 --- !u!1 &753434289
 GameObject:
   m_ObjectHideFlags: 0

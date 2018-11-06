@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 33281936679589554}
   - component: {fileID: 23060229457516636}
   - component: {fileID: 65402758633585452}
+  - component: {fileID: 114421700840971264}
   m_Layer: 0
   m_Name: ActualObjective
   m_TagString: Treasure
@@ -226,3 +227,15 @@ MonoBehaviour:
   objTrapType: 0
   trapCode: 00000000000000000000000000000000
   minigameActivated: 0
+--- !u!114 &114421700840971264
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1707394891938178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a235afce320d90448ced0acf8c3a544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minigame: {fileID: 114006541979400274}

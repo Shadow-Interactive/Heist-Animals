@@ -31,9 +31,16 @@ public class OverSeerControl : NetworkBehaviour {
     bool EMP = false;
     float empTimer = 0;
 
-    public Canvas trapCanvas;
+    //all the juicy ui stuff
+    public Canvas trapCanvas, regularCanvas;
     RoomManager theRoomManager;
-    public Text txtPrefab;
+    private List<Text> trapTexts = new List<Text>();
+    private List<GameObject> trapImages = new List<GameObject>();
+    GameObject txtPrefab;
+    GameObject shockImage, empImage;
+    GameObject imageTemp;
+    GameObject[] theImages = new GameObject[4];
+    private float imageHeight;
 
     string mouseX = "Mouse X", mouseY = "Mouse Y";
 
@@ -61,10 +68,24 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+        txtPrefab = Resources.Load("Test") as GameObject;
+        shockImage = Resources.Load("ShockUI") as GameObject;
+        empImage = Resources.Load("EMPUI") as GameObject;
+
+        //we need images or smth to dictate no traps/safeguards
+        theImages[0] = shockImage;
+        theImages[1] = shockImage;
+        theImages[2] = empImage;
+        theImages[3] = empImage;
 
         for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
         {
             AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i));
+        }
+
+        for (int i = 0; i < theRoomManager.SecurityLength(); i++)
+        {
+            AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
         }
     }
 
@@ -81,6 +102,8 @@ public class OverSeerControl : NetworkBehaviour {
         {
             totalCamera[0].GetComponentInChildren<Camera>().enabled = false;
             camChoice = false;
+            regularCanvas.gameObject.SetActive(false);
+            trapCanvas.gameObject.SetActive(false);
             return;
         }
         
@@ -209,12 +232,25 @@ public class OverSeerControl : NetworkBehaviour {
         return EMP;
     }
 
-    public void AddTrap(Vector3 trapPos, int[] theCode)
+    void AddTrap(Vector3 trapPos, int[] theCode)
     {
-        Text newObjTxt = GameObject.Instantiate(txtPrefab);
+        Text newObjTxt = GameObject.Instantiate(txtPrefab.GetComponent<Text>());
         newObjTxt.transform.parent = trapCanvas.transform;
         newObjTxt.transform.position = new Vector3(trapPos.x, 2, trapPos.z);
 
         newObjTxt.text = (theCode[0] + " " + theCode[1] + " " + theCode[2] + " " + theCode[3]).ToString();
+        trapTexts.Add(newObjTxt);
+    }
+
+    void AddImage(Transform boxPos, Quaternion boxRotation, RoomTraps theType)
+    {
+        imageTemp = GameObject.Instantiate(theImages[(int)theType]);
+        imageTemp.transform.SetPositionAndRotation(new Vector3(boxPos.position.x, boxPos.position.y + 0.8f, boxPos.position.z), boxRotation);
+        trapImages.Add(imageTemp);
+    }
+
+    public void UpdateTextCode(int[] theCode, int index)
+    {
+        trapTexts[index].text = (theCode[0] + " " + theCode[1] + " " + theCode[2] + " " + theCode[3]).ToString();
     }
 }

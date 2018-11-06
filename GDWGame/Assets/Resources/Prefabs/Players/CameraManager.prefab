@@ -744,8 +744,7 @@ MonoBehaviour:
   camChoice: 1
   screenBlocker: {fileID: 1190410017832892}
   trapCanvas: {fileID: 223423120977993404}
-  txtPrefab: {fileID: 114487356540237604, guid: 97eac09c7259dd84b90a01f61d12303d,
-    type: 2}
+  regularCanvas: {fileID: 223803537360159520}
 --- !u!114 &114874986282227082
 MonoBehaviour:
   m_ObjectHideFlags: 0

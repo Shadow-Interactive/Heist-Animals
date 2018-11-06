@@ -18,6 +18,13 @@ public enum TrapTypes
     NO_TRAP = 3
 }
 
+public enum ColourTypes
+{
+    RED = 0, //0 is false
+    GREEN = 1,
+    YELLOW = 2
+}
+
 
 //used atiya and angela's flyweight pattern as a framework
 
@@ -33,6 +40,7 @@ public class RoomManager : MonoBehaviour
 
     public GameObject emptyObjectives;
     public GameObject emptyRooms;
+    List<GameObject> securityBoxes = new List<GameObject>();
 
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
@@ -41,7 +49,6 @@ public class RoomManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         LoadProperties();
 
         theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
@@ -50,6 +57,7 @@ public class RoomManager : MonoBehaviour
         for (int i = 0; i < theRooms.Length; i++)
         {
             theRooms[i].roomTag = i;
+            securityBoxes.Add(theRooms[i].securityBox);
         }
 
         for (int i = 0; i < theObjectives.Length; i++)
@@ -57,9 +65,7 @@ public class RoomManager : MonoBehaviour
             if (theObjectives[i].objTrapType != TrapTypes.NO_TRAP)
             {
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
-
             }
-
         }
     }
 
@@ -125,8 +131,28 @@ public class RoomManager : MonoBehaviour
         return theObjectives[index].trapCode;
     }
 
+    public RoomTraps getRoomTrap(int index)
+    {
+        return theRooms[index].trapType;
+    }
+
+    public Transform GetSecurityPos(int index)
+    {
+        return securityBoxes[index].transform;
+    }
+
+    public Quaternion GetSecurityRotation(int index)
+    {
+        return securityBoxes[index].transform.rotation;
+    }
+
     public int ObjectiveLength()
     {
         return theObjectives.Length;
+    }
+
+    public int SecurityLength()
+    {
+        return securityBoxes.Count;
     }
 }

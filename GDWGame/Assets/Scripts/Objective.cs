@@ -73,4 +73,15 @@ public class Objective : MonoBehaviour {
     {
         gameObject.SetActive(false);
     }
+    public void GameObjectVisible(bool temp)
+    {
+        gameObject.SetActive(temp);
+    }
+
+    //https://letsgeekblog.wordpress.com/2017/03/11/drag-object-script-in-unity3d/
+    void OnMouseDown()
+    {
+        if (minigameActivated == false)
+            GameObjectVisible(false);
+    }
 }

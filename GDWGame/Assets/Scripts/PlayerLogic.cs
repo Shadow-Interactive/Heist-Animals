@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+
+
 public class PlayerLogic : NetworkBehaviour {
 
     //data that is shared
@@ -32,6 +34,8 @@ public class PlayerLogic : NetworkBehaviour {
     float playerHeightAmount = 1.5f, shockTimer = 0;
     bool zapperReload = false;
 
+    public Canvas playerCanvas;
+
     // Use this for initialization
     void Start () {
         roomInt = 8;
@@ -50,6 +54,7 @@ public class PlayerLogic : NetworkBehaviour {
         if (!isLocalPlayer)
         {
             shockTrap = false;
+            playerCanvas.gameObject.SetActive(false);
             return;
         }
         //the updates that are running
