@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using System;
 
-public class RoomScript : MonoBehaviour
+public class RoomScript : NetworkBehaviour
 {
     public int roomTag;
     public RoomTraps trapType;

@@ -54,6 +54,26 @@ public class CustomSpawn : NetworkLobbyManager
             return _temp;
             
         }
+        else if (conn.connectionId == 2)
+        {
+            //Player 3: They are coded to be a runner currently
+            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[0],
+                startPositions[conn.connectionId].position,
+                Quaternion.identity);
+
+            return _temp;
+
+        }
+        else if (conn.connectionId == 3)
+        {
+            //Player 4: They are coded to be an overseer currently
+            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[1],
+                startPositions[conn.connectionId].position,
+                Quaternion.identity);
+
+            return _temp;
+
+        }
         else return null;
     }
 

@@ -24,7 +24,9 @@ public class PlayerLogic : NetworkBehaviour {
     public GameObject lightningSprite;
     OverSeerControl theOverSeer;
     [HideInInspector] public Objective currentObjective;
+    GameObject networkZapper;
 
+    
     //private variables
     //strings
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
@@ -40,6 +42,8 @@ public class PlayerLogic : NetworkBehaviour {
     void Start () {
         roomInt = 8;
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+        playerTag = gameObject.tag;
+
     }
 
     public void SetRunnerTag(string theTag)
@@ -54,9 +58,11 @@ public class PlayerLogic : NetworkBehaviour {
         if (!isLocalPlayer)
         {
             shockTrap = false;
+            playerTag = null;
             playerCanvas.gameObject.SetActive(false);
             return;
         }
+
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
         KeyInputUpdate();
@@ -121,9 +127,23 @@ public class PlayerLogic : NetworkBehaviour {
     private void Shoot()
     {
         zapperSlider.value--;
-        GameObject newZapper = GameObject.Instantiate(Zapper, transform.position, thePlayerMovement.playerCam.rotation);
-        newZapper.GetComponent<ZapperScript>().zapperTag = playerTag;
-        Destroy(newZapper, 5);
+        //networkZapper = Instantiate(Zapper, transform.position, thePlayerMovement.playerCam.rotation);
+        
+        CmdSpawnBullet(thePlayerMovement.playerCam.rotation, gameObject.tag);
+
+        //Debug.Log(Bullet.GetComponent<ZapperScript>().zapperTag);
+    }
+
+    [Command]
+    void CmdSpawnBullet(Quaternion rotation, string tagForBullet)
+    {
+        
+        GameObject Bullet = Instantiate(Zapper, transform.position + transform.forward * 0.25f, rotation);
+        //if (isLocalPlayer)
+        Bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
+        NetworkServer.Spawn(Bullet);
+        
+        Destroy(Bullet, 5);
     }
 
     //activates the affect on the player for the shock trap
@@ -145,7 +165,7 @@ public class PlayerLogic : NetworkBehaviour {
     //or if the zapper refills
     public void Restore()
     {
-        transform.position = new Vector3(playerPosition.x, playerPosition.y, playerPosition.z);
+        transform.position = new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z);
 
         if (zapHealth <= 0)
             zapHealth = 3;
@@ -201,7 +221,8 @@ public class PlayerLogic : NetworkBehaviour {
         }
         else if (other.CompareTag(zapStr))
         {
-            if (other.GetComponent<ZapperScript>().zapperTag != playerTag)
+            Debug.Log(other.GetComponent<ZapperScript>().zapperTag);
+            if (other.GetComponent<ZapperScript>().zapperTag != gameObject.tag)
             {
                 Destroy(other.gameObject);
                 zapHealth--;

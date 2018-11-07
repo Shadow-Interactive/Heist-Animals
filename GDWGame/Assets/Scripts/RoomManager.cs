@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public enum RoomTraps
 {
@@ -28,7 +29,7 @@ public enum ColourTypes
 
 //used atiya and angela's flyweight pattern as a framework
 
-public class RoomManager : MonoBehaviour
+public class RoomManager : NetworkBehaviour
 {
     public string strZap = "Zap";
     RoomScript[] theRooms;
@@ -49,6 +50,7 @@ public class RoomManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        
         LoadProperties();
 
         theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
@@ -67,6 +69,8 @@ public class RoomManager : MonoBehaviour
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
+
+        
     }
 
     void LoadProperties()
@@ -126,7 +130,7 @@ public class RoomManager : MonoBehaviour
         return theObjectives[index].transform.position;
     }
 
-    public int[] GetObjCode(int index)
+    public SyncListInt GetObjCode(int index)
     {
         return theObjectives[index].trapCode;
     }
