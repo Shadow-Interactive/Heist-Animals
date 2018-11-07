@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Objective : MonoBehaviour {
+public class Objective : NetworkBehaviour {
 
     TrapBase theTrapType;
     Vector3 objectivePosition;
     public TrapTypes objTrapType;
-    [HideInInspector] public int[] trapCode = new int[4];
+    [HideInInspector] public SyncListInt trapCode = new SyncListInt();
     PlayerObjectiveManager activePlayer;
     [HideInInspector] public bool minigameActivated = false; 
 
@@ -15,7 +16,8 @@ public class Objective : MonoBehaviour {
     void Start () {
 		for (int i = 0; i <4; i++)
         {
-            trapCode[i] = Random.Range(0, 10);
+            int random = Random.Range(0, 10);
+            trapCode.Add(random);
         }
 
         print("Trap is" + trapCode[0] + trapCode[1] + trapCode[2] +  trapCode[3] );

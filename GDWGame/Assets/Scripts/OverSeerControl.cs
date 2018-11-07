@@ -14,7 +14,7 @@ public class OverSeerControl : NetworkBehaviour {
 
     public float test;
 
-    private float zoomSpeed = 5.0f;
+    private float zoomSpeed = 20.0f;
 
     public GameObject cam1;
     public GameObject cam2;
@@ -232,7 +232,7 @@ public class OverSeerControl : NetworkBehaviour {
         return EMP;
     }
 
-    void AddTrap(Vector3 trapPos, int[] theCode)
+    void AddTrap(Vector3 trapPos, SyncListInt theCode)
     {
         Text newObjTxt = GameObject.Instantiate(txtPrefab.GetComponent<Text>());
         newObjTxt.transform.parent = trapCanvas.transform;

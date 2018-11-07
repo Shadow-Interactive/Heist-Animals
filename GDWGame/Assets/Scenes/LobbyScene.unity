@@ -533,8 +533,9 @@ MonoBehaviour:
   m_OfflineScene: LobbyScene
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1297237473405666, guid: 5bf88f9c50579d3498ef5d19f405680d, type: 2}
+  - {fileID: 1229463023276866, guid: 5e3a1868c4a39584d9e92241ad6ff50e, type: 2}
   - {fileID: 1599972875405128, guid: 16c16237ba2289d4b886da1253e5af62, type: 2}
+  - {fileID: 1617729459345444, guid: c1c42e4e8155ea94faabfabb8c4d07b7, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -600,7 +601,7 @@ MonoBehaviour:
   m_LobbyScene: LobbyScene
   m_PlayScene: SampleScene
   lobbySlots: []
-  runner: {fileID: 114939359849314944, guid: 5bf88f9c50579d3498ef5d19f405680d, type: 2}
+  runner: {fileID: 114327088882521172, guid: 5e3a1868c4a39584d9e92241ad6ff50e, type: 2}
   overseer: {fileID: 114805338434383150, guid: 16c16237ba2289d4b886da1253e5af62, type: 2}
   Spawn: {fileID: 4572195713969698, guid: eb00a210de8b3554aaf5cc124aa9715d, type: 2}
   choice: 0

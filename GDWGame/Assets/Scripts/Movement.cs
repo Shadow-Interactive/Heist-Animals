@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 public class Movement : NetworkBehaviour {
 
     //constraints for the camera y rotation
-    private const float CAM_Y_MIN = -80.0f;
-    private const float CAM_Y_MAX = 80.0f;
+    private const float CAM_Y_MIN = -60.0f;
+    private const float CAM_Y_MAX = 60.0f;
     //player speed per second (expected 60 FPS)
     public float speed = 600.0f; //speed without time.Deltatime was 10
 
@@ -19,6 +19,9 @@ public class Movement : NetworkBehaviour {
     public Transform noDownWardForce;
     public Camera viewCam;
     public Camera NoDownWardForceCam;
+
+    public Transform overTheShoulder;
+    
 
     //private variables to gather mouse and keyboard input
     private Vector2 moveInput;
@@ -55,8 +58,9 @@ public class Movement : NetworkBehaviour {
             if (isServer)
             {
                
-                gameObject.transform.position = new Vector3(0f, 0f, 0f);
+                gameObject.transform.position = new Vector3(0f, 1f, 0f);
                 gameObject.tag = "RunnerOne";
+                gameObject.name = "RunnerOne";
 
             }
             else
@@ -64,6 +68,7 @@ public class Movement : NetworkBehaviour {
                 
                 gameObject.transform.position = new Vector3(2f, 1f, 0f);
                 gameObject.tag = "RunnerTwo";
+                gameObject.name = "RunnerTwo";
                 
             }
         }
@@ -73,14 +78,17 @@ public class Movement : NetworkBehaviour {
             {
                 gameObject.transform.position = new Vector3(2f, 1f, 0f);
                 gameObject.tag = "RunnerTwo";
+                gameObject.name = "RunnerTwo";
             }
             else
             {
-                gameObject.transform.position = new Vector3(0f, 0f, 0f);
+                gameObject.transform.position = new Vector3(0f, 1f, 0f);
+                gameObject.tag = "RunnerOne";
                 gameObject.name = "RunnerOne";
             }
         }
 
+        
     }
     // Update is called once per frame
     void Update() {
@@ -116,9 +124,14 @@ public class Movement : NetworkBehaviour {
         //create the rotation for the Y rotation only camera
         Quaternion cameraRotateOnlyY = Quaternion.Euler(0, cameraLook.x, 0);
         //update the position of the camera, using the player's position and camera rotation, alongside the distance from the camera to player
-        playerCam.position = cameraTarget.position + cameraRotate * new Vector3(1, 0, -2);
+        playerCam.position = overTheShoulder.position + cameraRotate * new Vector3(0, 0, -2);
+
+        //gameObject.transform.rotation = cameraRotateOnlyY;
+        //we need to be able to look past the player in 3rd person, so an over the shoulder camera works here
         //want the camera always looking at the player, since it's a 3rd person camera
-        playerCam.LookAt(cameraTarget);
+        //overTheShoulder.position = (cameraTarget.position + new Vector3(0.2f, 0.2f, 0)) + gameObject.transform.rotation * new Vector3(0, 0, 0);
+        //overTheShoulder.LookAt(cameraTarget);
+        playerCam.LookAt(overTheShoulder);
 
         //setup the Y rotation only camera to properly get line of sight for character movement and velocity
         noDownWardForce.position = new Vector3(playerCam.position.x, cameraTarget.position.y, playerCam.position.z) + cameraRotateOnlyY * new Vector3(0, 0, 0);
@@ -127,7 +140,7 @@ public class Movement : NetworkBehaviour {
 
         //want the player to move in the forward direction of the Y rotation onlys camera (to avoid any downward force when camera is tilted), rather than just on it's local axis
         Vector3 moveInDirectionOfCam = NoDownWardForceCam.transform.TransformVector(playerControl);
-        //gameObject.transform.Rotate(new Vector3(0, moveInDirectionOfCam.x, 0));
+        gameObject.transform.rotation = cameraRotateOnlyY;
         //y isn't needed for movement
         moveInDirectionOfCam.y = 0;
 
@@ -150,7 +163,7 @@ public class Movement : NetworkBehaviour {
         //variable for contact point of the raycast
         RaycastHit contact;
         //send out raycasts from behind the player to check if the ray is colliding with an object behind the player
-        if (Physics.Raycast(cameraTarget.TransformPoint(new Vector3(0, 0, 0)), rayCastBehind, out contact, 2.0f) && contact.transform != playerCam)
+        if (Physics.Raycast(overTheShoulder.TransformPoint(new Vector3(0, 0, 0)), rayCastBehind, out contact, 2.0f) && contact.transform != playerCam && contact.transform != gameObject.transform)
         {
 
             //situate the camera at point of contact to avoid camera clipping into objects
