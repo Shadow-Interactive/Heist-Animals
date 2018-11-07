@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using UnityEngine;
 
 using System.Runtime.InteropServices;
+using SoundEngine;
 
 public class Movement : NetworkBehaviour {
 
@@ -29,21 +30,7 @@ public class Movement : NetworkBehaviour {
     public bool spawnIn = false;
 
     [HideInInspector] public bool disableMovement = false;
-
-    const string dllName = "FMOD Controller";
-
-    [DllImport(dllName)]
-    public static extern void setListenerPos(float _x, float _y, float _z);
-
-    [DllImport(dllName)]
-    public static extern void setListenerVel(float _x, float _y, float _z);
-
-    [DllImport(dllName)]
-    public static extern void setListenerUp(float _x, float _y, float _z);
-
-    [DllImport(dllName)]
-    public static extern void setListenerForward(float _x, float _y, float _z);
-
+    
     // Use this for initialization
     void Start () {
 
@@ -157,6 +144,8 @@ public class Movement : NetworkBehaviour {
             playerCam.position = new Vector3(contact.point.x, contact.point.y, contact.point.z);
 
         }
+
+        SoundManager.setListenerForward(rayCastBehind.x, rayCastBehind.y, rayCastBehind.z);
 
     }
     public void roleChose (Movement script)

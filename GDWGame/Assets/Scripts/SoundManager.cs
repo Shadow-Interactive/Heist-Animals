@@ -15,22 +15,46 @@ namespace SoundEngine
         public static extern void initFMOD();
 
         [DllImport(dllName)]
-        public static extern void setPosition(float _x, float _y, float _z);
+        public static extern void update(/*float dt, int channel, bool _playing*/);
 
         [DllImport(dllName)]
-        public static extern void setVelocity(float _x, float _y, float _z);
+        public static extern void setPosition(float _x, float _y, float _z, int channel);
 
         [DllImport(dllName)]
-        public static extern void update(float dt, int channel, bool _playing);
-
-        [DllImport(dllName)]
-        public static extern void setMode(int channel);
+        public static extern void setVelocity(float _x, float _y, float _z, int channel);
 
         [DllImport(dllName)]
         public static extern void setVolume(float _volume, int channel);
 
         [DllImport(dllName)]
-        public static extern void createSound(string soundFile);
+        public static extern void set3D(int channel);
+
+        [DllImport(dllName)]
+        public static extern void setMono(int channel);
+
+        [DllImport(dllName)]
+        public static extern void setLoop(int channel, bool looping);
+
+        [DllImport(dllName)]
+        public static extern bool createSound(string soundFile, int channel);
+
+        [DllImport(dllName)]
+        public static extern void setPlaying(bool temp, int channel);
+
+        [DllImport(dllName)]
+        public static extern bool getPlaying(int _channel);
+
+        [DllImport(dllName)]
+        public static extern void setListenerPos(float _x, float _y, float _z);
+
+        [DllImport(dllName)]
+        public static extern void setListenerVel(float _x, float _y, float _z);
+
+        [DllImport(dllName)]
+        public static extern void setListenerUp(float _x, float _y, float _z);
+
+        [DllImport(dllName)]
+        public static extern void setListenerForward(float _x, float _y, float _z);
 
         [DllImport(dllName)]
         public static extern void cleanFMOD();
@@ -39,17 +63,18 @@ namespace SoundEngine
         void Start()
         {
             initFMOD();
+            setListenerUp(0f, 1f, 0f);
         }
 
         // Update is called once per frame
         void Update()
         {
-            //update(Time.deltaTime, 0, true);
+            update();
         }
 
         void OnDestroy()
         {
-            //cleanFMOD();
+            cleanFMOD();
         }
     }
 }

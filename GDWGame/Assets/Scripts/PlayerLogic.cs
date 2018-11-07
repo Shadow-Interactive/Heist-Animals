@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+using SoundEngine;
+
 public class PlayerLogic : NetworkBehaviour {
 
     //data that is shared
@@ -36,6 +38,12 @@ public class PlayerLogic : NetworkBehaviour {
     void Start () {
         roomInt = 8;
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+
+        SoundManager.createSound("../Audio/Walking.wav", 0);
+        SoundManager.setLoop(0, true);
+
+        SoundManager.createSound("../Audio/Shocked.wav", 1);
+        SoundManager.setLoop(0, false);
     }
 
     public void SetRunnerTag(string theTag)
