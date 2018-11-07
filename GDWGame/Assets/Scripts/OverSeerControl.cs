@@ -242,11 +242,11 @@ public class OverSeerControl : NetworkBehaviour {
         trapTexts.Add(newObjTxt);
     }
 
-    void AddImage(Transform boxPos, Quaternion boxRotation, RoomTraps theType)
+    void AddImage(Transform boxPos, Vector3 boxRotation, RoomTraps theType)
     {
         imageTemp = GameObject.Instantiate(theImages[(int)theType]);
-        print(boxRotation.y);
-        imageTemp.transform.SetPositionAndRotation(new Vector3(boxPos.position.x, boxPos.position.y + 1.7f, boxPos.position.z), boxRotation);
+        imageTemp.transform.position = new Vector3(boxPos.position.x, boxPos.position.y + 1.7f, boxPos.position.z);
+        imageTemp.transform.eulerAngles = new Vector3(boxRotation.x, boxRotation.y + 90, boxRotation.z);
         imageTemp.transform.parent = trapCanvas.transform;
         trapImages.Add(imageTemp);
 

@@ -12,6 +12,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
     int attemptCounter = 0, attemptNum = 1, normalAttempt = 1, trapAttempt = 2, currentCode = 0;
     float mNormalCount = 30, mCounter = 0, counterLimit = 30, mTrapCount = 15;
     int[] playerCodes = new int[4];
+    string NoDecimals = "F0";
 
     PlayerLogic thePlayer;
 
@@ -141,7 +142,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
 
     void setTimerText(float val)
     {
-        timerText.text = val.ToString();
+        timerText.text = val.ToString(NoDecimals);
     }
 
     public void WiredCaseTrap()

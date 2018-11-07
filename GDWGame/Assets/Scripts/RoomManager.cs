@@ -141,9 +141,9 @@ public class RoomManager : MonoBehaviour
         return securityBoxes[index].transform;
     }
 
-    public Quaternion GetSecurityRotation(int index)
+    public Vector3 GetSecurityRotation(int index)
     {
-        return securityBoxes[index].transform.rotation;
+        return securityBoxes[index].transform.eulerAngles;
     }
 
     public int ObjectiveLength()
