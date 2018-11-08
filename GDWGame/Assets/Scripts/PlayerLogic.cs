@@ -25,8 +25,9 @@ public class PlayerLogic : NetworkBehaviour {
     OverSeerControl theOverSeer;
     [HideInInspector] public Objective currentObjective;
     GameObject networkZapper;
+    public Text scoreText;
 
-    
+
     //private variables
     //strings
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
@@ -237,7 +238,9 @@ public class PlayerLogic : NetworkBehaviour {
             else if (other.CompareTag(treasureStr))
             {
                 numTreasures++;
+                scoreText.text = numTreasures.ToString();
                 print("Treasure num" + numTreasures);
+                Destroy(other.gameObject);
             }
         }
     }
