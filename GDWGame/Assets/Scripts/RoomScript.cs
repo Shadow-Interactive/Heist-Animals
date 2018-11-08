@@ -8,7 +8,8 @@ public class RoomScript : NetworkBehaviour
 {
     public int roomTag;
     public RoomTraps trapType;
-    public bool trapActivated = true;
+    [SyncVar]
+    public bool trapActivated;
     float doorTimer = 0;
     [HideInInspector] public bool doorCooldown = false;
     public GameObject securityBox;
@@ -25,6 +26,7 @@ public class RoomScript : NetworkBehaviour
 
     public void Update()
     {
+        Debug.Log(trapActivated);
         if (doorCooldown == true)
         {
             doorTimer += Time.deltaTime;
@@ -48,18 +50,33 @@ public class RoomScript : NetworkBehaviour
 
     }
 
-    public void TrapActivation(bool temp) //0 is false, 1 is true
+    //public void TrapActivation(bool temp) //0 is false, 1 is true
+    //{
+    //    trapActivated = temp;
+    //    doorCooldown = true;
+    //    ChangeSecurityColor(ColourTypes.YELLOW);
+    //}
+
+    public void TrapActivation()
     {
-        trapActivated = temp;
+        //trapActivated = !trapActivated;
+
+        if (isServer)
+        {
+            trapActivated = !trapActivated;
+        }
+        else
+        {
+            CmdTrapActivate(false);
+        }
         doorCooldown = true;
         ChangeSecurityColor(ColourTypes.YELLOW);
     }
 
-    public void TrapActivation()
+    [Command]
+    void CmdTrapActivate(bool takeIn)
     {
-        trapActivated = !trapActivated;
-        doorCooldown = true;
-        ChangeSecurityColor(ColourTypes.YELLOW);
+        trapActivated = takeIn;
     }
 
     public void ChangeSecurityColor(ColourTypes theColour)

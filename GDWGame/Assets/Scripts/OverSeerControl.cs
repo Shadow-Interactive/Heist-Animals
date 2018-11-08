@@ -16,8 +16,8 @@ public class OverSeerControl : NetworkBehaviour {
 
     private float zoomSpeed = 20.0f;
 
-    public GameObject cam1;
-    public GameObject cam2;
+    //can optimize later
+    public GameObject cam1, cam2, cam3, cam4, cam5, cam6, cam7, cam8, cam9, cam10, cam11, cam12;
 
     private List<GameObject> totalCamera = new List<GameObject>();
 
@@ -25,6 +25,7 @@ public class OverSeerControl : NetworkBehaviour {
     private List<Vector3> ogRotation = new List<Vector3>();
 
     public bool camChoice = true;
+    bool initRM = false;
 
     //for the trap
     public GameObject screenBlocker;
@@ -48,14 +49,40 @@ public class OverSeerControl : NetworkBehaviour {
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
 
-        cam1.transform.position = new Vector3(-12.591f, 3.0f, -4.65f);
-        cam2.transform.position = new Vector3(-17.47f, 3.0f, 17.7f);
+        gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
+        //cam1.transform.position = new Vector3(-12.591f, 3.0f, -4.65f);
+        //cam2.transform.position = new Vector3(-17.47f, 3.0f, 17.7f);
 
+        //load in our cameras
         totalCamera.Add(cam1);
         totalCamera.Add(cam2);
-
+        totalCamera.Add(cam3);
+        totalCamera.Add(cam4);
+        totalCamera.Add(cam5);
+        totalCamera.Add(cam6);
+        totalCamera.Add(cam7);
+        totalCamera.Add(cam8);
+        totalCamera.Add(cam9);
+        totalCamera.Add(cam10);
+        totalCamera.Add(cam11);
+        totalCamera.Add(cam12);
+        //totalCamera.Add(cam13);
+        
+        //original rotations to reset to
         ogRotation.Add(cam1.transform.rotation.eulerAngles);
         ogRotation.Add(cam2.transform.rotation.eulerAngles);
+        ogRotation.Add(cam3.transform.rotation.eulerAngles);
+        ogRotation.Add(cam4.transform.rotation.eulerAngles);
+        ogRotation.Add(cam5.transform.rotation.eulerAngles);
+        ogRotation.Add(cam6.transform.rotation.eulerAngles);
+        ogRotation.Add(cam7.transform.rotation.eulerAngles);
+        ogRotation.Add(cam8.transform.rotation.eulerAngles);
+        ogRotation.Add(cam9.transform.rotation.eulerAngles);
+        ogRotation.Add(cam10.transform.rotation.eulerAngles);
+        ogRotation.Add(cam11.transform.rotation.eulerAngles);
+        ogRotation.Add(cam12.transform.rotation.eulerAngles);
+        //ogRotation.Add(cam13.transform.rotation.eulerAngles);
+        
 
         if (camChoice)
             totalCamera[0].GetComponentInChildren<Camera>().enabled = true;
@@ -106,7 +133,35 @@ public class OverSeerControl : NetworkBehaviour {
             trapCanvas.gameObject.SetActive(false);
             return;
         }
-        
+
+        if (!initRM)
+        {
+            gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
+
+            theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+            txtPrefab = Resources.Load("Test") as GameObject;
+            shockImage = Resources.Load("ShockUI") as GameObject;
+            empImage = Resources.Load("EMPUI") as GameObject;
+
+            //we need images or smth to dictate no traps/safeguards
+            theImages[0] = shockImage;
+            theImages[1] = shockImage;
+            theImages[2] = empImage;
+            theImages[3] = empImage;
+
+            for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
+            {
+                AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i));
+            }
+
+            for (int i = 0; i < theRoomManager.SecurityLength(); i++)
+            {
+                AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
+            }
+
+            initRM = true;
+        }
+
         cameraLook.x += Input.GetAxis("Mouse X");
         cameraLook.y += Input.GetAxis("Mouse Y");
 

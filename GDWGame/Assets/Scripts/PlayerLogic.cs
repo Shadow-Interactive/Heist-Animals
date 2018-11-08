@@ -11,6 +11,7 @@ public class PlayerLogic : NetworkBehaviour {
     //data that is shared
     [HideInInspector] public int roomInt;
     [HideInInspector] public string playerTag;
+    [SyncVar]
     [HideInInspector] public Vector3 playerPosition;
     [HideInInspector] public bool shockTrap = false;
     [HideInInspector] public int numTreasures = 0;
@@ -33,11 +34,15 @@ public class PlayerLogic : NetworkBehaviour {
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
 
     //ints, floats and bools used in logic
-    int zapperAmount = 3, zapHealth = 3, shockAttempts = 0;
+    int zapperAmount = 3,  shockAttempts = 0;
+    [SyncVar]
+    int zapHealth = 3;
     float playerHeightAmount = 1.5f, shockTimer = 0;
     bool zapperReload = false;
-
+    
     public Canvas playerCanvas;
+
+    bool initRM = false;
 
     // Use this for initialization
     void Start () {
@@ -64,6 +69,15 @@ public class PlayerLogic : NetworkBehaviour {
             return;
         }
 
+        if (!initRM)
+        {
+            theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+
+            initRM = true;
+        }
+
+        Debug.Log(zapHealth);
+
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
         KeyInputUpdate();
@@ -71,6 +85,12 @@ public class PlayerLogic : NetworkBehaviour {
         ZapperUpdate();
 
         TrapAffectUpdate();
+
+        if (zapHealth <= 0)
+        {
+            theRoomManager.Teleport(ref playerPosition, ref roomInt);
+            Restore();
+        }
     }
 
     //updating the key inputs
@@ -167,7 +187,7 @@ public class PlayerLogic : NetworkBehaviour {
     public void Restore()
     {
         transform.position = new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z);
-
+        
         if (zapHealth <= 0)
             zapHealth = 3;
         if (shockAttempts >= 3)
@@ -222,17 +242,19 @@ public class PlayerLogic : NetworkBehaviour {
         }
         else if (other.CompareTag(zapStr))
         {
-            Debug.Log(other.GetComponent<ZapperScript>().zapperTag);
             if (other.GetComponent<ZapperScript>().zapperTag != gameObject.tag)
             {
+                
                 Destroy(other.gameObject);
+
+                //if (!isServer)
+                //{
+                //    return;
+                //}
+
                 zapHealth--;
 
-                if (zapHealth <= 0)
-                {
-                    theRoomManager.Teleport(ref playerPosition, ref roomInt);
-                    Restore();
-                }
+                //Debug.Log(zapHealth);
             }
 
             else if (other.CompareTag(treasureStr))

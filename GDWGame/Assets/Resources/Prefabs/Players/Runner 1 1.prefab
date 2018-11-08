@@ -1089,7 +1089,7 @@ MeshFilter:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1229463023276866}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 04f6c0100add8154b95238f4c8b25c26, type: 3}
 --- !u!54 &54821172616394460
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -1842,7 +1842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832e58e43b1c93b46bda2b95f887dcc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 300
+  speed: 450
   cameraTarget: {fileID: 4626574901804518}
   playerCam: {fileID: 4204176643526714}
   noDownWardForce: {fileID: 4592749226247758}
