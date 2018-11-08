@@ -18,6 +18,9 @@ namespace SoundEngine
         public static extern void update(/*float dt, int channel, bool _playing*/);
 
         [DllImport(dllName)]
+        public static extern bool playSound(int channel, float dt);
+
+        [DllImport(dllName)]
         public static extern void setPosition(float _x, float _y, float _z, int channel);
 
         [DllImport(dllName)]
