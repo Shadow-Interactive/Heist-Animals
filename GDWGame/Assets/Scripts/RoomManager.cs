@@ -26,14 +26,13 @@ public enum ColourTypes
     YELLOW = 2
 }
 
-
 //used atiya and angela's flyweight pattern as a framework
 
 public class RoomManager : NetworkBehaviour
 {
     public string strZap = "Zap";
     RoomScript[] theRooms;
-    Objective[] theObjectives;
+    [HideInInspector] public Objective[] theObjectives;
 
     Mesh[] theMeshes = new Mesh[3];
     Material[] theMaterials = new Material[3];
@@ -42,6 +41,9 @@ public class RoomManager : NetworkBehaviour
     public GameObject emptyObjectives;
     public GameObject emptyRooms;
     List<GameObject> securityBoxes = new List<GameObject>();
+
+    //lol im not doing this right
+    public Texture[] theImages = new Texture[10];
 
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
@@ -69,9 +71,8 @@ public class RoomManager : NetworkBehaviour
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
-
-        
     }
+   
 
     void LoadProperties()
     {
@@ -125,6 +126,14 @@ public class RoomManager : NetworkBehaviour
         return currentObjective;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown("w"))
+        {
+            theObjectives[0].Reshuffle(theImages);
+        }
+    }
+
     public Vector3 GetObjPos(int index)
     {
         return theObjectives[index].transform.position;
@@ -158,5 +167,15 @@ public class RoomManager : NetworkBehaviour
     public int SecurityLength()
     {
         return securityBoxes.Count;
+    }
+
+    public void SetObjectiveTrapImages(int index, CodeVisual associated)
+    {
+        theObjectives[index].associatedCodeObject = associated;
+    }
+
+    public Texture GetTexture(int index)
+    {
+        return theImages[index];
     }
 }

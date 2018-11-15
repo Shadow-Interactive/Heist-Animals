@@ -35,9 +35,9 @@ public class OverSeerControl : NetworkBehaviour {
     //all the juicy ui stuff
     public Canvas trapCanvas, regularCanvas;
     RoomManager theRoomManager;
-    private List<Text> trapTexts = new List<Text>();
+    private List<GameObject> codeVisuals = new List<GameObject>();
     private List<GameObject> trapImages = new List<GameObject>();
-    GameObject txtPrefab;
+    GameObject codePrefab;
     GameObject shockImage, empImage;
     GameObject imageTemp;
     GameObject[] theImages = new GameObject[4];
@@ -47,6 +47,9 @@ public class OverSeerControl : NetworkBehaviour {
     string treasureStr = "Treasure";
 
     RaycastHit clickHit;
+
+    //for the images
+
 
     // Use this for initialization
     void Start () {
@@ -98,7 +101,7 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
-        txtPrefab = Resources.Load("Test") as GameObject;
+        codePrefab = Resources.Load("ONumberOutput") as GameObject;
         shockImage = Resources.Load("ShockUI") as GameObject;
         empImage = Resources.Load("EMPUI") as GameObject;
 
@@ -110,7 +113,7 @@ public class OverSeerControl : NetworkBehaviour {
 
         for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
         {
-            AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i));
+            AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i), i);
         }
 
         for (int i = 0; i < theRoomManager.SecurityLength(); i++)
@@ -128,6 +131,7 @@ public class OverSeerControl : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
         
+
         if (!isLocalPlayer)
         {
             totalCamera[0].GetComponentInChildren<Camera>().enabled = false;
@@ -142,7 +146,7 @@ public class OverSeerControl : NetworkBehaviour {
             gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
 
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
-            txtPrefab = Resources.Load("Test") as GameObject;
+            codePrefab = Resources.Load("ONumberOutput") as GameObject;
             shockImage = Resources.Load("ShockUI") as GameObject;
             empImage = Resources.Load("EMPUI") as GameObject;
 
@@ -154,7 +158,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
             {
-                AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i));
+                AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i), i);
             }
 
             for (int i = 0; i < theRoomManager.SecurityLength(); i++)
@@ -182,7 +186,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             if (Physics.Raycast(clickRay, out clickHit) && clickHit.transform.CompareTag(treasureStr))
             {
-                clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick();
+                clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages);
             }
         }
 
@@ -302,14 +306,20 @@ public class OverSeerControl : NetworkBehaviour {
         return EMP;
     }
 
-    void AddTrap(Vector3 trapPos, SyncListInt theCode)
+    void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex)
     {
-        Text newObjTxt = GameObject.Instantiate(txtPrefab.GetComponent<Text>());
-        newObjTxt.transform.parent = trapCanvas.transform;
-        newObjTxt.transform.position = new Vector3(trapPos.x, 2, trapPos.z);
+        GameObject trapObj = GameObject.Instantiate(codePrefab);
+        trapObj.transform.parent = trapCanvas.transform;
+        trapObj.transform.position = new Vector3(trapPos.x, -1, trapPos.z);
+        trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
+        theRoomManager.theObjectives[codeIndex].associatedCodeObject = trapObj.GetComponent<CodeVisual>();
 
-        newObjTxt.text = (theCode[0] + " " + theCode[1] + " " + theCode[2] + " " + theCode[3]).ToString();
-        trapTexts.Add(newObjTxt);
+        for (int i = 0; i < 4; i++)
+        {
+            trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[i]]);
+        }
+        
+        codeVisuals.Add(trapObj);
     }
 
     void AddImage(Transform boxPos, Vector3 boxRotation, RoomTraps theType)
@@ -320,10 +330,5 @@ public class OverSeerControl : NetworkBehaviour {
         imageTemp.transform.parent = trapCanvas.transform;
         trapImages.Add(imageTemp);
 
-    }
-
-    public void UpdateTextCode(int[] theCode, int index)
-    {
-        trapTexts[index].text = (theCode[0] + " " + theCode[1] + " " + theCode[2] + " " + theCode[3]).ToString();
     }
 }

@@ -26,7 +26,7 @@ public class RoomScript : NetworkBehaviour
 
     public void Update()
     {
-        Debug.Log(trapActivated);
+       // Debug.Log(trapActivated);
         if (doorCooldown == true)
         {
             doorTimer += Time.deltaTime;

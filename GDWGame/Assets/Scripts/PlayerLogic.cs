@@ -61,6 +61,8 @@ public class PlayerLogic : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
 
+        
+
         if (!isLocalPlayer)
         {
             shockTrap = false;
@@ -286,4 +288,10 @@ public class PlayerLogic : NetworkBehaviour {
         thePlayerMovement.SetCursor(activation);
     }
 
+    public void Reshuffle()
+    {
+        //what am i doingggggg its so late at nighttttttt ahhhh
+        currentObjective.Reshuffle(theRoomManager.theImages);
+
+    }
 }

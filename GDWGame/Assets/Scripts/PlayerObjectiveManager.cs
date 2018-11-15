@@ -101,7 +101,8 @@ public class PlayerObjectiveManager : MonoBehaviour {
             }
             else
             {
-                thePlayer.currentObjective.Reshuffle();
+                thePlayer.Reshuffle();
+                 
                 clearAll();
             }
         }

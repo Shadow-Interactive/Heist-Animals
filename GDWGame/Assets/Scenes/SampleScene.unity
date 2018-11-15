@@ -479,6 +479,17 @@ MonoBehaviour:
   strZap: Zap
   emptyObjectives: {fileID: 1587763739}
   emptyRooms: {fileID: 202591598}
+  theImages:
+  - {fileID: 2800000, guid: d6efba35d1f16554b8a27d43d7e83035, type: 3}
+  - {fileID: 2800000, guid: fedc155b44eacf84e9b33c109c6b216b, type: 3}
+  - {fileID: 2800000, guid: 264c49e88c411a24393ef5867ca4a091, type: 3}
+  - {fileID: 2800000, guid: e11ac22c9b2c8514593ba4fc0c4d0490, type: 3}
+  - {fileID: 2800000, guid: 8e342968e15cc634eb6d384d793961f1, type: 3}
+  - {fileID: 2800000, guid: 9c8976cd56b1f9e4883f443c70fabfc7, type: 3}
+  - {fileID: 2800000, guid: f060e35c6f0fef343b3e5cc571484197, type: 3}
+  - {fileID: 2800000, guid: 3b722ccf12e9c5c47a93673b36401e78, type: 3}
+  - {fileID: 2800000, guid: 537a9826e5531894081319c09bc54a50, type: 3}
+  - {fileID: 2800000, guid: be3b5615ac564214abf2f080e047889d, type: 3}
 --- !u!114 &202591601
 MonoBehaviour:
   m_ObjectHideFlags: 0

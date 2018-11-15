@@ -6,8 +6,8 @@ public class Treasure : MonoBehaviour {
 
     public Objective minigame;
 
-    public void TreasureOnClick()
+    public void TreasureOnClick(Texture[] theImages)
     {
-        minigame.GameObjectVisible(true);
+        minigame.ActivateObject(theImages);
     }
 }

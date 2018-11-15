@@ -10,7 +10,8 @@ public class Objective : NetworkBehaviour {
     public TrapTypes objTrapType;
     [HideInInspector] public SyncListInt trapCode = new SyncListInt();
     PlayerObjectiveManager activePlayer;
-    [HideInInspector] public bool minigameActivated = false; 
+    [HideInInspector] public bool minigameActivated = false;
+    [HideInInspector] public CodeVisual associatedCodeObject;
 
     // Use this for initialization
     void Start () {
@@ -43,7 +44,7 @@ public class Objective : NetworkBehaviour {
             {
                 activePlayer = collision.gameObject.GetComponentInChildren<PlayerObjectiveManager>();
                 activePlayer.ActivateMinigame();
-                Activate();
+                ActivateMinigame();
             }
         }
     }
@@ -54,21 +55,27 @@ public class Objective : NetworkBehaviour {
             minigameActivated = false;
     }
 
-    public void Reshuffle()
+    public void Reshuffle(Texture[] theImages)
     {
         for (int i = 0; i < 4; i++)
         {
             trapCode[i] = Random.Range(0, 10);
+            associatedCodeObject.SetSprite(i, theImages[trapCode[i]]);
         }
         print("New trap is" + trapCode[0] + trapCode[1]+trapCode[2]+trapCode[3]);
 
     }
 
-    public void Activate()
+    public void ActivateMinigame()
     {
-        gameObject.SetActive(true);
         minigameActivated = true;
         theTrapType.Execute(activePlayer);
+    }
+
+    public void ActivateObject(Texture[] theImages)
+    {
+        gameObject.SetActive(true);
+        Reshuffle(theImages);
     }
 
     public void DeActivate()
