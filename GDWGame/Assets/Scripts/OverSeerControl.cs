@@ -44,6 +44,9 @@ public class OverSeerControl : NetworkBehaviour {
     private float imageHeight;
 
     string mouseX = "Mouse X", mouseY = "Mouse Y";
+    string treasureStr = "Treasure";
+
+    RaycastHit clickHit;
 
     // Use this for initialization
     void Start () {
@@ -170,6 +173,18 @@ public class OverSeerControl : NetworkBehaviour {
         cameraLook.x = Mathf.Clamp(cameraLook.x, CAM_X_MIN, CAM_X_MAX);
         //Debug.Log(totalCamera.Count);
         //array will be way more useful for this stuff later on
+
+        //https://answers.unity.com/questions/615771/how-to-check-if-click-mouse-on-object.html
+        //to activate trap
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray clickRay = totalCamera[0].GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(clickRay, out clickHit) && clickHit.transform.CompareTag(treasureStr))
+            {
+                clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick();
+            }
+        }
 
         for (int i = 0; i < totalCamera.Count; i++)
         {

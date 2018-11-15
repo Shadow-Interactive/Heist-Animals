@@ -79,11 +79,4 @@ public class Objective : NetworkBehaviour {
     {
         gameObject.SetActive(temp);
     }
-
-    //https://letsgeekblog.wordpress.com/2017/03/11/drag-object-script-in-unity3d/
-    void OnMouseDown()
-    {
-        if (minigameActivated == false)
-            GameObjectVisible(false);
-    }
 }
