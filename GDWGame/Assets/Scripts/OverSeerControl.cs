@@ -42,11 +42,13 @@ public class OverSeerControl : NetworkBehaviour {
     GameObject imageTemp;
     GameObject[] theImages = new GameObject[4];
     private float imageHeight;
+    int currentCamera = 0;
 
     string mouseX = "Mouse X", mouseY = "Mouse Y";
-    string treasureStr = "Treasure";
+    string treasureStr = "Treasure", securityStr = "SecurityBox";
 
     RaycastHit clickHit;
+    Ray clickRay;
 
     //for the images
 
@@ -143,6 +145,7 @@ public class OverSeerControl : NetworkBehaviour {
 
         if (!initRM)
         {
+            currentCamera = 0;
             gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
 
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
@@ -182,12 +185,20 @@ public class OverSeerControl : NetworkBehaviour {
         //to activate trap
         if (Input.GetMouseButtonDown(0))
         {
-            Ray clickRay = totalCamera[0].GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+            clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(clickRay, out clickHit) && clickHit.transform.CompareTag(treasureStr))
+            if (Physics.Raycast(clickRay, out clickHit))
             {
-                clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages);
+                if (clickHit.transform.CompareTag(treasureStr))
+                {
+                    clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages);
+                }
+                else if (clickHit.transform.CompareTag(securityStr))
+                {
+                    clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick();
+                }
             }
+           
         }
 
         for (int i = 0; i < totalCamera.Count; i++)
@@ -211,6 +222,7 @@ public class OverSeerControl : NetworkBehaviour {
                     else
                     {
                         totalCamera[i - 1].GetComponentInChildren<Camera>().enabled = true;
+                        currentCamera = i - 1;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         break;
                     }
@@ -236,10 +248,12 @@ public class OverSeerControl : NetworkBehaviour {
                     {
                         totalCamera[i + 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+                        currentCamera = i + 1;
                         break;
                     }
                 }
                 trapCanvas.worldCamera = totalCamera[i].GetComponentInChildren<Camera>();
+
             }
 
             if (Input.GetKey(KeyCode.UpArrow))

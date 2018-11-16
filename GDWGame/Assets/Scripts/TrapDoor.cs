@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class TrapDoor : NetworkBehaviour {
     
-    private void OnMouseDown()
+    public void OnSecurityClick()
     {
         if (!gameObject.GetComponentInParent<RoomScript>().doorCooldown)
         {

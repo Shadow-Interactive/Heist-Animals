@@ -42,8 +42,9 @@ public class RoomManager : NetworkBehaviour
     public GameObject emptyRooms;
     List<GameObject> securityBoxes = new List<GameObject>();
 
-    //lol im not doing this right
     public Texture[] theImages = new Texture[10];
+
+    
 
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
@@ -52,7 +53,6 @@ public class RoomManager : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        
         LoadProperties();
 
         theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
@@ -71,6 +71,7 @@ public class RoomManager : NetworkBehaviour
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
+
     }
    
 
