@@ -257,14 +257,16 @@ public class PlayerLogic : NetworkBehaviour {
                 //Debug.Log(zapHealth);
             }
 
-            else if (other.CompareTag(treasureStr))
+           
+        }
+
+		if (other.CompareTag(treasureStr))
             {
                 numTreasures++;
                 scoreText.text = numTreasures.ToString();
                 print("Treasure num" + numTreasures);
                 Destroy(other.gameObject);
             }
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
