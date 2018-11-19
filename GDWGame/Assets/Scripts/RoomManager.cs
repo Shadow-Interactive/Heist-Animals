@@ -44,13 +44,15 @@ public class RoomManager : NetworkBehaviour
 
     public Texture[] theImages = new Texture[10];
 
-    
+
 
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
 
     //here we can do stuff like the player transporting to a random level, and anything else that would require access to the diff levels. 
     // Use this for initialization
+
+
     void Start()
     {
         LoadProperties();

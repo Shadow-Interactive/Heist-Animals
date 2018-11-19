@@ -52,7 +52,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
         IncrementCounter();
     }
 
-    public void clearAll()
+    public void ClearAll()
     {
         currentCode = 0;
         for (int i = 0; i < 4; i++)
@@ -75,7 +75,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
 
     public void DeactivateMinigame()
     {
-        clearAll();
+        ClearAll();
         minigameCanvas.SetActive(false);
         attemptCounter = 0;
         attemptNum = normalAttempt;
@@ -89,7 +89,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
 
     public void Confirm()
     {
-        if (!checkCode(thePlayer.currentObjective))
+        if (!CheckCode(thePlayer.currentObjective))
         {
             attemptCounter++;
 
@@ -102,13 +102,12 @@ public class PlayerObjectiveManager : MonoBehaviour {
             else
             {
                 thePlayer.Reshuffle();
-                 
-                clearAll();
+                ClearAll();
             }
         }
     }
 
-    bool checkCode(Objective currentObjective)
+    bool CheckCode(Objective currentObjective)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -129,11 +128,12 @@ public class PlayerObjectiveManager : MonoBehaviour {
         while (thePlayer.GetActivation())
         {
             mCounter += Time.deltaTime;
-            setTimerText(mCounter);
+            SetTimerText(mCounter);
 
             if (mCounter > counterLimit)
             {
                 DeactivateMinigame();
+                thePlayer.TrapFailure();
                 StopCoroutine(MiniGame());
                 yield break;
             }
@@ -141,7 +141,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
         }
     }
 
-    void setTimerText(float val)
+    void SetTimerText(float val)
     {
         timerText.text = val.ToString(NoDecimals);
     }

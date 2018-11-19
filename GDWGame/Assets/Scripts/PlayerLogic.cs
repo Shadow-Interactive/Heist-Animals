@@ -37,6 +37,9 @@ public class PlayerLogic : NetworkBehaviour {
     int zapperAmount = 3,  shockAttempts = 0;
     [SyncVar]
     int zapHealth = 3;
+    //[SyncVar] dont think I would need this...?
+    int trapHealth = 3;
+
     float playerHeightAmount = 1.5f, shockTimer = 0;
     bool zapperReload = false;
     
@@ -60,9 +63,7 @@ public class PlayerLogic : NetworkBehaviour {
 
     // Update is called once per frame
     void Update () {
-
         
-
         if (!isLocalPlayer)
         {
             shockTrap = false;
@@ -77,8 +78,6 @@ public class PlayerLogic : NetworkBehaviour {
 
             initRM = true;
         }
-
-        Debug.Log(zapHealth);
 
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
@@ -196,7 +195,7 @@ public class PlayerLogic : NetworkBehaviour {
             shockAttempts = 0;
     }
 
-    void setTrap(RoomTraps theTrapTypes)
+    void SetTrap(RoomTraps theTrapTypes)
     {
         switch (theTrapTypes)
         {
@@ -237,7 +236,7 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
                 {
-                    setTrap(other.GetComponentInParent<RoomScript>().trapType);
+                    SetTrap(other.GetComponentInParent<RoomScript>().trapType);
                 }
             }
 
@@ -258,14 +257,13 @@ public class PlayerLogic : NetworkBehaviour {
 
                 //Debug.Log(zapHealth);
             }
-
-            else if (other.CompareTag(treasureStr))
-            {
-                numTreasures++;
-                scoreText.text = numTreasures.ToString();
-                print("Treasure num" + numTreasures);
-                Destroy(other.gameObject);
-            }
+            
+        }
+        if (other.CompareTag(treasureStr))
+        {
+            numTreasures += other.GetComponent<Treasure>().ScoreWorth; 
+            scoreText.text = numTreasures.ToString();
+            other.GetComponent<Treasure>().Deactivate();
         }
     }
 
@@ -292,6 +290,16 @@ public class PlayerLogic : NetworkBehaviour {
     {
         //what am i doingggggg its so late at nighttttttt ahhhh
         currentObjective.Reshuffle(theRoomManager.theImages);
+    }
 
+    public void TrapFailure()
+    {
+        trapHealth--;
+        if (trapHealth <= 0)
+        {
+            theRoomManager.Teleport(ref playerPosition, ref roomInt);
+            trapHealth = 3;
+        }
+        currentObjective.Reshuffle(theRoomManager.theImages);
     }
 }

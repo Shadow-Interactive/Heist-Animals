@@ -12,6 +12,7 @@ public class Objective : NetworkBehaviour {
     PlayerObjectiveManager activePlayer;
     [HideInInspector] public bool minigameActivated = false;
     [HideInInspector] public CodeVisual associatedCodeObject;
+    string runnerStr = "RunnerOne", runner2Str = "RunnerTwo";
 
     // Use this for initialization
     void Start () {
@@ -40,7 +41,7 @@ public class Objective : NetworkBehaviour {
     {
         if (!minigameActivated)
         {
-            if (collision.collider.CompareTag("RunnerOne") && objTrapType != TrapTypes.NO_TRAP)
+            if (collision.collider.CompareTag(runnerStr) || collision.collider.CompareTag(runner2Str) && objTrapType != TrapTypes.NO_TRAP)
             {
                 activePlayer = collision.gameObject.GetComponentInChildren<PlayerObjectiveManager>();
                 activePlayer.ActivateMinigame();
@@ -60,7 +61,8 @@ public class Objective : NetworkBehaviour {
         for (int i = 0; i < 4; i++)
         {
             trapCode[i] = Random.Range(0, 10);
-            associatedCodeObject.SetSprite(i, theImages[trapCode[i]]);
+            if (associatedCodeObject != null)
+                associatedCodeObject.SetSprite(i, theImages[trapCode[i]]);
         }
         print("New trap is" + trapCode[0] + trapCode[1]+trapCode[2]+trapCode[3]);
 
