@@ -5,13 +5,21 @@ using UnityEngine.Networking;
 
 public class Objective : NetworkBehaviour {
 
+    //Other classes/types of data contained here (components?)
     TrapBase theTrapType;
-    Vector3 objectivePosition;
+    [HideInInspector] public CodeVisual associatedCodeObject;
+    OverSeerControl activeOverseer; //for the minigames
+    PlayerObjectiveManager activePlayer;
+    public RoomScript currentRoom;
+
+    //public variables
     public TrapTypes objTrapType;
     [HideInInspector] public SyncListInt trapCode = new SyncListInt();
-    PlayerObjectiveManager activePlayer;
     [HideInInspector] public bool minigameActivated = false;
-    [HideInInspector] public CodeVisual associatedCodeObject;
+    [HideInInspector] public int currentObjectID = 0;
+
+    //private/contained variables
+    Vector3 objectivePosition;
     string runnerStr = "RunnerOne", runner2Str = "RunnerTwo";
 
     // Use this for initialization
@@ -21,13 +29,14 @@ public class Objective : NetworkBehaviour {
             int random = Random.Range(0, 10);
             trapCode.Add(random);
         }
-
-        print("Trap is" + trapCode[0] + trapCode[1] + trapCode[2] +  trapCode[3] );
     }
 
-    // Update is called once per frame
-    void Update () {
-
+    private void Update()
+    {
+        if (Input.GetKeyDown("i"))
+        {
+            DecoupleTrap();
+        }
     }
 
     public void SetUpTrap(TrapBase theType)
@@ -61,11 +70,10 @@ public class Objective : NetworkBehaviour {
         for (int i = 0; i < 4; i++)
         {
             trapCode[i] = Random.Range(0, 10);
+
             if (associatedCodeObject != null)
                 associatedCodeObject.SetSprite(i, theImages[trapCode[i]]);
         }
-        print("New trap is" + trapCode[0] + trapCode[1]+trapCode[2]+trapCode[3]);
-
     }
 
     public void ActivateMinigame()
@@ -74,18 +82,37 @@ public class Objective : NetworkBehaviour {
         theTrapType.Execute(activePlayer);
     }
 
-    public void ActivateObject(Texture[] theImages)
+    public void ActivateObject(Texture[] theImages,OverSeerControl activeO)
     {
-        gameObject.SetActive(true);
-        Reshuffle(theImages);
-    }
+         activeOverseer = activeO;
 
-    public void DeActivate()
-    {
-        gameObject.SetActive(false);
+         if (activeOverseer.GetNumTrap() < 4)
+         {
+            GameObjectVisible(true);
+            activeOverseer.ObjectiveActivate(ref currentObjectID, GetRoomID());
+            Reshuffle(theImages);
+        }
     }
-    public void GameObjectVisible(bool temp)
+    
+    public void GameObjectVisible(bool temp) //this controls the visibility
     {
         gameObject.SetActive(temp);
+        if  (associatedCodeObject != null)
+        associatedCodeObject.SetActive(temp);
+    }
+
+    public void DecoupleTrap() //This handles the UI side of the minigame
+    {
+        if (activeOverseer != null && activeOverseer.GetNumTrap() > 0)
+        {
+            activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+        }
+
+        GameObjectVisible(false);
+    }
+
+    public int GetRoomID()
+    {
+        return currentRoom.roomTag;
     }
 }

@@ -14,6 +14,7 @@ public class RoomScript : NetworkBehaviour
     [HideInInspector] public bool doorCooldown = false;
     public GameObject securityBox;
     Color[] theColors = new Color[3];
+    string strZapper = "Zap";
 
     // Use this for initialization
     void Start()
@@ -82,5 +83,11 @@ public class RoomScript : NetworkBehaviour
     public void ChangeSecurityColor(ColourTypes theColour)
     {
         securityBox.GetComponent<Renderer>().material.color = theColors[(int)theColour];
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(strZapper))
+            other.GetComponent<ZapperScript>().SetActive(false);
     }
 }

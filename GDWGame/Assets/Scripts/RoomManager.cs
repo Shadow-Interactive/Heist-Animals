@@ -43,15 +43,14 @@ public class RoomManager : NetworkBehaviour
     List<GameObject> securityBoxes = new List<GameObject>();
 
     public Texture[] theImages = new Texture[10];
-
-
+    float ohgodwhy = 0;
+    bool usingTimer = true;
 
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
 
     //here we can do stuff like the player transporting to a random level, and anything else that would require access to the diff levels. 
     // Use this for initialization
-
 
     void Start()
     {
@@ -74,6 +73,7 @@ public class RoomManager : NetworkBehaviour
             }
         }
 
+        //DeactivateTraps();
     }
    
 
@@ -111,7 +111,7 @@ public class RoomManager : NetworkBehaviour
         int temp = Random.Range(0, theRooms.Length);
         position = theRooms[temp].transform.position;
         roomInt = temp;
-        print("Player teleported to room #" + roomInt);
+        //print("Player teleported to room #" + roomInt);
 
     }
 
@@ -119,9 +119,10 @@ public class RoomManager : NetworkBehaviour
     {
         for (int i = 0; i < theObjectives.Length; i++)
         {
+            
             if (currentObjective != theObjectives[i] && theObjectives[i].gameObject.activeSelf)
             {
-                print("BeepBoop the new code is: " + theObjectives[i].trapCode[0] + " " + theObjectives[i].trapCode[1] + " " + theObjectives[i].trapCode[2] + " " + theObjectives[i].trapCode[3]);
+                //print("BeepBoop the new code is: " + theObjectives[i].trapCode[0] + " " + theObjectives[i].trapCode[1] + " " + theObjectives[i].trapCode[2] + " " + theObjectives[i].trapCode[3]);
                 return theObjectives[i];
             }
         }
@@ -131,9 +132,18 @@ public class RoomManager : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("w"))
+        //THIS IS BECUZ WE COULDN'T FIX THE TRAP ACTIVATION IN OTHER WAYS TOT
+        //WILL HOPEFULLY GET CLEANED UP SOON
+        //ASK ATIYA FOR DETAILS
+        if (usingTimer == true)
         {
-            theObjectives[0].Reshuffle(theImages);
+            ohgodwhy += Time.deltaTime;
+
+            if (ohgodwhy > 0.15)
+            {
+                DeactivateTraps();
+                usingTimer = false;
+            }
         }
     }
 
@@ -172,13 +182,26 @@ public class RoomManager : NetworkBehaviour
         return securityBoxes.Count;
     }
 
-    public void SetObjectiveTrapImages(int index, CodeVisual associated)
+    public void SetObjectiveTrapImages(int index6, CodeVisual associated)
     {
-        theObjectives[index].associatedCodeObject = associated;
+        theObjectives[index6].associatedCodeObject = associated;
     }
 
-    public Texture GetTexture(int index)
+    public Texture GetTexture(int index7)
     {
-        return theImages[index];
+        return theImages[index7];
+    }
+
+    public void DeactivateTraps()
+    {
+        for (int i = 0; i < theObjectives.Length; i++)
+        {
+            theObjectives[i].GameObjectVisible(false);
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        DeactivateTraps();
     }
 }

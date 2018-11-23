@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class CodeVisual : MonoBehaviour {
 
-    public RawImage[] codeSprites;
-    [HideInInspector] int index = 0;
+    public RawImage[] codeSprites = new RawImage[4];
+    [HideInInspector] int id = 0;
 
     public void SetSprite(int i, Texture newImage)
     {
@@ -15,6 +15,12 @@ public class CodeVisual : MonoBehaviour {
 
     public void SetIndex(int i)
     {
-        index = i;
+        id = i;
+    }
+
+    public void SetActive(bool Active)
+    {
+        for (int i = 0; i < 4; i++)
+            codeSprites[i].enabled = Active;
     }
 }

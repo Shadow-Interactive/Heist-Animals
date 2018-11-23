@@ -7,15 +7,33 @@ public class ZapperScript : NetworkBehaviour {
 
     [SyncVar]
     public string zapperTag;
+    bool active;
 
 	// Use this for initialization
 	void Start () {
-        
+        SetActive(false);
     }
 
     // Update is called once per frame
     void Update () {
-        gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
+        if (active)
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
     }
 
+    public void SetActive(bool temp)
+    {
+        active = temp;
+        gameObject.SetActive(temp);
+    }
+
+    public void SetPosition(Vector3 position, Quaternion rotation)
+    {
+        transform.position = position;
+        transform.rotation = rotation; 
+    }
+
+    public bool GetActive()
+    {
+        return active; 
+    }
 }

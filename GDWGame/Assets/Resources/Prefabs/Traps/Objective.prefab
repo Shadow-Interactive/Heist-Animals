@@ -224,9 +224,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b931dbef4e94c9f4db207df2df08ab82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  associatedCodeObject: {fileID: 0}
+  currentRoom: {fileID: 0}
   objTrapType: 0
-  trapCode: 00000000000000000000000000000000
   minigameActivated: 0
+  currentObjectID: 0
 --- !u!114 &114421700840971264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,4 +240,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a235afce320d90448ced0acf8c3a544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minigame: {fileID: 114006541979400274}
+  minigame: {fileID: 1474939518184212}
+  ScoreWorth: 1

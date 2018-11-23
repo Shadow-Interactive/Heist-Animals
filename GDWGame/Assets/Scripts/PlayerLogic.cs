@@ -27,7 +27,7 @@ public class PlayerLogic : NetworkBehaviour {
     [HideInInspector] public Objective currentObjective;
     GameObject networkZapper;
     public Text scoreText;
-
+    int activeBulletNum = 14, numBullets = 15; 
 
     //private variables
     //strings
@@ -47,11 +47,14 @@ public class PlayerLogic : NetworkBehaviour {
 
     bool initRM = false;
 
+    List<GameObject> theBullets = new List<GameObject>();
+
     // Use this for initialization
     void Start () {
         roomInt = 8;
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
         playerTag = gameObject.tag;
+
 
     }
 
@@ -76,6 +79,9 @@ public class PlayerLogic : NetworkBehaviour {
         {
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
 
+            for (int i = 0; i < numBullets; i++)
+                CmdSpawnBullet(thePlayerMovement.playerCam.rotation, gameObject.tag);
+
             initRM = true;
         }
 
@@ -92,6 +98,7 @@ public class PlayerLogic : NetworkBehaviour {
             theRoomManager.Teleport(ref playerPosition, ref roomInt);
             Restore();
         }
+
     }
 
     //updating the key inputs
@@ -99,7 +106,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space) && zapperReload == false && shockTrap == false)
         {
-            if (zapperSlider.value > 0)
+            if (zapperSlider.value > 0 && activeBulletNum >= 0)
             {
                 Shoot();
             }
@@ -108,6 +115,11 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 zapperReload = true;
                 zapperFill.color = Color.red;
+            }
+
+            if (activeBulletNum < 0)
+            {
+                activeBulletNum = numBullets - 1 ;
             }
         }
     }
@@ -120,7 +132,7 @@ public class PlayerLogic : NetworkBehaviour {
         {
             zapperSlider.value += (3 * Time.deltaTime);
 
-            if (zapperSlider.value >= zapperAmount)
+            if (zapperSlider.value >= zapperAmount && AreBulletsAvailable())
             {
                 zapperSlider.value = zapperAmount;
                 zapperFill.color = Color.green;
@@ -148,10 +160,13 @@ public class PlayerLogic : NetworkBehaviour {
     //shoots the zapper
     private void Shoot()
     {
-        zapperSlider.value--;
+       
+       zapperSlider.value--;
+       theBullets[activeBulletNum].GetComponent<ZapperScript>().SetPosition(transform.position + transform.forward * 0.25f, thePlayerMovement.playerCam.rotation);
+       theBullets[activeBulletNum].GetComponent<ZapperScript>().SetActive(true);
+       activeBulletNum--;
+        print("Pew" + activeBulletNum);
         //networkZapper = Instantiate(Zapper, transform.position, thePlayerMovement.playerCam.rotation);
-        
-        CmdSpawnBullet(thePlayerMovement.playerCam.rotation, gameObject.tag);
 
         //Debug.Log(Bullet.GetComponent<ZapperScript>().zapperTag);
     }
@@ -163,9 +178,8 @@ public class PlayerLogic : NetworkBehaviour {
         GameObject Bullet = Instantiate(Zapper, transform.position + transform.forward * 0.25f, rotation);
         //if (isLocalPlayer)
         Bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
+        theBullets.Add(Bullet);
         NetworkServer.Spawn(Bullet);
-        
-        Destroy(Bullet, 5);
     }
 
     //activates the affect on the player for the shock trap
@@ -301,5 +315,17 @@ public class PlayerLogic : NetworkBehaviour {
             trapHealth = 3;
         }
         currentObjective.Reshuffle(theRoomManager.theImages);
+    }
+
+    public bool AreBulletsAvailable()
+    {
+        int bulletCounter = 0;
+        for (int i = 0; i < theBullets.Count-1; i++)
+        {
+            if (!theBullets[i].GetComponent<ZapperScript>().GetActive())
+                bulletCounter++;
+        }
+
+        return bulletCounter >= 3 ? true : false;
     }
 }

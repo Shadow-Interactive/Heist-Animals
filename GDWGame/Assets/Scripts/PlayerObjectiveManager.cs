@@ -77,14 +77,19 @@ public class PlayerObjectiveManager : MonoBehaviour {
     {
         ClearAll();
         minigameCanvas.SetActive(false);
+        ResetMinigameNumbers();
+        thePlayer.setCursor(true);
+        thePlayer.SetMovement(false);
+        thePlayer.currentObjective.DecoupleTrap();
+    }
+
+    void ResetMinigameNumbers()
+    {
         attemptCounter = 0;
         attemptNum = normalAttempt;
         counterLimit = mNormalCount;
         mCounter = 0;
         timerText.text = 0.ToString();
-        thePlayer.setCursor(true);
-        thePlayer.SetMovement(false);
-
     }
 
     public void Confirm()
@@ -97,7 +102,7 @@ public class PlayerObjectiveManager : MonoBehaviour {
             {
                 attemptCounter = 0;
                 DeactivateMinigame();
-                thePlayer.currentObjective.DeActivate();
+                thePlayer.currentObjective.GameObjectVisible(false);
             }
             else
             {

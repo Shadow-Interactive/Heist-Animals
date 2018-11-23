@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Treasure : MonoBehaviour {
 
-    public Objective minigame;
+    public GameObject minigame;
     public int ScoreWorth = 1; //not properly in use
     bool regen = false;
     float regenTimer = 0, regenLimit = 0;
+    bool ohgodhwy = false;
 
-    public void TreasureOnClick(Texture[] theImages)
+    public void TreasureOnClick(Texture[] theImages, OverSeerControl theOverseer)
     {
-        minigame.ActivateObject(theImages);
+        minigame.GetComponent<Objective>().ActivateObject(theImages, theOverseer);//, theOverseer);
     }
 
     public void Deactivate()
@@ -38,6 +39,7 @@ public class Treasure : MonoBehaviour {
 
     private void Update()
     {
+
         if (regen)
         {
             regenTimer += Time.deltaTime;

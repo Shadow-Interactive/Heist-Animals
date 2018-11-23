@@ -26,32 +26,21 @@ public class OverSeerControl : NetworkBehaviour {
 
     public bool camChoice = true;
     bool initRM = false;
-
-    //for the trap
-    public GameObject screenBlocker;
-    bool EMP = false;
-    float empTimer = 0;
-
-    //all the juicy ui stuff
-    public Canvas trapCanvas, regularCanvas;
-    RoomManager theRoomManager;
-    private List<GameObject> codeVisuals = new List<GameObject>();
-    private List<GameObject> trapImages = new List<GameObject>();
-    GameObject codePrefab;
-    GameObject shockImage, empImage;
-    GameObject imageTemp;
-    GameObject[] theImages = new GameObject[4];
-    private float imageHeight;
-    int currentCamera = 0;
-
+    
     string mouseX = "Mouse X", mouseY = "Mouse Y";
     string treasureStr = "Treasure", securityStr = "SecurityBox";
 
     RaycastHit clickHit;
     Ray clickRay;
 
-    //for the images
+    RoomManager theRoomManager;
+    
+    Vector3 viewportCenter = new Vector3(0.5f, 0.5f, 0);
+    public Image cursor;
 
+    int currentCamera = 0;
+
+    public OverseerCanvasManager theCanvasManager;
 
     // Use this for initialization
     void Start () {
@@ -102,26 +91,7 @@ public class OverSeerControl : NetworkBehaviour {
             totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
         }
 
-        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
-        codePrefab = Resources.Load("ONumberOutput") as GameObject;
-        shockImage = Resources.Load("ShockUI") as GameObject;
-        empImage = Resources.Load("EMPUI") as GameObject;
-
-        //we need images or smth to dictate no traps/safeguards
-        theImages[0] = shockImage;
-        theImages[1] = shockImage;
-        theImages[2] = empImage;
-        theImages[3] = empImage;
-
-        for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
-        {
-            AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i), i);
-        }
-
-        for (int i = 0; i < theRoomManager.SecurityLength(); i++)
-        {
-            AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
-        }
+       theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
     }
 
     void findFOV(int x)
@@ -129,47 +99,36 @@ public class OverSeerControl : NetworkBehaviour {
         test = totalCamera[x].GetComponentInChildren<Camera>().fieldOfView;
         return;
     }
-	
+
+    public void LoadProperties()
+    {
+        currentCamera = 0;
+        gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
+
+        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+       
+        //cursor.GetComponent<RectTransform>().anchoredPosition = viewportCenter;
+        theCanvasManager.LoadProperties(theRoomManager);
+
+        initRM = true;
+    }
+
+
 	// Update is called once per frame
 	void Update () {
-        
 
         if (!isLocalPlayer)
         {
-            totalCamera[0].GetComponentInChildren<Camera>().enabled = false;
+            for (int i = 0; i < totalCamera.Count; i++)
+            totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
             camChoice = false;
-            regularCanvas.gameObject.SetActive(false);
-            trapCanvas.gameObject.SetActive(false);
+            theCanvasManager.SetCanvasActive(false);
             return;
         }
 
         if (!initRM)
         {
-            currentCamera = 0;
-            gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
-
-            theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
-            codePrefab = Resources.Load("ONumberOutput") as GameObject;
-            shockImage = Resources.Load("ShockUI") as GameObject;
-            empImage = Resources.Load("EMPUI") as GameObject;
-
-            //we need images or smth to dictate no traps/safeguards
-            theImages[0] = shockImage;
-            theImages[1] = shockImage;
-            theImages[2] = empImage;
-            theImages[3] = empImage;
-
-            for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
-            {
-                AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i), i);
-            }
-
-            for (int i = 0; i < theRoomManager.SecurityLength(); i++)
-            {
-                AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
-            }
-
-            initRM = true;
+            LoadProperties();
         }
 
         cameraLook.x += Input.GetAxis("Mouse X");
@@ -180,18 +139,20 @@ public class OverSeerControl : NetworkBehaviour {
         cameraLook.x = Mathf.Clamp(cameraLook.x, CAM_X_MIN, CAM_X_MAX);
         //Debug.Log(totalCamera.Count);
         //array will be way more useful for this stuff later on
-
+        
         //https://answers.unity.com/questions/615771/how-to-check-if-click-mouse-on-object.html
         //to activate trap
         if (Input.GetMouseButtonDown(0))
         {
-            clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+            clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
+            //print(clickRay + " other ver " + totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter));
 
             if (Physics.Raycast(clickRay, out clickHit))
             {
                 if (clickHit.transform.CompareTag(treasureStr))
                 {
-                    clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages);
+                    //atm, the overseer can only have 5 active traps at a time
+                    clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages,gameObject.GetComponent<OverSeerControl>());//, this.gameObject.GetComponent<OverSeerControl>());
                 }
                 else if (clickHit.transform.CompareTag(securityStr))
                 {
@@ -223,12 +184,13 @@ public class OverSeerControl : NetworkBehaviour {
                     {
                         totalCamera[i - 1].GetComponentInChildren<Camera>().enabled = true;
                         currentCamera = i - 1;
+                        theCanvasManager.SwitchCameras(currentCamera);
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         break;
                     }
                     //totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                 }
-                trapCanvas.worldCamera = totalCamera[i].GetComponentInChildren<Camera>();
+                theCanvasManager.UpdateCanvasCamera(totalCamera[i].GetComponentInChildren<Camera>());
             }
 
             if (Input.GetKeyUp(KeyCode.RightArrow))
@@ -249,10 +211,11 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[i + 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         currentCamera = i + 1;
+                        theCanvasManager.SwitchCameras(currentCamera);
                         break;
                     }
                 }
-                trapCanvas.worldCamera = totalCamera[i].GetComponentInChildren<Camera>();
+                theCanvasManager.UpdateCanvasCamera(totalCamera[i].GetComponentInChildren<Camera>());
 
             }
 
@@ -288,17 +251,7 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
-        if (EMP)
-        {
-            empTimer += Time.deltaTime;
-
-            if (empTimer > 10)
-            {
-                empTimer = 0;
-                EMP = false;
-                screenBlocker.SetActive(EMP);
-            }
-        }
+        
     }
 
     public void roleChose(OverSeerControl script)
@@ -309,40 +262,23 @@ public class OverSeerControl : NetworkBehaviour {
         Debug.Log(camChoice);
     }
 
-    public void setEMP(bool activeEMP)
+    public int GetNumTrap()
     {
-        EMP = activeEMP;
-        screenBlocker.SetActive(activeEMP);
+        return theCanvasManager.numTrapActivated;
     }
 
-    public bool getEMP()
+    public void ObjectiveActivate(ref int currentObjectID, int ID)
     {
-        return EMP;
+        theCanvasManager.numTrapActivated++;
+        currentObjectID = theCanvasManager.currentTrap;
+        theCanvasManager.SetTrapIconActive(currentObjectID, Color.green, ID);
+        theCanvasManager.SetCurrentlyActive();        
     }
 
-    void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex)
+    public void DecoupleTrap(int currentObjectID, Color theColor, int ID)
     {
-        GameObject trapObj = GameObject.Instantiate(codePrefab);
-        trapObj.transform.parent = trapCanvas.transform;
-        trapObj.transform.position = new Vector3(trapPos.x, -1, trapPos.z);
-        trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
-        theRoomManager.theObjectives[codeIndex].associatedCodeObject = trapObj.GetComponent<CodeVisual>();
-
-        for (int i = 0; i < 4; i++)
-        {
-            trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[i]]);
-        }
-        
-        codeVisuals.Add(trapObj);
-    }
-
-    void AddImage(Transform boxPos, Vector3 boxRotation, RoomTraps theType)
-    {
-        imageTemp = GameObject.Instantiate(theImages[(int)theType]);
-        imageTemp.transform.position = new Vector3(boxPos.position.x, boxPos.position.y + 1.7f, boxPos.position.z);
-        imageTemp.transform.eulerAngles = new Vector3(boxRotation.x, boxRotation.y + 90, boxRotation.z);
-        imageTemp.transform.parent = trapCanvas.transform;
-        trapImages.Add(imageTemp);
-
+        theCanvasManager.numTrapActivated--;
+        theCanvasManager.SetTrapIconActive(currentObjectID, theColor, ID);
+        theCanvasManager.SetCurrentlyActive();
     }
 }
