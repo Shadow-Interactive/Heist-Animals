@@ -534,7 +534,7 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1229463023276866, guid: 5e3a1868c4a39584d9e92241ad6ff50e, type: 2}
-  - {fileID: 1320331585609526, guid: bcb000fc28e43e841829424cf4dd2ff8, type: 2}
+  - {fileID: 1537034751883168, guid: 04ce5589ff0c6b24e981dfc7927a7f98, type: 2}
   - {fileID: 1617729459345444, guid: c1c42e4e8155ea94faabfabb8c4d07b7, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
@@ -593,7 +593,7 @@ MonoBehaviour:
   matchMaker: {fileID: 0}
   m_ShowLobbyGUI: 1
   m_MaxPlayers: 4
-  m_MaxPlayersPerConnection: 4
+  m_MaxPlayersPerConnection: 1
   m_MinPlayers: 0
   m_LobbyPlayerPrefab: {fileID: 114754252273311574, guid: 108645a49ec71df46b30064d402afa6a,
     type: 2}
@@ -602,7 +602,7 @@ MonoBehaviour:
   m_PlayScene: SampleScene
   lobbySlots: []
   runner: {fileID: 114327088882521172, guid: 5e3a1868c4a39584d9e92241ad6ff50e, type: 2}
-  overseer: {fileID: 114805338434383150, guid: 16c16237ba2289d4b886da1253e5af62, type: 2}
+  overseer: {fileID: 0}
   Spawn: {fileID: 4572195713969698, guid: eb00a210de8b3554aaf5cc124aa9715d, type: 2}
   choice: 0
 --- !u!1 &753434289

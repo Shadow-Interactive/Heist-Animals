@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class PlayerObjectiveManager : MonoBehaviour {
+public class PlayerObjectiveManager : NetworkBehaviour {
     
     public GameObject minigameCanvas;
     public RawImage[] theNumbers;
@@ -102,6 +103,9 @@ public class PlayerObjectiveManager : MonoBehaviour {
             {
                 attemptCounter = 0;
                 DeactivateMinigame();
+                //thePlayer.currentObjective.DeActivate());
+                thePlayer.CmdDeactivateTrap(thePlayer.currentObjective.name);
+                //thePlayer.currentObjective.DeActivate();
                 thePlayer.currentObjective.GameObjectVisible(false);
             }
             else

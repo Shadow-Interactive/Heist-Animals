@@ -10,6 +10,19 @@ TagManager:
   - RunnerTwo
   - RoomManager
   - thePlayer
+  - SecurityBox
+  - Trap
+  - Treasure
+  - C1
+  - C2
+  - C4
+  - C6
+  - C8
+  - C9
+  - C11
+  - C12
+  - C14
+  - C15
   layers:
   - Default
   - TransparentFX

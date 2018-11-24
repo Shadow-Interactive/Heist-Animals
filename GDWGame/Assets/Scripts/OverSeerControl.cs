@@ -17,7 +17,7 @@ public class OverSeerControl : NetworkBehaviour {
     private float zoomSpeed = 20.0f;
 
     //can optimize later
-    public GameObject cam1, cam2, cam3, cam4, cam5, cam6, cam7, cam8, cam9, cam10, cam11, cam12;
+    public GameObject cam1, cam2, cam3, cam4, cam5, cam6, cam7, cam8, cam9, cam10, cam11, cam12, cam13, cam14, cam15;
 
     private List<GameObject> totalCamera = new List<GameObject>();
 
@@ -26,9 +26,11 @@ public class OverSeerControl : NetworkBehaviour {
 
     public bool camChoice = true;
     bool initRM = false;
+    int trapSelect = 0;
     
     string mouseX = "Mouse X", mouseY = "Mouse Y";
     string treasureStr = "Treasure", securityStr = "SecurityBox";
+    public string camRoomName;
 
     RaycastHit clickHit;
     Ray clickRay;
@@ -63,8 +65,10 @@ public class OverSeerControl : NetworkBehaviour {
         totalCamera.Add(cam10);
         totalCamera.Add(cam11);
         totalCamera.Add(cam12);
-        //totalCamera.Add(cam13);
-        
+        totalCamera.Add(cam13);
+        totalCamera.Add(cam14);
+        totalCamera.Add(cam15);
+
         //original rotations to reset to
         ogRotation.Add(cam1.transform.rotation.eulerAngles);
         ogRotation.Add(cam2.transform.rotation.eulerAngles);
@@ -78,8 +82,10 @@ public class OverSeerControl : NetworkBehaviour {
         ogRotation.Add(cam10.transform.rotation.eulerAngles);
         ogRotation.Add(cam11.transform.rotation.eulerAngles);
         ogRotation.Add(cam12.transform.rotation.eulerAngles);
-        //ogRotation.Add(cam13.transform.rotation.eulerAngles);
-        
+        ogRotation.Add(cam13.transform.rotation.eulerAngles);
+        ogRotation.Add(cam14.transform.rotation.eulerAngles);
+        ogRotation.Add(cam15.transform.rotation.eulerAngles);
+
 
         if (camChoice)
             totalCamera[0].GetComponentInChildren<Camera>().enabled = true;
@@ -92,6 +98,7 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+        camRoomName = "Room1";
     }
 
     void findFOV(int x)
@@ -128,7 +135,10 @@ public class OverSeerControl : NetworkBehaviour {
 
         if (!initRM)
         {
+            camRoomName = "Room1";
+            trapSelect = 1;
             LoadProperties();
+            
         }
 
         cameraLook.x += Input.GetAxis("Mouse X");
@@ -156,6 +166,8 @@ public class OverSeerControl : NetworkBehaviour {
                 }
                 else if (clickHit.transform.CompareTag(securityStr))
                 {
+                    Debug.Log(camRoomName);
+                    Debug.Log(trapSelect);
                     clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick();
                 }
             }
@@ -176,12 +188,16 @@ public class OverSeerControl : NetworkBehaviour {
 
                     if (totalCamera[i] == totalCamera[0])
                     {
+                        trapSelect = 15;
                         totalCamera[totalCamera.Count - 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+                        currentCamera = 14;
+                        theCanvasManager.SwitchCameras(currentCamera);
                         break;
                     }
                     else
                     {
+                        trapSelect--;
                         totalCamera[i - 1].GetComponentInChildren<Camera>().enabled = true;
                         currentCamera = i - 1;
                         theCanvasManager.SwitchCameras(currentCamera);
@@ -202,12 +218,16 @@ public class OverSeerControl : NetworkBehaviour {
                     cameraLook.y = 0;
                     if (totalCamera[i] == totalCamera[totalCamera.Count - 1])
                     {
+                        trapSelect = 1;
                         totalCamera[0].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+                        currentCamera = 0;
+                        theCanvasManager.SwitchCameras(currentCamera);
                         break;
                     }
                     else
                     {
+                        trapSelect++;
                         totalCamera[i + 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         currentCamera = i + 1;
@@ -251,7 +271,7 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
-        
+        camRoomName = "Room" + trapSelect.ToString();
     }
 
     public void roleChose(OverSeerControl script)
@@ -280,5 +300,13 @@ public class OverSeerControl : NetworkBehaviour {
         theCanvasManager.numTrapActivated--;
         theCanvasManager.SetTrapIconActive(currentObjectID, theColor, ID);
         theCanvasManager.SetCurrentlyActive();
+    }
+    [Command]
+    public void CmdTrapActivate(string theName)
+    {
+        //camRoomName = ("Room" + trapSelect.ToString());
+        //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated = !GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated;
+        GameObject.Find(theName).GetComponent<RoomScript>().trapActivated = !GameObject.Find(theName).GetComponent<RoomScript>().trapActivated;
+        //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().doorCooldown = true;
     }
 }

@@ -11,6 +11,7 @@ public class RoomScript : NetworkBehaviour
     [SyncVar]
     public bool trapActivated;
     float doorTimer = 0;
+    [SyncVar]
     [HideInInspector] public bool doorCooldown = false;
     public GameObject securityBox;
     Color[] theColors = new Color[3];
@@ -27,7 +28,7 @@ public class RoomScript : NetworkBehaviour
 
     public void Update()
     {
-       // Debug.Log(trapActivated);
+       //Debug.Log(trapActivated);
         if (doorCooldown == true)
         {
             doorTimer += Time.deltaTime;

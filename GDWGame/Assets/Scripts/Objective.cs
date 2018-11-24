@@ -15,12 +15,15 @@ public class Objective : NetworkBehaviour {
     //public variables
     public TrapTypes objTrapType;
     [HideInInspector] public SyncListInt trapCode = new SyncListInt();
+    [SyncVar] [HideInInspector] public bool trapActive = true;
+    public int trapNum = 0;
     [HideInInspector] public bool minigameActivated = false;
     [HideInInspector] public int currentObjectID = 0;
 
     //private/contained variables
     Vector3 objectivePosition;
     string runnerStr = "RunnerOne", runner2Str = "RunnerTwo";
+
 
     // Use this for initialization
     void Start () {
@@ -109,6 +112,13 @@ public class Objective : NetworkBehaviour {
         }
 
         GameObjectVisible(false);
+
+        //old networking stuff
+
+        //Debug.Log(trapActive);
+        //gameObject.SetActive(trapActive);
+        //if (trapActive == false)
+            //GameObject.Find("Objective").GetComponentInChildren<Objective>().gameObject.SetActive(false);
     }
 
     public int GetRoomID()

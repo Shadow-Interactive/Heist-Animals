@@ -29,6 +29,13 @@ public class PlayerLogic : NetworkBehaviour {
     public Text scoreText;
     int activeBulletNum = 14, numBullets = 15; 
 
+    [SyncVar]
+    public bool trapActive = false;
+    [SyncVar(hook = "NumChange")]
+    public int curTrap;
+    private int test;
+
+
     //private variables
     //strings
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
@@ -57,6 +64,20 @@ public class PlayerLogic : NetworkBehaviour {
 
 
     }
+
+    public void NumChange(int newValue)
+    {
+        Debug.Log("Old value is " + curTrap);
+        curTrap = newValue;
+        Debug.Log("Value is now: " + curTrap);
+    }
+
+    [ClientRpc]
+    public void RpcUpdateData()
+    {
+        curTrap = 1;
+    }
+
 
     public void SetRunnerTag(string theTag)
     {
@@ -99,6 +120,51 @@ public class PlayerLogic : NetworkBehaviour {
             Restore();
         }
 
+        //Debug.Log(currentObjective.trapActive);
+        //Debug.Log(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway);
+
+        //if (trapActive)
+        //curTrap = 1;
+
+        switch(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway)
+        {
+            case 1:
+                currentObjective = GameObject.Find("Objective").GetComponentInChildren<Objective>();
+                break;
+            case 2:
+                currentObjective = GameObject.Find("Objective2").GetComponentInChildren<Objective>();
+                break;
+            case 3:
+                currentObjective = GameObject.Find("Objective3").GetComponentInChildren<Objective>();
+                break;
+            case 4:
+                currentObjective = GameObject.Find("Objective4").GetComponentInChildren<Objective>();
+                break;
+            case 5:
+                currentObjective = GameObject.Find("Objective5").GetComponentInChildren<Objective>();
+                break;
+            case 6:
+                currentObjective = GameObject.Find("Objective6").GetComponentInChildren<Objective>();
+                break;
+            case 7:
+                currentObjective = GameObject.Find("Objective7").GetComponentInChildren<Objective>();
+                break;
+            default:
+                break;
+       
+
+        }
+
+        //currentObjective.DeActivate();
+
+        //if (GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway == 1)
+        //{
+        //    currentObjective = GameObject.Find("Objective").GetComponentInChildren<Objective>();
+        //    Debug.Log(currentObjective.name);
+        //    //Debug.Log(currentObjective.trapActive);
+        //    //currentObjective.DeActivate();
+        //    currentObjective.DeActivate();
+        //}
     }
 
     //updating the key inputs
@@ -171,6 +237,7 @@ public class PlayerLogic : NetworkBehaviour {
         //Debug.Log(Bullet.GetComponent<ZapperScript>().zapperTag);
     }
 
+    //lovely commands for all the lovely stuff
     [Command]
     void CmdSpawnBullet(Quaternion rotation, string tagForBullet)
     {
@@ -180,6 +247,16 @@ public class PlayerLogic : NetworkBehaviour {
         Bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
         theBullets.Add(Bullet);
         NetworkServer.Spawn(Bullet);
+    }
+
+    //commands work when tied to player objects
+    [Command]
+    public void CmdDeactivateTrap(string theName)
+    {
+        //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        //currentObjective.trapActive = !currentObjective.trapActive;
+        //currentObjective.DeActivate();
     }
 
     //activates the affect on the player for the shock trap
@@ -285,8 +362,12 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (collision.collider.CompareTag(trapStr))
         {
-            currentObjective = collision.gameObject.GetComponent<Objective>();
-            print(currentObjective.objTrapType);
+            trapActive = true;
+            GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
+            curTrap = collision.gameObject.GetComponent<Objective>().trapNum;
+
+            //currentObjective = collision.gameObject.GetComponent<Objective>();
+            //print(currentObjective.objTrapType);
         }
     }
 

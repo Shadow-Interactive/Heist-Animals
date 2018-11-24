@@ -15,7 +15,8 @@ public class TrapDoor : NetworkBehaviour {
     {
         if (!gameObject.GetComponentInParent<RoomScript>().doorCooldown)
         {
-            gameObject.GetComponentInParent<RoomScript>().TrapActivation();
+            GameObject.Find("TheCameraManager(Clone)").GetComponent<OverSeerControl>().CmdTrapActivate(GameObject.Find("TheCameraManager(Clone)").GetComponent<OverSeerControl>().camRoomName);
+            //gameObject.GetComponentInParent<RoomScript>().TrapActivation();
             theEm.Play();
 
         }
