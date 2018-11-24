@@ -89,10 +89,10 @@ public class OverseerCanvasManager : NetworkBehaviour
         pointPositions[6] = new Vector3(32, 21.3f, 0);
         pointPositions[7] = new Vector3(21.6f, 33.2f, 0);
         pointPositions[8] = new Vector3(31.1f, 10.9f, 0);
-        pointPositions[9] = new Vector3(-10.6f, -15f, 0);
-        pointPositions[10] = new Vector3(-25.7f, 0, 0);
-        pointPositions[11] = new Vector3(-40.6f, 25.9f, 0);
-        pointPositions[12] = new Vector3(-43.5f, -2.1f, 0);
+        pointPositions[9] = new Vector3(-25.7f, 0, 0);
+        pointPositions[10] = new Vector3(-40.6f, 25.9f, 0);
+        pointPositions[11] = new Vector3(-43.5f, -2.1f, 0);
+        pointPositions[12] = new Vector3(-10.6f, -15f, 0);
         pointPositions[13] = new Vector3(-10.6f, -30.4f, 0);
         pointPositions[14] = new Vector3(-39.6f, -30.4f, 0);
 
@@ -108,8 +108,9 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[9] = "Hallway 4";
         theRoomTexts[10] = "Room 2";
         theRoomTexts[11] = "Room 3";
-        theRoomTexts[12] = "Room 5";
-        theRoomTexts[13] = "Room 4";
+        theRoomTexts[12] = "Hallway 5";
+        theRoomTexts[13] = "Room 5";
+        theRoomTexts[14] = "Room 4";
         
     }
 
