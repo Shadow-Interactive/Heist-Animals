@@ -34,6 +34,8 @@ public class OverseerCanvasManager : NetworkBehaviour
     string[] theRoomTexts = new string[15];
     string roomStr = "Room: ", defaultText = "NA";
 
+    public Canvas cursorCanvas;
+
     // Use this for initialization
     void Start () {
 		
@@ -180,10 +182,11 @@ public class OverseerCanvasManager : NetworkBehaviour
         return EMP;
     }
 
-    public void SwitchCameras(int currentCamera)
+    public void SwitchCameras(int currentCamera, Camera theCamera)
     {
         currentRoom.text = theRoomTexts[currentCamera];
         SetPointPosition(currentCamera);
+        cursorCanvas.worldCamera = theCamera;
     }
 
     public void UpdateCanvasCamera(Camera newCamera)

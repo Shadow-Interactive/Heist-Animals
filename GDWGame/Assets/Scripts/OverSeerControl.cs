@@ -38,7 +38,6 @@ public class OverSeerControl : NetworkBehaviour {
     RoomManager theRoomManager;
     
     Vector3 viewportCenter = new Vector3(0.5f, 0.5f, 0);
-    public Image cursor;
 
     int currentCamera = 0;
 
@@ -118,11 +117,13 @@ public class OverSeerControl : NetworkBehaviour {
         theCanvasManager.LoadProperties(theRoomManager);
 
         initRM = true;
+        theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
+
     }
 
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
 
         if (!isLocalPlayer)
         {
@@ -192,7 +193,7 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[totalCamera.Count - 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         currentCamera = 14;
-                        theCanvasManager.SwitchCameras(currentCamera);
+                        theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
                         break;
                     }
                     else
@@ -200,10 +201,11 @@ public class OverSeerControl : NetworkBehaviour {
                         trapSelect--;
                         totalCamera[i - 1].GetComponentInChildren<Camera>().enabled = true;
                         currentCamera = i - 1;
-                        theCanvasManager.SwitchCameras(currentCamera);
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+                        theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
                         break;
                     }
+
                     //totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                 }
                 theCanvasManager.UpdateCanvasCamera(totalCamera[i].GetComponentInChildren<Camera>());
@@ -222,7 +224,7 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[0].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         currentCamera = 0;
-                        theCanvasManager.SwitchCameras(currentCamera);
+                        theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
                         break;
                     }
                     else
@@ -231,9 +233,10 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[i + 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         currentCamera = i + 1;
-                        theCanvasManager.SwitchCameras(currentCamera);
+                        theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
                         break;
                     }
+
                 }
                 theCanvasManager.UpdateCanvasCamera(totalCamera[i].GetComponentInChildren<Camera>());
 
