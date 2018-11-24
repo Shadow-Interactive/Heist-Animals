@@ -123,7 +123,6 @@ public class OverseerCanvasManager : NetworkBehaviour
         trapObj.transform.position = new Vector3(trapPos.x, -1, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
         theRoomManager.theObjectives[codeIndex].associatedCodeObject = trapObj.GetComponent<CodeVisual>();
-        print(theRoomManager.theObjectives[codeIndex].associatedCodeObject);
 
         for (int i = 0; i < 4; i++)
         {
