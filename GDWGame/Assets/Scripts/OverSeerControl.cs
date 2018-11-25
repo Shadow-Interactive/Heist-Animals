@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.UI;
 
+using SoundEngine;
+using XBOX;
 
 public class OverSeerControl : NetworkBehaviour {
 
@@ -271,6 +273,14 @@ public class OverSeerControl : NetworkBehaviour {
             if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
             {
                 totalCamera[i].transform.eulerAngles = new Vector3(-cameraLook.y, ogRotation[i].y + cameraLook.x, 0);
+
+                Vector3 psoition = totalCamera[i].transform.position;
+                
+
+                SoundManager.setListenerPos(psoition.x, psoition.y, psoition.z);
+                SoundManager.setListenerVel(0f, 0f, 0f);
+                Vector3 cast = totalCamera[i].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter).direction;
+                SoundManager.setListenerForward(cast.x, cast.y, cast.z);
             }
         }
 

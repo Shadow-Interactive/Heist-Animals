@@ -5,6 +5,8 @@ using UnityEngine;
 
 using System.Runtime.InteropServices;
 
+using SoundEngine;
+
 public class Movement : NetworkBehaviour {
 
     //constraints for the camera y rotation
@@ -32,20 +34,6 @@ public class Movement : NetworkBehaviour {
     public bool spawnIn = false;
 
     [HideInInspector] public bool disableMovement = false;
-
-    const string dllName = "FMOD Controller";
-
-    [DllImport(dllName)]
-    public static extern void setListenerPos(float _x, float _y, float _z);
-
-    [DllImport(dllName)]
-    public static extern void setListenerVel(float _x, float _y, float _z);
-
-    [DllImport(dllName)]
-    public static extern void setListenerUp(float _x, float _y, float _z);
-
-    [DllImport(dllName)]
-    public static extern void setListenerForward(float _x, float _y, float _z);
 
     // Use this for initialization
     void Start () {
@@ -170,6 +158,12 @@ public class Movement : NetworkBehaviour {
             playerCam.position = new Vector3(contact.point.x, contact.point.y, contact.point.z);
 
         }
+
+        Vector3 pos = GetComponent<Transform>().position;
+        Vector3 vel = GetComponent<Rigidbody>().velocity;
+        SoundManager.setListenerPos(pos.x, pos.y, pos.z);
+        SoundManager.setListenerForward(moveInDirectionOfCam.x, moveInDirectionOfCam.y, moveInDirectionOfCam.z);
+        SoundManager.setListenerVel(vel.x, vel.y, vel.z);
 
     }
     public void roleChose (Movement script)
