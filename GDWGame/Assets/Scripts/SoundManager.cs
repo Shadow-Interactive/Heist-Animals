@@ -73,18 +73,39 @@ namespace SoundEngine
             soundPath = Application.dataPath + "/Audio/";
             initFMOD();
             setListenerUp(0f, 1f, 0f);
+            createSound(soundPath + "Sneaky-Beaky Like.mp3", 0);
+            setLoop(0, true);
+            setMono(0);
+            setPlaying(true, 0);
+            //playSound(0, Time.deltaTime);
         }
         
         // Update is called once per frame
         void Update()
         {
             update();
+
+            PlaySounds(0);
         }
         
         void OnDestroy()
         {
             cleanFMOD();
             cleanChannels();
+        }
+
+        public void PlaySounds(int _channel)
+        {
+            if (!getPlaying(0))
+            {
+                print("What the fuck???!!!\n");
+            }
+            else
+            {
+                setPlaying(true, _channel);
+                playSound(0, Time.deltaTime);
+                print("Start playing again\n");
+            }
         }
     }
 }
