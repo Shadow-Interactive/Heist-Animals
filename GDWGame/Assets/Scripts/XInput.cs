@@ -86,7 +86,7 @@ namespace XBOX
             {
                 getPackets();
             }
-
+            
             if(getButtonB())
             {
                 Application.Quit();
