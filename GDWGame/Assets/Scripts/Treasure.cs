@@ -12,7 +12,9 @@ public class Treasure : MonoBehaviour {
 
     public void TreasureOnClick(Texture[] theImages, OverSeerControl theOverseer)
     {
+
         minigame.GetComponent<Objective>().ActivateObject(theImages, theOverseer);//, theOverseer);
+        
     }
 
     public void Deactivate()

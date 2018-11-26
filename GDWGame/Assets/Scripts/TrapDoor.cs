@@ -11,11 +11,11 @@ public class TrapDoor : NetworkBehaviour {
         theEm = GetComponent<ParticleSystem>();
     }
 
-    public void OnSecurityClick()
+    public void OnSecurityClick(GameObject activeOverseer)
     {
         if (!gameObject.GetComponentInParent<RoomScript>().doorCooldown)
         {
-            GameObject.Find("TheCameraManager(Clone)").GetComponent<OverSeerControl>().CmdTrapActivate(GameObject.Find("TheCameraManager(Clone)").GetComponent<OverSeerControl>().camRoomName);
+            activeOverseer.GetComponent<OverSeerControl>().CmdTrapActivate(activeOverseer.GetComponent<OverSeerControl>().camRoomName);
             //gameObject.GetComponentInParent<RoomScript>().TrapActivation();
             theEm.Play();
 

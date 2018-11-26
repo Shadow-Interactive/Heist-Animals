@@ -15,7 +15,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     int[] playerCodes = new int[4];
     string NoDecimals = "F0";
 
-    PlayerLogic thePlayer;
+    [HideInInspector] public PlayerLogic thePlayer;
 
     // Use this for initialization
     void Start () {
@@ -71,6 +71,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
         mCounter = 0;
         thePlayer.SetMovement(true);
         thePlayer.setCursor(false);
+        //thePlayer.SetActivation(true);
         StartCoroutine(MiniGame());
     }
 
@@ -81,7 +82,11 @@ public class PlayerObjectiveManager : NetworkBehaviour {
         ResetMinigameNumbers();
         thePlayer.setCursor(true);
         thePlayer.SetMovement(false);
-        thePlayer.currentObjective.DecoupleTrap();
+        thePlayer.SetActivation(false);
+        if (thePlayer.name == "RunnerOne")
+            thePlayer.R1currentObjective.DecoupleTrap();
+        if (thePlayer.name == "RunnerTwo")
+            thePlayer.R2currentObjective.DecoupleTrap();
     }
 
     void ResetMinigameNumbers()
@@ -95,23 +100,50 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void Confirm()
     {
-        if (!CheckCode(thePlayer.currentObjective))
+        if (thePlayer.name == "RunnerOne")
         {
-            attemptCounter++;
+            if (!CheckCode(thePlayer.R1currentObjective))
+            {
+                attemptCounter++;
 
-            if (attemptCounter >= attemptNum)
-            {
-                attemptCounter = 0;
-                DeactivateMinigame();
-                //thePlayer.currentObjective.DeActivate());
-                thePlayer.CmdDeactivateTrap(thePlayer.currentObjective.name);
-                //thePlayer.currentObjective.DeActivate();
-                thePlayer.currentObjective.GameObjectVisible(false);
+                if (attemptCounter >= attemptNum)
+                {
+                    print("Hey there");
+                    attemptCounter = 0;
+                    DeactivateMinigame();
+                    //thePlayer.currentObjective.DeActivate());
+                    thePlayer.CmdDeactivateTrap(thePlayer.R1currentObjective.name);
+                    //thePlayer.currentObjective.DeActivate();
+                    //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
+                }
+                else
+                {
+                    thePlayer.Reshuffle();
+                    ClearAll();
+                }
             }
-            else
+        }
+        else if (thePlayer.name == "RunnerTwo")
+        {
+            if (!CheckCode(thePlayer.R2currentObjective))
             {
-                thePlayer.Reshuffle();
-                ClearAll();
+                attemptCounter++;
+
+                if (attemptCounter >= attemptNum)
+                {
+                    print("HeyJude");
+                    attemptCounter = 0;
+                    DeactivateMinigame();
+                    //thePlayer.currentObjective.DeActivate());
+                    thePlayer.CmdDeactivateTrap(thePlayer.R2currentObjective.name);
+                    //thePlayer.currentObjective.DeActivate();
+                    //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
+                }
+                else
+                {
+                    thePlayer.Reshuffle();
+                    ClearAll();
+                }
             }
         }
     }

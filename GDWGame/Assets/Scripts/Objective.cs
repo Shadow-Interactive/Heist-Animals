@@ -12,6 +12,8 @@ public class Objective : NetworkBehaviour {
     PlayerObjectiveManager activePlayer;
     public RoomScript currentRoom;
 
+    PlayerLogic runner1, runner2; //players for syncing objectives
+
     //public variables
     public TrapTypes objTrapType;
     [HideInInspector] public SyncListInt trapCode = new SyncListInt();
@@ -32,6 +34,8 @@ public class Objective : NetworkBehaviour {
             int random = Random.Range(0, 10);
             trapCode.Add(random);
         }
+
+        print("New trap is " + trapCode[0] + trapCode[1] + trapCode[2] + trapCode[3]);
     }
 
     private void Update()
@@ -40,6 +44,10 @@ public class Objective : NetworkBehaviour {
         {
             DecoupleTrap();
         }
+
+        GameObjectVisibleNetwork();
+
+        //Debug.Log(trapActive);
     }
 
     public void SetUpTrap(TrapBase theType)
@@ -77,6 +85,8 @@ public class Objective : NetworkBehaviour {
             if (associatedCodeObject != null)
                 associatedCodeObject.SetSprite(i, theImages[trapCode[i]]);
         }
+
+        print("New trap is " + trapCode[0] + trapCode[1] + trapCode[2] + trapCode[3]);
     }
 
     public void ActivateMinigame()
@@ -91,7 +101,13 @@ public class Objective : NetworkBehaviour {
 
          if (activeOverseer.GetNumTrap() < 4)
          {
+            //hacky fun
             GameObjectVisible(true);
+            activeOverseer.CmdObjectiveTrap(gameObject.name);
+            //GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway = gameObject.GetComponent<Objective>().trapNum;
+            activeOverseer.CmdTrapSelect(trapNum);
+            Debug.Log(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway);
+            //gameObject.SetActive(trapActive);
             activeOverseer.ObjectiveActivate(ref currentObjectID, GetRoomID());
             Reshuffle(theImages);
         }
@@ -104,6 +120,13 @@ public class Objective : NetworkBehaviour {
         associatedCodeObject.SetActive(temp);
     }
 
+    public void GameObjectVisibleNetwork() //this controls the visibility
+    {
+        gameObject.SetActive(trapActive);
+        if (associatedCodeObject != null)
+        associatedCodeObject.SetActive(trapActive);
+    }
+
     public void DecoupleTrap() //This handles the UI side of the minigame
     {
         if (activeOverseer != null && activeOverseer.GetNumTrap() > 0)
@@ -111,7 +134,7 @@ public class Objective : NetworkBehaviour {
             activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
         }
 
-        GameObjectVisible(false);
+        GameObjectVisible(trapActive);
 
         //old networking stuff
 

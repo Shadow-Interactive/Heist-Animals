@@ -47,7 +47,7 @@ public class CustomSpawn : NetworkLobbyManager
         else if (conn.connectionId == 1)
         {
             //Player 2: They are coded to be an overseer currently
-            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[0],
+            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[1],
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
 

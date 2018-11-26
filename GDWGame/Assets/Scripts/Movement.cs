@@ -54,7 +54,7 @@ public class Movement : NetworkBehaviour {
             else
             {
                 
-                gameObject.transform.position = new Vector3(2f, 1f, 0f);
+                gameObject.transform.position = new Vector3(0f, 1f, 1f);
                 gameObject.tag = "RunnerTwo";
                 gameObject.name = "RunnerTwo";
                 
@@ -64,7 +64,7 @@ public class Movement : NetworkBehaviour {
         {
             if (isServer)
             {
-                gameObject.transform.position = new Vector3(2f, 1f, 0f);
+                gameObject.transform.position = new Vector3(0f, 1f, 1f);
                 gameObject.tag = "RunnerTwo";
                 gameObject.name = "RunnerTwo";
             }

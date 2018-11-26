@@ -141,7 +141,7 @@ public class RoomManager : NetworkBehaviour
 
             if (ohgodwhy > 0.15)
             {
-                DeactivateTraps();
+                //DeactivateTraps();
                 usingTimer = false;
             }
         }

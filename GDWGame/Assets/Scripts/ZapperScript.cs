@@ -17,7 +17,7 @@ public class ZapperScript : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
         if (active)
-            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 10;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 20f;
     }
 
     public void SetActive(bool temp)
@@ -36,4 +36,5 @@ public class ZapperScript : NetworkBehaviour {
     {
         return active; 
     }
+
 }
