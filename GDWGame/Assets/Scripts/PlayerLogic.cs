@@ -30,9 +30,13 @@ public class PlayerLogic : NetworkBehaviour {
     public Text scoreText;
     int activeBulletNum = 14, numBullets = 15; 
 
+
     //private variables
     //strings
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
+    string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap", 
+        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7",
+        strBulletPool = "BulletPool";
 
     //ints, floats and bools used in logic
     int zapperAmount = 3,  shockAttempts = 0;
@@ -98,34 +102,34 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
         //for deactivating runner 1 traps :)
-        switch (GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway)
+        switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
         {
             case 1:
-                R1currentObjective = GameObject.Find("Objective").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O1).GetComponentInChildren<Objective>();
 
                 break;
             case 2:
-                R1currentObjective = GameObject.Find("Objective2").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O2).GetComponentInChildren<Objective>();
 
                 break;
             case 3:
-                R1currentObjective = GameObject.Find("Objective3").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O3).GetComponentInChildren<Objective>();
 
                 break;
             case 4:
-                R1currentObjective = GameObject.Find("Objective4").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O4).GetComponentInChildren<Objective>();
 
                 break;
             case 5:
-                R1currentObjective = GameObject.Find("Objective5").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O5).GetComponentInChildren<Objective>();
 
                 break;
             case 6:
-                R1currentObjective = GameObject.Find("Objective6").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O6).GetComponentInChildren<Objective>();
 
                 break;
             case 7:
-                R1currentObjective = GameObject.Find("Objective7").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
 
                 break;
             default:
@@ -134,34 +138,34 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
         //for deactivating runner2 traps :)
-        switch (GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().otherTrapToGoAway)
+        switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().otherTrapToGoAway)
         {
             case 1:
-                R2currentObjective = GameObject.Find("Objective").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O1).GetComponentInChildren<Objective>();
 
                 break;
             case 2:
-                R2currentObjective = GameObject.Find("Objective2").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O2).GetComponentInChildren<Objective>();
 
                 break;
             case 3:
-                R2currentObjective = GameObject.Find("Objective3").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O3).GetComponentInChildren<Objective>();
 
                 break;
             case 4:
-                R2currentObjective = GameObject.Find("Objective4").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O4).GetComponentInChildren<Objective>();
 
                 break;
             case 5:
-                R2currentObjective = GameObject.Find("Objective5").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O5).GetComponentInChildren<Objective>();
 
                 break;
             case 6:
-                R2currentObjective = GameObject.Find("Objective6").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O6).GetComponentInChildren<Objective>();
 
                 break;
             case 7:
-                R2currentObjective = GameObject.Find("Objective7").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
 
                 break;
             default:
@@ -235,7 +239,7 @@ public class PlayerLogic : NetworkBehaviour {
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetActive(true);
         //activeBulletNum--;
         CmdSpawnBullet(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation, gameObject.tag);
-        print("Pew" + activeBulletNum);
+        //print("Pew" + activeBulletNum);
         //networkZapper = Instantiate(Zapper, transform.position, thePlayerMovement.playerCam.rotation);
 
         //Debug.Log(Bullet.GetComponent<ZapperScript>().zapperTag);
@@ -245,7 +249,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         //if (isServer)
         //NetworkServer.Spawn(bullet);
-        var bullet = GameObject.Find("BulletPool").GetComponent<TheBulletPool>().availableBullet(position);
+        var bullet = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableBullet(position);
         bullet.transform.position = (bullet.transform.position + transform.forward * 0.25f);
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
@@ -321,18 +325,18 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void Scramble()
     {
-        if (gameObject.name == "RunnerOne")
+        if (gameObject.name == runnerOneStr)
         R1currentObjective = theRoomManager.Scramble(R1currentObjective);
 
-        if (gameObject.name == "RunnerTwo")
+        if (gameObject.name == runnerTwoStr)
         R2currentObjective = theRoomManager.Scramble(R2currentObjective);
     }
 
     public bool GetActivation()
     {
-        if (gameObject.name == "RunnerOne")
+        if (gameObject.name ==runnerOneStr)
             return R1currentObjective.minigameActivated;
-        else if (gameObject.name == "RunnerTwo")
+        else if (gameObject.name == runnerTwoStr)
             return R2currentObjective.minigameActivated;
         else
             return false;
@@ -340,10 +344,10 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void SetActivation(bool temp)
     {
-        if (gameObject.name == "RunnerOne")
+        if (gameObject.name == runnerOneStr)
             R1currentObjective.minigameActivated = temp;
 
-        if (gameObject.name == "RunnerTwo")
+        if (gameObject.name == runnerTwoStr)
             R2currentObjective.minigameActivated = temp;
     }
 
@@ -394,15 +398,15 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (collision.collider.CompareTag(trapStr))
         {
-            if (gameObject.name == "RunnerOne")
+            if (gameObject.name == runnerOneStr)
             {
-                GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
+                GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
                 R1currentObjective = collision.gameObject.GetComponent<Objective>();
             }
 
-            if (gameObject.name == "RunnerTwo")
+            if (gameObject.name == runnerTwoStr)
             {
-                GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().otherTrapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
+                GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().otherTrapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
                 R2currentObjective = collision.gameObject.GetComponent<Objective>();
             }
             //currentObjective = collision.gameObject.GetComponent<Objective>();
@@ -423,9 +427,9 @@ public class PlayerLogic : NetworkBehaviour {
     public void Reshuffle()
     {
         //what am i doingggggg its so late at nighttttttt ahhhh
-        if (gameObject.name == "RunnerOne")
+        if (gameObject.name == runnerOneStr)
             R1currentObjective.Reshuffle(theRoomManager.theImages);
-        if (gameObject.name == "RunnerTwo")
+        if (gameObject.name == runnerTwoStr)
             R2currentObjective.Reshuffle(theRoomManager.theImages);
     }
 
@@ -438,9 +442,9 @@ public class PlayerLogic : NetworkBehaviour {
             trapHealth = 3;
         }
 
-        if (gameObject.name == "RunnerOne")
+        if (gameObject.name == runnerOneStr)
             R1currentObjective.Reshuffle(theRoomManager.theImages);
-        if (gameObject.name == "RunnerTwo")
+        if (gameObject.name == runnerTwoStr)
             R2currentObjective.Reshuffle(theRoomManager.theImages);
     }
 
