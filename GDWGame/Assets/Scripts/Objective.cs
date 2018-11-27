@@ -101,13 +101,13 @@ public class Objective : NetworkBehaviour {
         {
             if (associatedCodeObject1 != null)
             {
-                associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
+               // associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
                 associatedCodeObject1.SetSprite(i, theImages[trapCode[i]]);
             }
 
             if (associatedCodeObject2 != null)
             {
-                associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
+                //associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
 
                 associatedCodeObject2.SetSprite(i, theImages[trapCode[i]]);
             }

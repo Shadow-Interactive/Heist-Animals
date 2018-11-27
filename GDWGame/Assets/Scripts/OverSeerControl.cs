@@ -32,7 +32,7 @@ public class OverSeerControl : NetworkBehaviour {
     
     string mouseX = "Mouse X", mouseY = "Mouse Y";
     string treasureStr = "Treasure", securityStr = "SecurityBox";
-    string networkTrapStr = "TheNetworkTrap",
+    string networkTrapStr = "TheNetworkTrap", roomStr = "Room",
         O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7";
     public string camRoomName;
 
@@ -149,7 +149,7 @@ public class OverSeerControl : NetworkBehaviour {
             
         }
 
-        theCanvasManager.PrintCode(theRoomManager.theObjectives[theRoomManager.reshuffleID].trapCode);
+       // theCanvasManager.PrintCode(theRoomManager.theObjectives[theRoomManager.reshuffleID].trapCode);
 
         //for deactivating traps :)
         switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
@@ -360,7 +360,7 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
-        camRoomName = "Room" + trapSelect.ToString();
+        camRoomName = roomStr + trapSelect.ToString();
     }
 
     public void roleChose(OverSeerControl script)

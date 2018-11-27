@@ -338,11 +338,12 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void Scramble()
     {
-        if (gameObject.name == runnerOneStr)
-        R1currentObjective = theRoomManager.Scramble(R1currentObjective);
-
-        if (gameObject.name == runnerTwoStr)
-        R2currentObjective = theRoomManager.Scramble(R2currentObjective);
+       //if (gameObject.name == runnerOneStr)
+       //R1currentObjective = theRoomManager.Scramble(R1currentObjective);
+       //
+       //if (gameObject.name == runnerTwoStr)
+       //R2currentObjective = theRoomManager.Scramble(R2currentObjective);
+       
     }
 
     public bool GetActivation()

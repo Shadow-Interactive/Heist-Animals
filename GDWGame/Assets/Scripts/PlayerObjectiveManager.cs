@@ -18,6 +18,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     string NoDecimals = "F0", runner0ne = "RunnerOne", runnerTwo = "RunnerTwo";
 
     [HideInInspector] public PlayerLogic thePlayer;
+    [HideInInspector] public bool smoke = false; //this is bad bleh
 
     // Use this for initialization
     void Start () {
@@ -114,6 +115,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     print("Hey there");
                     attemptCounter = 0;
                     DeactivateMinigame();
+                    StopCoroutine(MiniGame());
                     //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R1currentObjective.name);
                     //thePlayer.currentObjective.DeActivate();
@@ -142,6 +144,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 {
                     print("HeyJude");
                     attemptCounter = 0;
+                    StopCoroutine(MiniGame());
                     DeactivateMinigame();
                     //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R2currentObjective.name);
@@ -176,16 +179,25 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     {
         thePlayer.SetActivation(true);
         mCounter = 0;
+        float hackyTimer = 0;
 
         while (thePlayer.GetActivation())
         {
             mCounter += Time.deltaTime;
+            hackyTimer += Time.deltaTime;
             SetTimerText(mCounter);
+
+            if (smoke && hackyTimer >= 7)
+            {
+                thePlayer.Reshuffle();
+                hackyTimer = 0;
+            }
 
             if (mCounter > counterLimit)
             {
                 DeactivateMinigame();
                 thePlayer.TrapFailure();
+                hackyTimer = 0;
                 StopCoroutine(MiniGame());
                 yield break;
             }
@@ -210,6 +222,6 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void SmokeBombTrap()
     {
-        thePlayer.Scramble();
+        smoke = true;
     }
 }

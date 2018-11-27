@@ -69,7 +69,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     public void LoadProperties(RoomManager theRoomManager)
     {
 
-        print(overseerID + " the id");
+        //print(overseerID + " the id");
         codePrefab = Resources.Load("ONumberOutput") as GameObject;
         shockImage = Resources.Load("ShockUI") as GameObject;
         empImage = Resources.Load("EMPUI") as GameObject;

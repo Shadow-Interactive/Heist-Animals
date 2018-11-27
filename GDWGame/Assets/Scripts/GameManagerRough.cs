@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class GameManagerRough : MonoBehaviour {
+
+public class GameManagerRough : NetworkBehaviour {
 
     //this will get moved
     double theTimerSeconds = 0;
@@ -11,10 +13,11 @@ public class GameManagerRough : MonoBehaviour {
     bool gameOver = false;
     public GameObject gameoverScreen;
     public Text timerText;
-    string NoDecimals = "F0", withZero = ":0", withoutZero = ":", Team1Wins = "Team 1 Wins!", Team2Wins = "Team 2 Wins!";
+    string NoDecimals = "F0", withZero = ":0", withoutZero = ":", Team1Wins = "Team 1 Wins!", Team2Wins = "Team 2 Wins!", Tie = "It's a tie!";
     PlayerLogic RunnerOne, RunnerTwo;
     public Text Score1, Score2, WinningText;
-    int player1Score = 0, player2Score = 0; //this specifically is to make it easier to test
+    [SyncVar] int player1Score = 0;
+    [SyncVar] int player2Score = 0; //this specifically is to make it easier to test
 
     bool loadProperties = false;
     int gameTimeLimit = 5;
@@ -39,7 +42,7 @@ public class GameManagerRough : MonoBehaviour {
 
         }
 
-        if (theTimerSeconds % 60 >= 59.7)
+        if (theTimerSeconds % 60 >= 59.6)
         {
             theTimer++;
             theTimerSeconds = 0;
@@ -64,16 +67,28 @@ public class GameManagerRough : MonoBehaviour {
     {
         gameoverScreen.SetActive(true);
 
-        if (RunnerOne != null) player1Score = RunnerOne.numTreasures;
-        if (RunnerTwo != null) player2Score = RunnerTwo.numTreasures;
+        if (RunnerOne != null)
+        {
+           // print("beepbooprunnerone");
+            player1Score = RunnerOne.numTreasures;
+        }
+
+        if (RunnerTwo != null)
+        {
+           // print("beepbooprunner2");
+            player2Score = RunnerTwo.numTreasures;
+        }
 
         Score1.text = player1Score.ToString(NoDecimals);
         Score2.text = player2Score.ToString(NoDecimals);
-        
+
         if (player1Score > player2Score)
             WinningText.text = Team1Wins;
-        else
+        else if (player1Score < player2Score)
             WinningText.text = Team2Wins;
+        else
+            WinningText.text = Tie;
+
         
     }
 
