@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-
+using SoundEngine;
 
 public class PlayerLogic : NetworkBehaviour {
 
@@ -194,6 +194,19 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 activeBulletNum = numBullets - 1 ;
             }
+
+            SoundManager.createSound(SoundManager.soundPath + "ZapperFire.mp3", 1);
+            SoundManager.setPlaying(true, 1);
+
+            Vector3 vel = gameObject.transform.forward * 20f;
+            SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
+
+            Vector3 pos = GetComponent<Transform>().position;
+            SoundManager.setPosition(pos.x, pos.y, pos.z, 1);
+
+            SoundManager.setVolume(20.0f, 1);
+
+            SoundManager.playSound(1, Time.deltaTime);
         }
     }
 

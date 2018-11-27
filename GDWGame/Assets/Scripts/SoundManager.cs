@@ -74,6 +74,7 @@ namespace SoundEngine
             initFMOD();
             setListenerUp(0f, 1f, 0f);
             createSound(soundPath + "Sneaky-Beaky Like.mp3", 0);
+            setVolume(0f, 0);
             setLoop(0, true);
             setMono(0);
             setPlaying(true, 0);
@@ -103,7 +104,7 @@ namespace SoundEngine
             else
             {
                 setPlaying(true, _channel);
-                playSound(0, Time.deltaTime);
+                //playSound(0, Time.deltaTime);
                 print("Start playing again\n");
             }
         }
