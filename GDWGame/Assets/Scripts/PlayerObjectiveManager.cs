@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+using SoundEngine;
+
 public class PlayerObjectiveManager : NetworkBehaviour {
     
     public GameObject minigameCanvas;
@@ -106,6 +108,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
             {
                 attemptCounter++;
 
+                //player's code entry was successful
                 if (attemptCounter >= attemptNum)
                 {
                     print("Hey there");
@@ -122,6 +125,11 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     thePlayer.Reshuffle();
                     ClearAll();
                 }
+            }
+            //code entry was unsuccessful
+            else
+            {
+                
             }
         }
         else if (thePlayer.name == runnerTwo)

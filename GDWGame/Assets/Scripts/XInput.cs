@@ -85,11 +85,11 @@ namespace XBOX
             if(getConnected())
             {
                 getPackets();
-            }
-            
-            if(getButtonB())
-            {
-                Application.Quit();
+
+                if (getButtonB())
+                {
+                    Application.Quit();
+                }
             }
         }
     }
