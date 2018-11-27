@@ -194,19 +194,6 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 activeBulletNum = numBullets - 1 ;
             }
-
-            SoundManager.createSound(SoundManager.soundPath + "ZapperFire.mp3", 1);
-            SoundManager.setPlaying(true, 1);
-
-            Vector3 vel = gameObject.transform.forward * 20f;
-            SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
-
-            Vector3 pos = GetComponent<Transform>().position;
-            SoundManager.setPosition(pos.x, pos.y, pos.z, 1);
-
-            SoundManager.setVolume(20.0f, 1);
-
-            SoundManager.playSound(1, Time.deltaTime);
         }
     }
 
@@ -266,6 +253,18 @@ public class PlayerLogic : NetworkBehaviour {
         bullet.transform.position = (bullet.transform.position + transform.forward * 0.25f);
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
+
+        SoundManager.setPlaying(true, 1);
+
+        Vector3 vel = gameObject.transform.forward * 20f;
+        SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
+
+        Vector3 pos = GetComponent<Transform>().position;
+        SoundManager.setPosition(pos.x, pos.y, pos.z, 1);
+
+        SoundManager.setVolume(20.0f, 1);
+
+        SoundManager.playSound(1, Time.deltaTime);
 
         StartCoroutine(DeactivateBullet(bullet, 3));
     }
