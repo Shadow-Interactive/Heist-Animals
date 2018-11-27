@@ -101,13 +101,13 @@ namespace SoundEngine
         {
             if (!getPlaying(0))
             {
-                print("What the fuck???!!!\n");
+                //print("What the fuck???!!!\n");
             }
             else
             {
                 setPlaying(true, _channel);
                 //playSound(0, Time.deltaTime);
-                print("Start playing again\n");
+               // print("Start playing again\n");
             }
         }
     }

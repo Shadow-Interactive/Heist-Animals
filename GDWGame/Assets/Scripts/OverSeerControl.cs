@@ -32,6 +32,8 @@ public class OverSeerControl : NetworkBehaviour {
     
     string mouseX = "Mouse X", mouseY = "Mouse Y";
     string treasureStr = "Treasure", securityStr = "SecurityBox";
+    string networkTrapStr = "TheNetworkTrap", roomStr = "Room",
+        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7";
     public string camRoomName;
 
     RaycastHit clickHit;
@@ -147,35 +149,37 @@ public class OverSeerControl : NetworkBehaviour {
             
         }
 
+       // theCanvasManager.PrintCode(theRoomManager.theObjectives[theRoomManager.reshuffleID].trapCode);
+
         //for deactivating traps :)
-        switch (GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway)
+        switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
         {
             case 1:
-                R1currentObjective = GameObject.Find("Objective").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O1).GetComponentInChildren<Objective>();
                
                 break;
             case 2:
-                R1currentObjective = GameObject.Find("Objective2").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O2).GetComponentInChildren<Objective>();
                
                 break;
             case 3:
-                R1currentObjective = GameObject.Find("Objective3").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O3).GetComponentInChildren<Objective>();
                
                 break;
             case 4:
-                R1currentObjective = GameObject.Find("Objective4").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O4).GetComponentInChildren<Objective>();
                
                 break;
             case 5:
-                R1currentObjective = GameObject.Find("Objective5").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O5).GetComponentInChildren<Objective>();
                 
                 break;
             case 6:
-                R1currentObjective = GameObject.Find("Objective6").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O6).GetComponentInChildren<Objective>();
                 
                 break;
             case 7:
-                R1currentObjective = GameObject.Find("Objective7").GetComponentInChildren<Objective>();
+                R1currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
                 
                 break;
             default:
@@ -183,34 +187,34 @@ public class OverSeerControl : NetworkBehaviour {
                 break;
         }
 
-        switch (GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().otherTrapToGoAway)
+        switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().otherTrapToGoAway)
         {
             case 1:
-                R2currentObjective = GameObject.Find("Objective").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O1).GetComponentInChildren<Objective>();
                 
                 break;
             case 2:
-                R2currentObjective = GameObject.Find("Objective2").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O2).GetComponentInChildren<Objective>();
                 
                 break;
             case 3:
-                R2currentObjective = GameObject.Find("Objective3").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O3).GetComponentInChildren<Objective>();
                 
                 break;
             case 4:
-                R2currentObjective = GameObject.Find("Objective4").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O4).GetComponentInChildren<Objective>();
                 
                 break;
             case 5:
-                R2currentObjective = GameObject.Find("Objective5").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O5).GetComponentInChildren<Objective>();
                 
                 break;
             case 6:
-                R2currentObjective = GameObject.Find("Objective6").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O6).GetComponentInChildren<Objective>();
                 
                 break;
             case 7:
-                R2currentObjective = GameObject.Find("Objective7").GetComponentInChildren<Objective>();
+                R2currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
                 
                 break;
             default:
@@ -218,8 +222,8 @@ public class OverSeerControl : NetworkBehaviour {
                 break;
         }
 
-        cameraLook.x += Input.GetAxis("Mouse X");
-        cameraLook.y += Input.GetAxis("Mouse Y");
+        cameraLook.x += Input.GetAxis(mouseX);
+        cameraLook.y += Input.GetAxis(mouseY);
 
         //clamp the camera's y rotation to prevent weird camera angles
         cameraLook.y = Mathf.Clamp(cameraLook.y, CAM_Y_MIN, CAM_Y_MAX);
@@ -240,7 +244,7 @@ public class OverSeerControl : NetworkBehaviour {
                 {
                     //atm, the overseer can only have 5 active traps at a time
                     //CmdObjectiveTrap(clickHit.collider.gameObject.name);
-                    clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages, gameObject.GetComponent<OverSeerControl>());//, this.gameObject.GetComponent<OverSeerControl>());
+                    clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages, gameObject.GetComponent<OverSeerControl>(), theRoomManager);//, this.gameObject.GetComponent<OverSeerControl>());
                 }
                 else if (clickHit.transform.CompareTag(securityStr))
                 {
@@ -356,7 +360,7 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
-        camRoomName = "Room" + trapSelect.ToString();
+        camRoomName = roomStr + trapSelect.ToString();
     }
 
     public void roleChose(OverSeerControl script)

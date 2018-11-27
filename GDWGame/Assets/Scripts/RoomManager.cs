@@ -46,11 +46,17 @@ public class RoomManager : NetworkBehaviour
     float ohgodwhy = 0;
     bool usingTimer = true;
 
+    float killmetimer = 0;
+
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
 
     //here we can do stuff like the player transporting to a random level, and anything else that would require access to the diff levels. 
     // Use this for initialization
+
+    [HideInInspector] [SyncVar] public bool activateReshuffle = false;
+    [HideInInspector] [SyncVar] public int reshuffleID = 0;
+
 
     void Start()
     {
@@ -69,6 +75,7 @@ public class RoomManager : NetworkBehaviour
         {
             if (theObjectives[i].objTrapType != TrapTypes.NO_TRAP)
             {
+                theObjectives[i].trapID = i;
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
@@ -145,6 +152,23 @@ public class RoomManager : NetworkBehaviour
                 usingTimer = false;
             }
         }
+
+        if (activateReshuffle == true)
+        {
+            if (isServer)
+            {
+                theObjectives[reshuffleID].ActualReshuffle();
+                theObjectives[reshuffleID].UpdateSprites(theImages);
+                activateReshuffle = false;
+            }
+        }
+
+        for (int i = 0; i < ObjectiveLength(); i++)
+        {
+            theObjectives[i].UpdateSprites(theImages);
+
+        }
+
     }
 
     public Vector3 GetObjPos(int index)
@@ -182,9 +206,14 @@ public class RoomManager : NetworkBehaviour
         return securityBoxes.Count;
     }
 
-    public void SetObjectiveTrapImages(int index6, CodeVisual associated)
+    public void SetObjectiveTrapImages(int index6, CodeVisual associated, int whichOne)
     {
-        theObjectives[index6].associatedCodeObject = associated;
+        if (whichOne == 1)
+        theObjectives[index6].associatedCodeObject1 = associated;
+
+        else if (whichOne == 2)
+            theObjectives[index6].associatedCodeObject2 = associated;
+
     }
 
     public Texture GetTexture(int index7)

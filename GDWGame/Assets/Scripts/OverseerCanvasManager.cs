@@ -32,14 +32,21 @@ public class OverseerCanvasManager : NetworkBehaviour
     public Text currentRoom;
     
     string[] theRoomTexts = new string[15];
-    string roomStr = "Room: ", defaultText = "NA";
+    string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2";
 
     public Canvas cursorCanvas;
+    public int overseerID;
 
     // Use this for initialization
     void Start () {
-		
-	}
+
+        if (overseerID == 0)
+            gameObject.name = strO1;
+        else if (overseerID == 1)
+            gameObject.name = strO2;
+        else
+            gameObject.name = "killmebish" + overseerID;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -54,10 +61,15 @@ public class OverseerCanvasManager : NetworkBehaviour
                 screenBlocker.SetActive(EMP);
             }
         }
+
+      //  currentRoom.text = gameObject.name;
+
     }
 
     public void LoadProperties(RoomManager theRoomManager)
     {
+
+        //print(overseerID + " the id");
         codePrefab = Resources.Load("ONumberOutput") as GameObject;
         shockImage = Resources.Load("ShockUI") as GameObject;
         empImage = Resources.Load("EMPUI") as GameObject;
@@ -113,7 +125,9 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[12] = "Hallway 5";
         theRoomTexts[13] = "Room 5";
         theRoomTexts[14] = "Room 4";
-        
+
+
+       // currentRoom.text = gameObject.name;
     }
 
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
@@ -122,7 +136,12 @@ public class OverseerCanvasManager : NetworkBehaviour
         trapObj.transform.parent = trapCanvas.transform;
         trapObj.transform.position = new Vector3(trapPos.x, -1, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
-        theRoomManager.theObjectives[codeIndex].associatedCodeObject = trapObj.GetComponent<CodeVisual>();
+
+        if (gameObject.name == strO1)
+        theRoomManager.theObjectives[codeIndex].associatedCodeObject1 = trapObj.GetComponent<CodeVisual>();
+
+        else if (gameObject.name == strO2)
+            theRoomManager.theObjectives[codeIndex].associatedCodeObject2 = trapObj.GetComponent<CodeVisual>();
 
         for (int i = 0; i < 4; i++)
         {
@@ -199,5 +218,8 @@ public class OverseerCanvasManager : NetworkBehaviour
         trapCanvas.gameObject.SetActive(temp);
     }
 
-   
+   public void PrintCode(SyncListInt trapCode)
+    {
+        currentRoom.text = (trapCode[0] + " " + trapCode[1] + " " + trapCode[2] + " " + trapCode[3]).ToString();
+    }
 }

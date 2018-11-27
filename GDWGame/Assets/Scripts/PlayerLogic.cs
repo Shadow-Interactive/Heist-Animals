@@ -337,11 +337,12 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void Scramble()
     {
-        if (gameObject.name == runnerOneStr)
-        R1currentObjective = theRoomManager.Scramble(R1currentObjective);
-
-        if (gameObject.name == runnerTwoStr)
-        R2currentObjective = theRoomManager.Scramble(R2currentObjective);
+       //if (gameObject.name == runnerOneStr)
+       //R1currentObjective = theRoomManager.Scramble(R1currentObjective);
+       //
+       //if (gameObject.name == runnerTwoStr)
+       //R2currentObjective = theRoomManager.Scramble(R2currentObjective);
+       
     }
 
     public bool GetActivation()
@@ -440,9 +441,18 @@ public class PlayerLogic : NetworkBehaviour {
     {
         //what am i doingggggg its so late at nighttttttt ahhhh
         if (gameObject.name == runnerOneStr)
-            R1currentObjective.Reshuffle(theRoomManager.theImages);
+        {
+            R1currentObjective.Reshuffle(theRoomManager);
+          //  R1currentObjective.UpdateSprites(theRoomManager.theImages);
+            
+        }
         if (gameObject.name == runnerTwoStr)
-            R2currentObjective.Reshuffle(theRoomManager.theImages);
+        {
+            R2currentObjective.Reshuffle(theRoomManager);
+            //R2currentObjective.UpdateSprites(theRoomManager.theImages);
+
+        }
+        
     }
 
     public void TrapFailure()
@@ -454,10 +464,7 @@ public class PlayerLogic : NetworkBehaviour {
             trapHealth = 3;
         }
 
-        if (gameObject.name == runnerOneStr)
-            R1currentObjective.Reshuffle(theRoomManager.theImages);
-        if (gameObject.name == runnerTwoStr)
-            R2currentObjective.Reshuffle(theRoomManager.theImages);
+        Reshuffle();
     }
 
     public bool AreBulletsAvailable()

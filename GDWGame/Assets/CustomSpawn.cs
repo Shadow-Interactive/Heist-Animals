@@ -33,6 +33,8 @@ public class CustomSpawn : NetworkLobbyManager
         RegisterStartPosition(Spawn);
         RegisterStartPosition(Spawn);
 
+        Debug.Log("Testing 21321321");
+
         GameObject _temp;
 
         if (conn.connectionId == 0)
@@ -41,6 +43,8 @@ public class CustomSpawn : NetworkLobbyManager
             _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[choice],
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
+            if (choice == 1)
+            _temp.GetComponent<OverseerCanvasManager>().overseerID = 0;
 
             return _temp;
         }
@@ -51,6 +55,7 @@ public class CustomSpawn : NetworkLobbyManager
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
 
+            _temp.GetComponent<OverseerCanvasManager>().overseerID = 1;
             return _temp;
             
         }
@@ -71,6 +76,7 @@ public class CustomSpawn : NetworkLobbyManager
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
 
+            _temp.GetComponent<OverseerCanvasManager>().overseerID = 2;
             return _temp;
 
         }

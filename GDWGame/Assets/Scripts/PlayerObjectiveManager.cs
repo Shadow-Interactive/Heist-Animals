@@ -15,9 +15,10 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     int attemptCounter = 0, attemptNum = 1, normalAttempt = 1, trapAttempt = 2, currentCode = 0;
     float mNormalCount = 30, mCounter = 0, counterLimit = 30, mTrapCount = 15;
     int[] playerCodes = new int[4];
-    string NoDecimals = "F0";
+    string NoDecimals = "F0", runner0ne = "RunnerOne", runnerTwo = "RunnerTwo";
 
     [HideInInspector] public PlayerLogic thePlayer;
+    [HideInInspector] public bool smoke = false; //this is bad bleh
 
     // Use this for initialization
     void Start () {
@@ -85,9 +86,9 @@ public class PlayerObjectiveManager : NetworkBehaviour {
         thePlayer.setCursor(true);
         thePlayer.SetMovement(false);
         thePlayer.SetActivation(false);
-        if (thePlayer.name == "RunnerOne")
+        if (thePlayer.name == runner0ne)
             thePlayer.R1currentObjective.DecoupleTrap();
-        if (thePlayer.name == "RunnerTwo")
+        if (thePlayer.name == runnerTwo)
             thePlayer.R2currentObjective.DecoupleTrap();
     }
 
@@ -102,7 +103,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void Confirm()
     {
-        if (thePlayer.name == "RunnerOne")
+        if (thePlayer.name == runner0ne)
         {
             if (!CheckCode(thePlayer.R1currentObjective))
             {
@@ -114,6 +115,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     print("Hey there");
                     attemptCounter = 0;
                     DeactivateMinigame();
+                    StopCoroutine(MiniGame());
                     //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R1currentObjective.name);
                     //thePlayer.currentObjective.DeActivate();
@@ -121,6 +123,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 }
                 else
                 {
+                    print("killme <3 ");
                     thePlayer.Reshuffle();
                     ClearAll();
                 }
@@ -131,7 +134,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 
             }
         }
-        else if (thePlayer.name == "RunnerTwo")
+        else if (thePlayer.name == runnerTwo)
         {
             if (!CheckCode(thePlayer.R2currentObjective))
             {
@@ -141,6 +144,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 {
                     print("HeyJude");
                     attemptCounter = 0;
+                    StopCoroutine(MiniGame());
                     DeactivateMinigame();
                     //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R2currentObjective.name);
@@ -149,6 +153,8 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 }
                 else
                 {
+                    print("HAIRESHUFFLE");
+                    
                     thePlayer.Reshuffle();
                     ClearAll();
                 }
@@ -173,16 +179,25 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     {
         thePlayer.SetActivation(true);
         mCounter = 0;
+        float hackyTimer = 0;
 
         while (thePlayer.GetActivation())
         {
             mCounter += Time.deltaTime;
+            hackyTimer += Time.deltaTime;
             SetTimerText(mCounter);
+
+            if (smoke && hackyTimer >= 7)
+            {
+                thePlayer.Reshuffle();
+                hackyTimer = 0;
+            }
 
             if (mCounter > counterLimit)
             {
                 DeactivateMinigame();
                 thePlayer.TrapFailure();
+                hackyTimer = 0;
                 StopCoroutine(MiniGame());
                 yield break;
             }
@@ -207,6 +222,6 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void SmokeBombTrap()
     {
-        thePlayer.Scramble();
+        smoke = true;
     }
 }
