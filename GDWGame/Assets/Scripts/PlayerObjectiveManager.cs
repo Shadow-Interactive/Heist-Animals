@@ -13,7 +13,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     int attemptCounter = 0, attemptNum = 1, normalAttempt = 1, trapAttempt = 2, currentCode = 0;
     float mNormalCount = 30, mCounter = 0, counterLimit = 30, mTrapCount = 15;
     int[] playerCodes = new int[4];
-    string NoDecimals = "F0";
+    string NoDecimals = "F0", runner0ne = "RunnerOne", runnerTwo = "RunnerTwo";
 
     [HideInInspector] public PlayerLogic thePlayer;
 
@@ -83,9 +83,9 @@ public class PlayerObjectiveManager : NetworkBehaviour {
         thePlayer.setCursor(true);
         thePlayer.SetMovement(false);
         thePlayer.SetActivation(false);
-        if (thePlayer.name == "RunnerOne")
+        if (thePlayer.name == runner0ne)
             thePlayer.R1currentObjective.DecoupleTrap();
-        if (thePlayer.name == "RunnerTwo")
+        if (thePlayer.name == runnerTwo)
             thePlayer.R2currentObjective.DecoupleTrap();
     }
 
@@ -100,7 +100,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void Confirm()
     {
-        if (thePlayer.name == "RunnerOne")
+        if (thePlayer.name == runner0ne)
         {
             if (!CheckCode(thePlayer.R1currentObjective))
             {
@@ -118,12 +118,13 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 }
                 else
                 {
+                    print("killme <3 ");
                     thePlayer.Reshuffle();
                     ClearAll();
                 }
             }
         }
-        else if (thePlayer.name == "RunnerTwo")
+        else if (thePlayer.name == runnerTwo)
         {
             if (!CheckCode(thePlayer.R2currentObjective))
             {
@@ -141,6 +142,8 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                 }
                 else
                 {
+                    print("HAIRESHUFFLE");
+                    
                     thePlayer.Reshuffle();
                     ClearAll();
                 }

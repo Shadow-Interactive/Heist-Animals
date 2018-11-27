@@ -7,7 +7,7 @@ public class Objective : NetworkBehaviour {
 
     //Other classes/types of data contained here (components?)
     TrapBase theTrapType;
-    [HideInInspector] public CodeVisual associatedCodeObject;
+    [HideInInspector] public CodeVisual associatedCodeObject1, associatedCodeObject2;
     OverSeerControl activeOverseer; //for the minigames
     PlayerObjectiveManager activePlayer;
     public RoomScript currentRoom;
@@ -15,7 +15,7 @@ public class Objective : NetworkBehaviour {
     PlayerLogic runner1, runner2; //players for syncing objectives
 
     //public variables
-    public TrapTypes objTrapType;
+    [SyncVar] public TrapTypes objTrapType;
     [HideInInspector] public SyncListInt trapCode = new SyncListInt();
     [SyncVar] [HideInInspector] public bool trapActive = true;
     public int trapNum = 0;
@@ -26,6 +26,7 @@ public class Objective : NetworkBehaviour {
     Vector3 objectivePosition;
     string runnerStr = "RunnerOne", runner2Str = "RunnerTwo";
 
+    [SyncVar] public int trapID = 0;
 
     // Use this for initialization
     void Start () {
@@ -76,17 +77,41 @@ public class Objective : NetworkBehaviour {
             minigameActivated = false;
     }
 
-    public void Reshuffle(Texture[] theImages)
+    public void Reshuffle(RoomManager theRoomManager)
+    {
+        theRoomManager.activateReshuffle = true;
+        theRoomManager.reshuffleID = trapID;
+       // print("New trap is " + trapCode[0] + trapCode[1] + trapCode[2] + trapCode[3]);
+    }
+
+    public void ActualReshuffle()
+    {
+         for (int i = 0; i < 4; i++)
+         {
+             trapCode[i] = Random.Range(0, 10);
+            
+         }
+        
+        print("actual trap is " + trapCode[0] + trapCode[1] + trapCode[2] + trapCode[3]);
+    }
+
+    public void UpdateSprites(Texture[] theImages)
     {
         for (int i = 0; i < 4; i++)
         {
-            trapCode[i] = Random.Range(0, 10);
+            if (associatedCodeObject1 != null)
+            {
+                associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
+                associatedCodeObject1.SetSprite(i, theImages[trapCode[i]]);
+            }
 
-            if (associatedCodeObject != null)
-                associatedCodeObject.SetSprite(i, theImages[trapCode[i]]);
+            if (associatedCodeObject2 != null)
+            {
+                associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
+
+                associatedCodeObject2.SetSprite(i, theImages[trapCode[i]]);
+            }
         }
-
-        print("New trap is " + trapCode[0] + trapCode[1] + trapCode[2] + trapCode[3]);
     }
 
     public void ActivateMinigame()
@@ -95,7 +120,7 @@ public class Objective : NetworkBehaviour {
         theTrapType.Execute(activePlayer);
     }
 
-    public void ActivateObject(Texture[] theImages,OverSeerControl activeO)
+    public void ActivateObject(OverSeerControl activeO, RoomManager theRoomManager)
     {
          activeOverseer = activeO;
 
@@ -109,22 +134,35 @@ public class Objective : NetworkBehaviour {
             Debug.Log(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway);
             //gameObject.SetActive(trapActive);
             activeOverseer.ObjectiveActivate(ref currentObjectID, GetRoomID());
-            Reshuffle(theImages);
+            Reshuffle(theRoomManager);
         }
     }
     
     public void GameObjectVisible(bool temp) //this controls the visibility
     {
         gameObject.SetActive(temp);
-        if  (associatedCodeObject != null)
-        associatedCodeObject.SetActive(temp);
+        if (associatedCodeObject1 != null)
+        {
+            associatedCodeObject1.SetActive(temp);
+            
+        }
+
+        if (associatedCodeObject2 != null)
+        {
+            associatedCodeObject2.SetActive(temp);
+
+        }
+
     }
 
     public void GameObjectVisibleNetwork() //this controls the visibility
     {
         gameObject.SetActive(trapActive);
-        if (associatedCodeObject != null)
-        associatedCodeObject.SetActive(trapActive);
+        if (associatedCodeObject1 != null)
+        associatedCodeObject1.SetActive(trapActive);
+
+        if (associatedCodeObject2 != null)
+            associatedCodeObject2.SetActive(trapActive);
     }
 
     public void DecoupleTrap() //This handles the UI side of the minigame
