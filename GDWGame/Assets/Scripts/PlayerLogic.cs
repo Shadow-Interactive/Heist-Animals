@@ -397,8 +397,11 @@ public class PlayerLogic : NetworkBehaviour {
                 //{
                 //    return;
                 //}
-
-                zapHealth--;
+                if ((gameObject.name == runnerOneStr && R1currentObjective != null && !R1currentObjective.minigameActivated)
+                    || (gameObject.name == runnerTwoStr && R2currentObjective != null && !R2currentObjective.minigameActivated))
+                {
+                    zapHealth--;
+                }
 
                 //Debug.Log(zapHealth);
             }

@@ -90,6 +90,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
             thePlayer.R1currentObjective.DecoupleTrap();
         if (thePlayer.name == runnerTwo)
             thePlayer.R2currentObjective.DecoupleTrap();
+        smoke = false;
     }
 
     void ResetMinigameNumbers()
@@ -118,8 +119,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     StopCoroutine(MiniGame());
                     //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R1currentObjective.name);
-                    //thePlayer.currentObjective.DeActivate();
-                    //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
+                   
                 }
                 else
                 {
@@ -146,10 +146,8 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     attemptCounter = 0;
                     StopCoroutine(MiniGame());
                     DeactivateMinigame();
-                    //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R2currentObjective.name);
-                    //thePlayer.currentObjective.DeActivate();
-                    //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
+                    
                 }
                 else
                 {

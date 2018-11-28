@@ -128,8 +128,13 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[14] = "Room 4";
 
 
-       // currentRoom.text = gameObject.name;
+       //// currentRoom.text = gameObject.name;
+       //for (int i = 0; i < codeVisuals.Count; i++)
+       //{
+       //    codeVisuals[i].SetActive(false);
+       //}
     }
+    
 
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
     {
@@ -139,7 +144,7 @@ public class OverseerCanvasManager : NetworkBehaviour
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)
-        theRoomManager.theObjectives[codeIndex].associatedCodeObject1 = trapObj.GetComponent<CodeVisual>();
+            theRoomManager.theObjectives[codeIndex].associatedCodeObject1 = trapObj.GetComponent<CodeVisual>();
 
         else if (gameObject.name == strO2)
             theRoomManager.theObjectives[codeIndex].associatedCodeObject2 = trapObj.GetComponent<CodeVisual>();
@@ -233,5 +238,11 @@ public class OverseerCanvasManager : NetworkBehaviour
     public void PrintCode(bool temp)
     {
         currentRoom.text = temp.ToString();
+    }
+
+    public void PrintCode(string help)
+    {
+        currentRoom.text = help;
+
     }
 }

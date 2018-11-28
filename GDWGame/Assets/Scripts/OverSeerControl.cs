@@ -388,6 +388,7 @@ public class OverSeerControl : NetworkBehaviour {
         theCanvasManager.numTrapActivated--;
         theCanvasManager.SetTrapIconActive(currentObjectID, theColor, ID);
         theCanvasManager.SetCurrentlyActive();
+        theCanvasManager.PrintCode(gameObject.name);
     }
 
     [Command]

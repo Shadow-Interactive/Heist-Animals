@@ -40,7 +40,7 @@ public class RoomManager : NetworkBehaviour
 
     public GameObject emptyObjectives;
     public GameObject emptyRooms;
-    List<GameObject> securityBoxes = new List<GameObject>();
+    public List<GameObject> securityBoxes = new List<GameObject>();
 
     public Texture[] theImages = new Texture[10];
     float ohgodwhy = 0;
@@ -99,7 +99,7 @@ public class RoomManager : NetworkBehaviour
         for (int i = 0; i < theRooms.Length; i++)
         {
             theRooms[i].roomTag = i;
-            securityBoxes.Add(theRooms[i].securityBox);
+            //securityBoxes.Add(theRooms[i].securityBox);
         }
 
         for (int i = 0; i < theObjectives.Length; i++)
@@ -110,8 +110,7 @@ public class RoomManager : NetworkBehaviour
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
-
-        //DeactivateTraps();
+        
     }
 
 
@@ -236,8 +235,9 @@ public class RoomManager : NetworkBehaviour
     {
         for (int i = 0; i < theObjectives.Length; i++)
         {
-            theObjectives[i].GameObjectVisible(false);
             theObjectives[i].trapActive = false;
+
+            theObjectives[i].GameObjectVisible(false);
             
         }
     }
