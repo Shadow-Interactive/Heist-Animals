@@ -255,6 +255,7 @@ public class PlayerLogic : NetworkBehaviour {
         bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
 
         SoundManager.setPlaying(true, 1);
+        SoundManager.setLoop(1, false);
 
         Vector3 vel = gameObject.transform.forward * 20f;
         SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
@@ -394,6 +395,18 @@ public class PlayerLogic : NetworkBehaviour {
                 //}
 
                 zapHealth--;
+
+                SoundManager.setPlaying(true, 2);
+                SoundManager.setLoop(2, false);
+                
+                SoundManager.setVelocity(0f, 0f, 0f, 2);
+
+                Vector3 pos = GetComponent<Transform>().position;
+                SoundManager.setPosition(pos.x, pos.y, pos.z, 2);
+
+                SoundManager.setVolume(20.0f, 2);
+
+                SoundManager.playSound(2, Time.deltaTime);
 
                 //Debug.Log(zapHealth);
             }
