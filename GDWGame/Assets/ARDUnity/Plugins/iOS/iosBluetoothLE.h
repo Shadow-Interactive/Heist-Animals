@@ -2,7 +2,7 @@
 //  iosBluetoothLE.h
 //  iosPlugin
 //
-//  Created by Jaehong on 2016. 1. 5.
+//  Created by Jaehong on 2016. 1. 5..
 //  Copyright © 2016 Ardunity. All rights reserved.
 //
 

@@ -4813,10 +4813,14 @@ MonoBehaviour:
   screenBlocker: {fileID: 1796071232492384}
   trapCanvas: {fileID: 223872139084814470}
   regularCanvas: {fileID: 223638800586013122}
-  emptyTrapIcons: {fileID: 1479671309454074}
   numTrapActivated: 0
   currentTrap: 0
   minimapPoint: {fileID: 114220582503702076}
+  trapIcons:
+  - {fileID: 114928848902552870}
+  - {fileID: 114402489866209662}
+  - {fileID: 114610908758618772}
+  - {fileID: 114521726172449232}
   currentRoom: {fileID: 114915367059785138}
   cursorCanvas: {fileID: 223765117706722750}
   overseerID: 0

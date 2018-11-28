@@ -16,7 +16,6 @@ public class OverseerCanvasManager : NetworkBehaviour
     private List<GameObject> codeVisuals = new List<GameObject>();
     private List<GameObject> trapImages = new List<GameObject>();
 
-    public GameObject emptyTrapIcons;
     GameObject[] theImages = new GameObject[4];
     GameObject codePrefab;
     GameObject shockImage, empImage;
@@ -26,7 +25,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     
     [HideInInspector] public int numTrapActivated = 0, currentTrap = 0;
     public RawImage minimapPoint;
-    RawImage[] trapIcons;
+    public RawImage[] trapIcons;
 
     Vector3[] pointPositions = new Vector3[15];
     public Text currentRoom;
@@ -51,6 +50,8 @@ public class OverseerCanvasManager : NetworkBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+        
+
         if (EMP)
         {
             empTimer += Time.deltaTime;
@@ -91,9 +92,7 @@ public class OverseerCanvasManager : NetworkBehaviour
         {
             AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
         }
-
-        //more ui stuff here
-        trapIcons = emptyTrapIcons.GetComponentsInChildren<RawImage>();
+        
 
         pointPositions[0] = new Vector3(-7.9f, -5.4f, 0);
         pointPositions[1] = new Vector3(13.9f, -5.4f, 0);

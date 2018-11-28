@@ -151,6 +151,7 @@ public class OverSeerControl : NetworkBehaviour {
             totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
             camChoice = false;
             theCanvasManager.SetCanvasActive(false);
+
             return;
         }
 
@@ -168,6 +169,8 @@ public class OverSeerControl : NetworkBehaviour {
             LoadProperties();
             
         }
+
+        theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
 
         //for deactivating traps :)
@@ -269,11 +272,11 @@ public class OverSeerControl : NetworkBehaviour {
                 rightPress = true;
 
         }
-        else
-        {
+      //  else
+      //  {
             cameraLook.x += Input.GetAxis(mouseX);
             cameraLook.y += Input.GetAxis(mouseY);
-        }
+    //    }
 
         //clamp the camera's y rotation to prevent weird camera angles
         cameraLook.y = Mathf.Clamp(cameraLook.y, CAM_Y_MIN, CAM_Y_MAX);
@@ -284,7 +287,7 @@ public class OverSeerControl : NetworkBehaviour {
 
         //https://answers.unity.com/questions/615771/how-to-check-if-click-mouse-on-object.html
         //to activate trap
-        if (Input.GetMouseButtonDown(0) || trapPress && trapButton.Value == false)
+        if (Input.GetMouseButtonDown(0) || ( trapPress && !trapButton.Value))
         {
             trapPress = false;
             clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
@@ -312,7 +315,7 @@ public class OverSeerControl : NetworkBehaviour {
         {
             findFOV(i);
 
-            if (Input.GetKeyUp(KeyCode.LeftArrow) || leftPress && leftButton.Value == false)
+            if (Input.GetKeyUp(KeyCode.LeftArrow) || (leftPress && leftButton.Value == false))
             {
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                 {
@@ -346,7 +349,7 @@ public class OverSeerControl : NetworkBehaviour {
                 theCanvasManager.UpdateCanvasCamera(totalCamera[i].GetComponentInChildren<Camera>());
             }
 
-            if (Input.GetKeyUp(KeyCode.RightArrow) || rightPress && rightButton.Value == false)
+            if (Input.GetKeyUp(KeyCode.RightArrow) || (rightPress && rightButton.Value == false))
             {
                 
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)

@@ -1,8 +1,8 @@
 //
-//  iosBluetoothLE.m
+//  iosBluetoothLE.mm
 //  iosPlugin
 //
-//  Created by Jaehong on 2016. 1. 5.
+//  Created by Jaehong on 2016. 1. 5..
 //  Copyright © 2016 Ardunity. All rights reserved.
 //
 
@@ -30,7 +30,7 @@ extern "C" {
             return;
         
         [_BluetoothLE deInitialize];
-     //   [_BluetoothLE release];  Must disable in iOS
+        //[_BluetoothLE release];
         _BluetoothLE = nil;
         _unityCallback = nil;
     }
@@ -171,10 +171,10 @@ extern "C" {
     if (_centralManager == nil)
         return;
     
-    NSArray *services = @[[CBUUID UUIDWithString:serviceUUID]]; // For iOS
-    [_centralManager scanForPeripheralsWithServices:services options:nil]; // For iOS
+    NSArray *services = @[[CBUUID UUIDWithString:serviceUUID]];
+    [_centralManager scanForPeripheralsWithServices:services options:nil];
     
-  //  [_centralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionSolicitedServiceUUIDsKey:@[[CBUUID UUIDWithString:serviceUUID]]}]; // For OSX
+//    [_centralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionSolicitedServiceUUIDsKey:@[[CBUUID UUIDWithString:serviceUUID]]}];
     
     if(_unityCallback != nil)
         _unityCallback(nil, "StartScan");
@@ -323,7 +323,7 @@ extern "C" {
     CBPeripheral *peripheral = [_peripherals objectForKey:uuid];
     if (peripheral == nil)
         return;
-
+    
     CBUUID *cbService = [CBUUID UUIDWithString:serviceString];
     CBUUID *cbCharacteristic = [CBUUID UUIDWithString:characteristicString];
     for(CBService *service in peripheral.services)
@@ -508,14 +508,7 @@ extern "C" {
     }
     else
     {
-        NSString *charUUIDs = [NSString new];
-        for (CBCharacteristic *characteristic in service.characteristics)
-        {
-            if(characteristic.UUID != nil)
-                charUUIDs = [NSString stringWithFormat:@"%@:%@", charUUIDs, characteristic.UUID.UUIDString];
-        }
-        
-        NSString *message = [NSString stringWithFormat:@"DiscoveredCharacteristic~%@", charUUIDs];
+        NSString *message = [NSString stringWithFormat:@"DiscoveredCharacteristic"];
         if(_unityCallback != nil)
             _unityCallback([uuid UTF8String], [message UTF8String]);
     }
@@ -563,25 +556,6 @@ extern "C" {
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSString *uuid = [NSString stringWithFormat:@"%@", peripheral.identifier.UUIDString];
-    
-    if (error)
-    {
-        NSString *message = [NSString stringWithFormat:@"ErrorSubscribeCharacteristic~%@", error.description];
-        if(_unityCallback != nil)
-            _unityCallback([uuid UTF8String], [message UTF8String]);
-    }
-    else
-    {
-        NSString *message = [NSString new];
-        if(characteristic.isNotifying == true)
-            message = [NSString stringWithFormat:@"SubscribedCharacteristic~%@", characteristic.UUID.UUIDString];
-        else
-            message = [NSString stringWithFormat:@"UnSubscribedCharacteristic~%@", characteristic.UUID.UUIDString];
-        
-        if(_unityCallback != nil)
-            _unityCallback([uuid UTF8String], [message UTF8String]);
-    }
 }
 
 + (NSString*) CBUUIDToString: (CBUUID *)cbuuid;

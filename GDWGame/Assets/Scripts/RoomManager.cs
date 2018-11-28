@@ -31,7 +31,7 @@ public enum ColourTypes
 public class RoomManager : NetworkBehaviour
 {
     public string strZap = "Zap";
-    RoomScript[] theRooms;
+    public RoomScript[] theRooms;
     public Objective[] theObjectives;
 
     Mesh[] theMeshes = new Mesh[3];
@@ -62,6 +62,7 @@ public class RoomManager : NetworkBehaviour
 
     void Start()
     {
+        //LoadProperties();
     }
    
 
@@ -94,7 +95,7 @@ public class RoomManager : NetworkBehaviour
         theTraps[2].theMaterial = theMaterials[2];
 
         //theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
-        theRooms = emptyRooms.GetComponentsInChildren<RoomScript>();
+       // theRooms = emptyRooms.GetComponentsInChildren<RoomScript>();
 
         for (int i = 0; i < theRooms.Length; i++)
         {
@@ -236,7 +237,6 @@ public class RoomManager : NetworkBehaviour
         for (int i = 0; i < theObjectives.Length; i++)
         {
             theObjectives[i].trapActive = false;
-
             theObjectives[i].GameObjectVisible(false);
             
         }

@@ -3,11 +3,11 @@ using UnityEditor;
 
 public class AboutArdunity : EditorWindow
 {
-	readonly private string _edition = "Deluxe Edition";
-    readonly private string _version = "1.0.6";
-	readonly private string _releaseURL = "https://sites.google.com/site/ardunitydoc/home/release-note/releasenote-deluxe";
+	readonly private string _edition = "Basic Edition";
+    readonly private string _version = "1.0.8";
+	readonly private string _releaseURL = "https://sites.google.com/site/ardunitydoc/home/release-note/releasenote-basic";
 
-  //  static private Vector2 _windowSize = new Vector2(260, 215);
+ //   static private Vector2 _windowSize = new Vector2(260, 215);
 	static private Vector2 _windowSize = new Vector2(260, 190);
     private Texture2D _logo;
     
@@ -61,7 +61,7 @@ public class AboutArdunity : EditorWindow
         if(GUILayout.Button("Release Notes"))
 			Application.OpenURL(_releaseURL);
         
-    //    if(GUILayout.Button("Ardunity.com"))
-    //        Application.OpenURL("http://www.ardunity.com");
+ //       if(GUILayout.Button("Ardunity.com"))
+ //           Application.OpenURL("http://www.ardunity.com/");
     }
 }
