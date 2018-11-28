@@ -279,6 +279,91 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4052112034133364, guid: 2bbaf6ef99366ab46b78ebaae8419b99,
     type: 2}
   m_PrefabInternal: {fileID: 2047554419}
+--- !u!1001 &131762704
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282624626966196, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 114250686040470922, guid: a6b87798d3d72314dbcdb5eb09dbb39f,
+        type: 2}
+      propertyPath: device.name
+      value: COM3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114250686040470922, guid: a6b87798d3d72314dbcdb5eb09dbb39f,
+        type: 2}
+      propertyPath: device.address
+      value: //./COM3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114004879948688110, guid: a6b87798d3d72314dbcdb5eb09dbb39f,
+        type: 2}
+      propertyPath: autoConnect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1519936652110040, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: Ardunity
+      objectReference: {fileID: 0}
+    - target: {fileID: 1428238494670724, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: CamX
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704254828115332, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: CamY
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327446086858288, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: Zoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 1358114757883298, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: TrapButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096886767559232, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: LeftArrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313985829976962, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+      propertyPath: m_TagString
+      value: RightArrow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6b87798d3d72314dbcdb5eb09dbb39f, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -4879,7 +4964,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4052112034133364, guid: 2bbaf6ef99366ab46b78ebaae8419b99, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1163296292288922, guid: 2bbaf6ef99366ab46b78ebaae8419b99, type: 2}
       propertyPath: m_Name

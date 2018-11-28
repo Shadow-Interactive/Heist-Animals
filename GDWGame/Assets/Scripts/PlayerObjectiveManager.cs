@@ -23,6 +23,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     // Use this for initialization
     void Start () {
         thePlayer = GetComponentInParent<PlayerLogic>();
+        print(thePlayer);
 	}
 
     void IncrementCounter()
@@ -41,6 +42,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void InputNumber(int num)
     {
+        print("Pls :(");
         playerCodes[currentCode] = num;
         theNumbers[currentCode].GetComponentInChildren<Text>().text = num.ToString();
         IncrementCounter();

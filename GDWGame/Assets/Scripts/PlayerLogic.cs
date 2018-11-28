@@ -52,14 +52,21 @@ public class PlayerLogic : NetworkBehaviour {
 
     bool initRM = false;
 
+    //object pooling variables
     List<GameObject> theBullets = new List<GameObject>();
     TheBulletPool bulletPool;
+
+    //animator for shooting mask
+    Animator theAnimator;
+    float shootTime;
 
     // Use this for initialization
     void Start () {
         roomInt = 8;
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
         playerTag = gameObject.tag;
+
+        theAnimator = GetComponent<Animator>();
 
 
     }
@@ -84,6 +91,7 @@ public class PlayerLogic : NetworkBehaviour {
         if (!initRM)
         {
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+            theAnimator = GetComponent<Animator>();
             initRM = true;
         }
 
@@ -94,6 +102,8 @@ public class PlayerLogic : NetworkBehaviour {
         ZapperUpdate();
 
         TrapAffectUpdate();
+
+        shootAnimUpdate();
 
         if (zapHealth <= 0)
         {
@@ -230,11 +240,24 @@ public class PlayerLogic : NetworkBehaviour {
         }
     }
 
+    private void shootAnimUpdate()
+    {
+        if (shootTime < 1)
+        {
+            shootTime += Time.deltaTime;
+            if (shootTime > 0.4)
+                theAnimator.SetBool("IdleShoot", false);
+        }
+    }
+
     //shoots the zapper
     private void Shoot()
     {
-       
-       zapperSlider.value--;
+        
+        theAnimator.SetBool("IdleShoot", true);
+        shootTime = 0;
+        theAnimator.SetTrigger("Shooting");
+        zapperSlider.value--;
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetPosition(transform.position + transform.forward * 0.25f, thePlayerMovement.playerCam.rotation);
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetActive(true);
         //activeBulletNum--;
@@ -250,7 +273,7 @@ public class PlayerLogic : NetworkBehaviour {
         //if (isServer)
         //NetworkServer.Spawn(bullet);
         var bullet = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableBullet(position);
-        bullet.transform.position = (bullet.transform.position + transform.forward * 0.25f);
+        bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 0.3f, bullet.transform.position.z) + transform.forward * 0.2f;
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
 
@@ -375,6 +398,7 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
                 {
+                    theAnimator.Play("Shock/Teleport");
                     SetTrap(other.GetComponentInParent<RoomScript>().trapType);
                 }
             }
@@ -411,6 +435,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (collision.collider.CompareTag(trapStr))
         {
+            theAnimator.SetBool("Hacking", true);
             if (gameObject.name == runnerOneStr)
             {
                 GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
@@ -424,6 +449,14 @@ public class PlayerLogic : NetworkBehaviour {
             }
             //currentObjective = collision.gameObject.GetComponent<Objective>();
             //print(currentObjective.objTrapType);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag(trapStr))
+        {
+            theAnimator.SetBool("Hacking", false);
         }
     }
 

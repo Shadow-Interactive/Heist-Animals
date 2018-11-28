@@ -1346,7 +1346,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1742824698417922}
-  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0.3826836, z: -0, w: -0.92387944}
   m_LocalPosition: {x: -39.35, y: 4, z: 5.73}
   m_LocalScale: {x: 1.0000005, y: 1, z: 1.0000005}
   m_Children:
@@ -1354,7 +1354,7 @@ Transform:
   - {fileID: 4784054633510786}
   m_Father: {fileID: 4939581285086634}
   m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 315, z: 0}
 --- !u!4 &4397299301558332
 Transform:
   m_ObjectHideFlags: 1
@@ -4698,6 +4698,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6e3486f6ed48d40a992ba315fdc964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  controllerX: {fileID: 0}
+  controllerY: {fileID: 0}
+  controllerZ: {fileID: 0}
+  trapButton: {fileID: 0}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
   test: 0
   cam1: {fileID: 1686287769338132}
   cam2: {fileID: 1311729004231206}
@@ -4717,6 +4724,8 @@ MonoBehaviour:
   camChoice: 1
   camRoomName: 
   theCanvasManager: {fileID: 114655968643854498}
+  R1currentObjective: {fileID: 0}
+  R2currentObjective: {fileID: 0}
 --- !u!114 &114610908758618772
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4843,6 +4852,7 @@ MonoBehaviour:
   minimapPoint: {fileID: 114220582503702076}
   currentRoom: {fileID: 114031061387901830}
   cursorCanvas: {fileID: 223765117706722750}
+  overseerID: 0
 --- !u!114 &114656266965401414
 MonoBehaviour:
   m_ObjectHideFlags: 1
