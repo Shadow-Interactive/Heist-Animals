@@ -32,7 +32,7 @@ public class RoomManager : NetworkBehaviour
 {
     public string strZap = "Zap";
     RoomScript[] theRooms;
-    [HideInInspector] public Objective[] theObjectives;
+    public Objective[] theObjectives;
 
     Mesh[] theMeshes = new Mesh[3];
     Material[] theMaterials = new Material[3];
@@ -40,7 +40,7 @@ public class RoomManager : NetworkBehaviour
 
     public GameObject emptyObjectives;
     public GameObject emptyRooms;
-    List<GameObject> securityBoxes = new List<GameObject>();
+    public List<GameObject> securityBoxes = new List<GameObject>();
 
     public Texture[] theImages = new Texture[10];
     float ohgodwhy = 0;
@@ -55,37 +55,19 @@ public class RoomManager : NetworkBehaviour
     // Use this for initialization
 
     [HideInInspector] [SyncVar] public bool activateReshuffle = false;
+
     [HideInInspector] [SyncVar] public int reshuffleID = 0;
 
+    bool initRm = false;
 
     void Start()
     {
-        LoadProperties();
-
-        theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
-        theRooms = emptyRooms.GetComponentsInChildren<RoomScript>();
-
-        for (int i = 0; i < theRooms.Length; i++)
-        {
-            theRooms[i].roomTag = i;
-            securityBoxes.Add(theRooms[i].securityBox);
-        }
-
-        for (int i = 0; i < theObjectives.Length; i++)
-        {
-            if (theObjectives[i].objTrapType != TrapTypes.NO_TRAP)
-            {
-                theObjectives[i].trapID = i;
-                theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
-            }
-        }
-
-        //DeactivateTraps();
     }
    
 
     void LoadProperties()
     {
+
         GameObject wiredMesh = Resources.Load("Wired") as GameObject;
         theMeshes[0] = wiredMesh.GetComponent<MeshFilter>().sharedMesh; //wiredMesh.sharedMesh; //
 
@@ -110,6 +92,25 @@ public class RoomManager : NetworkBehaviour
         theTraps[2] = new SmokeBomb();
         theTraps[2].theMesh = theMeshes[2];
         theTraps[2].theMaterial = theMaterials[2];
+
+        //theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
+        theRooms = emptyRooms.GetComponentsInChildren<RoomScript>();
+
+        for (int i = 0; i < theRooms.Length; i++)
+        {
+            theRooms[i].roomTag = i;
+            //securityBoxes.Add(theRooms[i].securityBox);
+        }
+
+        for (int i = 0; i < theObjectives.Length; i++)
+        {
+            if (theObjectives[i].objTrapType != TrapTypes.NO_TRAP)
+            {
+                theObjectives[i].trapID = i;
+                theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
+            }
+        }
+        
     }
 
 
@@ -139,6 +140,13 @@ public class RoomManager : NetworkBehaviour
 
     private void Update()
     {
+
+        if (!initRm)
+        {
+            LoadProperties();
+            initRm = true;
+        }
+
         //THIS IS BECUZ WE COULDN'T FIX THE TRAP ACTIVATION IN OTHER WAYS TOT
         //WILL HOPEFULLY GET CLEANED UP SOON
         //ASK ATIYA FOR DETAILS
@@ -146,10 +154,11 @@ public class RoomManager : NetworkBehaviour
         {
             ohgodwhy += Time.deltaTime;
 
-            if (ohgodwhy > 0.15)
+            if (ohgodwhy > 1)
             {
-                //DeactivateTraps();
+                DeactivateTraps();
                 usingTimer = false;
+                ohgodwhy = 0;
             }
         }
 
@@ -162,11 +171,12 @@ public class RoomManager : NetworkBehaviour
                 activateReshuffle = false;
             }
         }
+        
 
         for (int i = 0; i < ObjectiveLength(); i++)
         {
             theObjectives[i].UpdateSprites(theImages);
-
+            theObjectives[i].GameObjectVisible(theObjectives[i].trapActive);
         }
 
     }
@@ -225,7 +235,10 @@ public class RoomManager : NetworkBehaviour
     {
         for (int i = 0; i < theObjectives.Length; i++)
         {
+            theObjectives[i].trapActive = false;
+
             theObjectives[i].GameObjectVisible(false);
+            
         }
     }
 

@@ -25,7 +25,7 @@ public class RoomScript : NetworkBehaviour
         theColors[0] = Color.red;
         theColors[1] = Color.green;
         theColors[2] = Color.yellow;
-        ChangeSecurityColor((ColourTypes)Convert.ToInt32(trapActivated));
+        ChangeSecurityColor(Convert.ToInt32(trapActivated));
     }
 
     public void Update()
@@ -39,7 +39,7 @@ public class RoomScript : NetworkBehaviour
             {
                 doorCooldown = false;
                 doorTimer = 0;
-                ChangeSecurityColor((ColourTypes)Convert.ToInt32(trapActivated));
+                ChangeSecurityColor(Convert.ToInt32(trapActivated));
             }
         }
     }
@@ -74,7 +74,7 @@ public class RoomScript : NetworkBehaviour
             CmdTrapActivate(false);
         }
         doorCooldown = true;
-        ChangeSecurityColor(ColourTypes.YELLOW);
+        ChangeSecurityColor(2);
     }
 
     [Command]
@@ -83,9 +83,9 @@ public class RoomScript : NetworkBehaviour
         trapActivated = takeIn;
     }
 
-    public void ChangeSecurityColor(ColourTypes theColour)
+    public void ChangeSecurityColor(int color)
     {
-        securityBox.GetComponent<Renderer>().material.color = theColors[(int)theColour];
+        securityBox.GetComponent<Renderer>().material.color = theColors[color];
     }
 
     private void OnTriggerEnter(Collider other)

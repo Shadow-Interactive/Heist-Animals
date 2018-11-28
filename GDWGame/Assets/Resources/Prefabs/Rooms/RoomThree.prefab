@@ -197,7 +197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4832970524241560}
   - component: {fileID: 65412246257656870}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Door (2)
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4281180108867198}
   - component: {fileID: 65556237341376372}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Door (1)
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4620452520890304}
   - component: {fileID: 65310289923330286}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Door
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -740,7 +740,7 @@ GameObject:
   - component: {fileID: 65818627737133386}
   m_Layer: 0
   m_Name: RoomThree
-  m_TagString: Untagged
+  m_TagString: C2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2610,7 +2610,7 @@ BoxCollider:
   m_GameObject: {fileID: 1896014992289990}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 19.802984, y: 4.130295, z: 0.26847458}
   m_Center: {x: 3.8045244, y: 1.9709854, z: -6.48}
@@ -2693,7 +2693,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1896014992289990}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 21.004436, y: 4.130295, z: 0.26847458}
@@ -2957,7 +2957,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1896014992289990}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.2362976, y: 4.197937, z: 4.6864786}
@@ -3226,7 +3226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomTag: 0
-  trapType: 0
+  trapType: 1
   trapActivated: 1
   doorCooldown: 0
   securityBox: {fileID: 1525262091691740}

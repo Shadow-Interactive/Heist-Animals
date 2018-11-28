@@ -30,7 +30,8 @@ public class OverseerCanvasManager : NetworkBehaviour
 
     Vector3[] pointPositions = new Vector3[15];
     public Text currentRoom;
-    
+
+
     string[] theRoomTexts = new string[15];
     string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2";
 
@@ -127,8 +128,13 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[14] = "Room 4";
 
 
-       // currentRoom.text = gameObject.name;
+       //// currentRoom.text = gameObject.name;
+       //for (int i = 0; i < codeVisuals.Count; i++)
+       //{
+       //    codeVisuals[i].SetActive(false);
+       //}
     }
+    
 
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
     {
@@ -138,7 +144,7 @@ public class OverseerCanvasManager : NetworkBehaviour
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)
-        theRoomManager.theObjectives[codeIndex].associatedCodeObject1 = trapObj.GetComponent<CodeVisual>();
+            theRoomManager.theObjectives[codeIndex].associatedCodeObject1 = trapObj.GetComponent<CodeVisual>();
 
         else if (gameObject.name == strO2)
             theRoomManager.theObjectives[codeIndex].associatedCodeObject2 = trapObj.GetComponent<CodeVisual>();
@@ -218,8 +224,25 @@ public class OverseerCanvasManager : NetworkBehaviour
         trapCanvas.gameObject.SetActive(temp);
     }
 
+    //these are for testing
    public void PrintCode(SyncListInt trapCode)
     {
         currentRoom.text = (trapCode[0] + " " + trapCode[1] + " " + trapCode[2] + " " + trapCode[3]).ToString();
+    }
+
+    public void PrintCode(int num)
+    {
+        currentRoom.text = num.ToString();
+    }
+
+    public void PrintCode(bool temp)
+    {
+        currentRoom.text = temp.ToString();
+    }
+
+    public void PrintCode(string help)
+    {
+        currentRoom.text = help;
+
     }
 }

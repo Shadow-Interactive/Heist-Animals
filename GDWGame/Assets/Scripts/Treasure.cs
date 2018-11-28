@@ -12,7 +12,6 @@ public class Treasure : MonoBehaviour {
 
     public void TreasureOnClick(Texture[] theImages, OverSeerControl theOverseer, RoomManager theRoomManager)
     {
-
         minigame.GetComponent<Objective>().ActivateObject(theOverseer, theRoomManager);//, theOverseer);
         minigame.GetComponent<Objective>().UpdateSprites(theImages);
     }
@@ -20,6 +19,11 @@ public class Treasure : MonoBehaviour {
     public void Deactivate()
     {
         gameObject.SetActive(false);
+    }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
     }
 
     public void SetScore(int newValue)

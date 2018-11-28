@@ -1124,7 +1124,7 @@ MeshFilter:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1229463023276866}
-  m_Mesh: {fileID: 4300000, guid: 04f6c0100add8154b95238f4c8b25c26, type: 3}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54821172616394460
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -1277,6 +1277,7 @@ MonoBehaviour:
   - {fileID: 114455735032103606}
   timerText: {fileID: 114828637856880630}
   thePlayer: {fileID: 0}
+  smoke: 0
 --- !u!114 &114139035385454338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2621,10 +2622,9 @@ MonoBehaviour:
   Zapper: {fileID: 1617729459345444, guid: c1c42e4e8155ea94faabfabb8c4d07b7, type: 2}
   thePlayerMovement: {fileID: 114327088882521172}
   lightningSprite: {fileID: 1421109991124976}
-  currentObjective: {fileID: 0}
+  R1currentObjective: {fileID: 0}
+  R2currentObjective: {fileID: 0}
   scoreText: {fileID: 114968092928755030}
-  trapActive: 0
-  curTrap: 0
   playerCanvas: {fileID: 223395547548918104}
 --- !u!114 &114649489639416226
 MonoBehaviour:
