@@ -79,6 +79,8 @@ namespace SoundEngine
             setMono(0);
             setPlaying(true, 0);
             //playSound(0, Time.deltaTime);
+            
+            SoundManager.createSound(SoundManager.soundPath + "ZapperFire.mp3", 1);
         }
         
         // Update is called once per frame
