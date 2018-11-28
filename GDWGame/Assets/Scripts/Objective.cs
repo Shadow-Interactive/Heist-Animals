@@ -19,7 +19,7 @@ public class Objective : NetworkBehaviour {
     [HideInInspector] public SyncListInt trapCode = new SyncListInt();
     [SyncVar] [HideInInspector] public bool trapActive = true;
     public int trapNum = 0;
-    [HideInInspector] public bool minigameActivated = false;
+    [HideInInspector] [SyncVar] public bool minigameActivated = false;
     [HideInInspector] public int currentObjectID = 0;
 
     //private/contained variables
@@ -127,29 +127,58 @@ public class Objective : NetworkBehaviour {
          if (activeOverseer.GetNumTrap() < 4)
          {
             //hacky fun
+            CmdSetTrapActive(true);
+
+            if (runner1 != null) runner1.CmdActivateTrap(gameObject.name);
+            if (runner2 != null) runner2.CmdActivateTrap(gameObject.name);
+            activeOverseer.CmdTrap(trapID, true);
             GameObjectVisible(true);
-            activeOverseer.CmdObjectiveTrap(gameObject.name);
-            //GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway = gameObject.GetComponent<Objective>().trapNum;
+
             activeOverseer.CmdTrapSelect(trapNum);
-            Debug.Log(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway);
-            //gameObject.SetActive(trapActive);
             activeOverseer.ObjectiveActivate(ref currentObjectID, GetRoomID());
             Reshuffle(theRoomManager);
         }
     }
-    
+
+    [Command]
+    public void CmdSetTrapActive(bool temp)
+    {
+        trapActive = temp;
+        RpcSetTrapActive(temp);
+    }
+
+    [ClientRpc]
+    public void RpcSetTrapActive(bool temp)
+    {
+        trapActive = temp;
+    }
+
+    [Command]
+    public void CmdDecouple()
+    {
+        RpcDecouple();
+    }
+
+    [ClientRpc]
+    public void RpcDecouple()
+    {
+        activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+    }
+
     public void GameObjectVisible(bool temp) //this controls the visibility
     {
         gameObject.SetActive(temp);
         if (associatedCodeObject1 != null)
         {
             associatedCodeObject1.SetActive(temp);
-            
+            //associatedCodeObject1.gameObject.SetActive(temp);
+
         }
 
         if (associatedCodeObject2 != null)
         {
             associatedCodeObject2.SetActive(temp);
+            //associatedCodeObject1.gameObject.SetActive(temp);
 
         }
 
@@ -164,22 +193,21 @@ public class Objective : NetworkBehaviour {
         if (associatedCodeObject2 != null)
             associatedCodeObject2.SetActive(trapActive);
     }
-
+    
     public void DecoupleTrap() //This handles the UI side of the minigame
     {
+        minigameActivated = false;
         if (activeOverseer != null && activeOverseer.GetNumTrap() > 0)
         {
-            activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+            print("hallaluyah");
+            // activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+            CmdDecouple();
         }
 
         GameObjectVisible(trapActive);
-
+        CmdSetTrapActive(false);
         //old networking stuff
-
-        //Debug.Log(trapActive);
-        //gameObject.SetActive(trapActive);
-        //if (trapActive == false)
-            //GameObject.Find("Objective").GetComponentInChildren<Objective>().gameObject.SetActive(false);
+        
     }
 
     public int GetRoomID()

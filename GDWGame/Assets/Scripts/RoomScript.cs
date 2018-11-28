@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 
+using SoundEngine;
+
 public class RoomScript : NetworkBehaviour
 {
     public int roomTag;
@@ -23,7 +25,7 @@ public class RoomScript : NetworkBehaviour
         theColors[0] = Color.red;
         theColors[1] = Color.green;
         theColors[2] = Color.yellow;
-        ChangeSecurityColor((ColourTypes)Convert.ToInt32(trapActivated));
+        ChangeSecurityColor(Convert.ToInt32(trapActivated));
     }
 
     public void Update()
@@ -37,7 +39,7 @@ public class RoomScript : NetworkBehaviour
             {
                 doorCooldown = false;
                 doorTimer = 0;
-                ChangeSecurityColor((ColourTypes)Convert.ToInt32(trapActivated));
+                ChangeSecurityColor(Convert.ToInt32(trapActivated));
             }
         }
     }
@@ -72,7 +74,7 @@ public class RoomScript : NetworkBehaviour
             CmdTrapActivate(false);
         }
         doorCooldown = true;
-        ChangeSecurityColor(ColourTypes.YELLOW);
+        ChangeSecurityColor(2);
     }
 
     [Command]
@@ -81,14 +83,27 @@ public class RoomScript : NetworkBehaviour
         trapActivated = takeIn;
     }
 
-    public void ChangeSecurityColor(ColourTypes theColour)
+    public void ChangeSecurityColor(int color)
     {
-        securityBox.GetComponent<Renderer>().material.color = theColors[(int)theColour];
+        securityBox.GetComponent<Renderer>().material.color = theColors[color];
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(strZapper))
+        {
             other.GetComponent<ZapperScript>().SetActive(false);
+
+            SoundManager.setPlaying(true, 2);
+
+            SoundManager.setVelocity(0f, 0f, 0f, 2);
+
+            Vector3 pos = other.GetComponent<Transform>().position;
+            SoundManager.setPosition(pos.x, pos.y, pos.z, 2);
+
+            SoundManager.setVolume(10.0f, 2);
+
+            SoundManager.playSound(2, Time.deltaTime);
+        }
     }
 }

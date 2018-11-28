@@ -95,6 +95,8 @@ public class PlayerLogic : NetworkBehaviour {
             initRM = true;
         }
 
+       // PrintObjs();
+
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
         KeyInputUpdate();
@@ -278,6 +280,7 @@ public class PlayerLogic : NetworkBehaviour {
         bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
 
         SoundManager.setPlaying(true, 1);
+        SoundManager.setLoop(1, false);
 
         Vector3 vel = gameObject.transform.forward * 20f;
         SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
@@ -307,7 +310,17 @@ public class PlayerLogic : NetworkBehaviour {
     public void CmdDeactivateTrap(string theName)
     {
         //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-        GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        GameObject.Find(theName).GetComponent<Objective>().DecoupleTrap();
+    }
+
+    //I want the sweet relief of death
+    [Command]
+    public void CmdActivateTrap(string theName)
+    {
+        //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        GameObject.Find(theName).GetComponent<Objective>().trapActive = true;
     }
 
     public IEnumerator DeactivateBullet(GameObject bullet, float seconds)
@@ -391,10 +404,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (other.CompareTag(doorStr))
         {
-            //I'M GONNA CHANGE THIS AND CLEAN IT UP
-            //THIS IS CODE I DID LAST MINUTE TO FIT WITH THE NEW CHANGES WITH THE RUNNER
-            //JUST GIVE ME TIMEEEE
-            if (roomInt != other.GetComponentInParent<RoomScript>().roomTag)
+            if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
             {
                 if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
                 {
@@ -402,7 +412,6 @@ public class PlayerLogic : NetworkBehaviour {
                     SetTrap(other.GetComponentInParent<RoomScript>().trapType);
                 }
             }
-
         }
         else if (other.CompareTag(zapStr))
         {
@@ -416,8 +425,23 @@ public class PlayerLogic : NetworkBehaviour {
                 //{
                 //    return;
                 //}
+                if ((gameObject.name == runnerOneStr && R1currentObjective != null && !R1currentObjective.minigameActivated)
+                    || (gameObject.name == runnerTwoStr && R2currentObjective != null && !R2currentObjective.minigameActivated))
+                {
+                    zapHealth--;
+                }
 
-                zapHealth--;
+                SoundManager.setPlaying(true, 2);
+                SoundManager.setLoop(2, false);
+                
+                SoundManager.setVelocity(0f, 0f, 0f, 2);
+
+                Vector3 pos = GetComponent<Transform>().position;
+                SoundManager.setPosition(pos.x, pos.y, pos.z, 2);
+
+                SoundManager.setVolume(20.0f, 2);
+
+                SoundManager.playSound(2, Time.deltaTime);
 
                 //Debug.Log(zapHealth);
             }
@@ -511,4 +535,5 @@ public class PlayerLogic : NetworkBehaviour {
 
         return bulletCounter >= 3 ? true : false;
     }
+    
 }

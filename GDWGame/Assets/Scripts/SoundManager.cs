@@ -74,13 +74,19 @@ namespace SoundEngine
             initFMOD();
             setListenerUp(0f, 1f, 0f);
             createSound(soundPath + "Sneaky-Beaky Like.mp3", 0);
+            createSound(soundPath + "ZapperFire.mp3", 1);
+            createSound(soundPath + "ZapperHit.mp3", 2);
+
+
+            createSound(soundPath + "Hack Win.mp3", 14);
+            createSound(soundPath + "Hack Fail.mp3", 15);
+
+            
             setVolume(0f, 0);
             setLoop(0, true);
             setMono(0);
             setPlaying(true, 0);
             //playSound(0, Time.deltaTime);
-            
-            SoundManager.createSound(SoundManager.soundPath + "ZapperFire.mp3", 1);
         }
         
         // Update is called once per frame

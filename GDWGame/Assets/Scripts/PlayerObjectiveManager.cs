@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -92,6 +92,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
             thePlayer.R1currentObjective.DecoupleTrap();
         if (thePlayer.name == runnerTwo)
             thePlayer.R2currentObjective.DecoupleTrap();
+        smoke = false;
     }
 
     void ResetMinigameNumbers()
@@ -120,20 +121,45 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     StopCoroutine(MiniGame());
                     //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R1currentObjective.name);
+                   
                     //thePlayer.currentObjective.DeActivate();
                     //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
+
+                    SoundManager.setPlaying(true, 14);
+                    SoundManager.setLoop(14, false);
+
+                    SoundManager.setVelocity(0f, 0f, 0f, 14);
+
+                    Vector3 pos = thePlayer.GetComponent<Transform>().position;
+                    SoundManager.setPosition(pos.x, pos.y, pos.z, 14);
+
+                    SoundManager.setVolume(20f, 14);
+
+                    SoundManager.playSound(14, Time.deltaTime);
                 }
+                //code entry was unsuccessful
                 else
                 {
                     print("killme <3 ");
                     thePlayer.Reshuffle();
                     ClearAll();
+
+
                 }
             }
-            //code entry was unsuccessful
             else
             {
-                
+                SoundManager.setPlaying(true, 15);
+                SoundManager.setLoop(15, false);
+
+                SoundManager.setVelocity(0f, 0f, 0f, 15);
+
+                Vector3 pos = thePlayer.GetComponent<Transform>().position;
+                SoundManager.setPosition(pos.x, pos.y, pos.z, 15);
+
+                SoundManager.setVolume(17f, 15);
+
+                SoundManager.playSound(15, Time.deltaTime);
             }
         }
         else if (thePlayer.name == runnerTwo)
@@ -148,10 +174,8 @@ public class PlayerObjectiveManager : NetworkBehaviour {
                     attemptCounter = 0;
                     StopCoroutine(MiniGame());
                     DeactivateMinigame();
-                    //thePlayer.currentObjective.DeActivate());
                     thePlayer.CmdDeactivateTrap(thePlayer.R2currentObjective.name);
-                    //thePlayer.currentObjective.DeActivate();
-                    //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
+                    
                 }
                 else
                 {
