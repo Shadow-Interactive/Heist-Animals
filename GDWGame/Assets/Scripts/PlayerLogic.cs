@@ -87,6 +87,8 @@ public class PlayerLogic : NetworkBehaviour {
             initRM = true;
         }
 
+       // PrintObjs();
+
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
         KeyInputUpdate();
@@ -285,7 +287,17 @@ public class PlayerLogic : NetworkBehaviour {
     public void CmdDeactivateTrap(string theName)
     {
         //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-        GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        GameObject.Find(theName).GetComponent<Objective>().DecoupleTrap();
+    }
+
+    //I want the sweet relief of death
+    [Command]
+    public void CmdActivateTrap(string theName)
+    {
+        //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
+        GameObject.Find(theName).GetComponent<Objective>().trapActive = true;
     }
 
     public IEnumerator DeactivateBullet(GameObject bullet, float seconds)
@@ -369,17 +381,10 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (other.CompareTag(doorStr))
         {
-            //I'M GONNA CHANGE THIS AND CLEAN IT UP
-            //THIS IS CODE I DID LAST MINUTE TO FIT WITH THE NEW CHANGES WITH THE RUNNER
-            //JUST GIVE ME TIMEEEE
-            if (roomInt != other.GetComponentInParent<RoomScript>().roomTag)
+            if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
             {
-                if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
-                {
-                    SetTrap(other.GetComponentInParent<RoomScript>().trapType);
-                }
+                SetTrap(other.GetComponentInParent<RoomScript>().trapType);
             }
-
         }
         else if (other.CompareTag(zapStr))
         {
@@ -479,4 +484,5 @@ public class PlayerLogic : NetworkBehaviour {
 
         return bulletCounter >= 3 ? true : false;
     }
+    
 }

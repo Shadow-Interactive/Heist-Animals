@@ -19,13 +19,18 @@ public class ZapperScript : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
         if (active)
+        {
             gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 20f;
+
+            
+        }
     }
 
     public void SetActive(bool temp)
     {
         active = temp;
         gameObject.SetActive(temp);
+
     }
 
     public void SetPosition(Vector3 position, Quaternion rotation)

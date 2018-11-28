@@ -148,8 +148,7 @@ public class OverSeerControl : NetworkBehaviour {
             LoadProperties();
             
         }
-
-       // theCanvasManager.PrintCode(theRoomManager.theObjectives[theRoomManager.reshuffleID].trapCode);
+        //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
 
         //for deactivating traps :)
         switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
@@ -397,6 +396,15 @@ public class OverSeerControl : NetworkBehaviour {
         //camRoomName = ("Room" + trapSelect.ToString());
         //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated = !GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated;
         GameObject.Find(theName).GetComponent<RoomScript>().trapActivated = !GameObject.Find(theName).GetComponent<RoomScript>().trapActivated;
+        //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().doorCooldown = true;
+    }
+
+    [Command]
+    public void CmdTrap(int index, bool temp)
+    {
+        //camRoomName = ("Room" + trapSelect.ToString());
+        //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated = !GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated;
+        theRoomManager.theObjectives[index].trapActive = temp;
         //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().doorCooldown = true;
     }
 

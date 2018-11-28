@@ -127,17 +127,37 @@ public class Objective : NetworkBehaviour {
          if (activeOverseer.GetNumTrap() < 4)
          {
             //hacky fun
+            //  GameObjectVisible(true);
+            //activeOverseer.CmdObjectiveTrap(gameObject.name);
+            CmdSetTrapActive(true);
+
+            if (runner1 != null) runner1.CmdActivateTrap(gameObject.name);
+            if (runner2 != null) runner2.CmdActivateTrap(gameObject.name);
+            activeOverseer.CmdTrap(trapID, true);
             GameObjectVisible(true);
-            activeOverseer.CmdObjectiveTrap(gameObject.name);
-            //GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway = gameObject.GetComponent<Objective>().trapNum;
+
             activeOverseer.CmdTrapSelect(trapNum);
-            Debug.Log(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway);
-            //gameObject.SetActive(trapActive);
+            //Debug.Log(GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway);
             activeOverseer.ObjectiveActivate(ref currentObjectID, GetRoomID());
             Reshuffle(theRoomManager);
         }
     }
-    
+
+    [Command]
+    public void CmdSetTrapActive(bool temp)
+    {
+        trapActive = temp;
+        RpcSetTrapActive(temp);
+    }
+
+    [ClientRpc]
+    public void RpcSetTrapActive(bool temp)
+    {
+        trapActive = temp;
+    }
+
+
+
     public void GameObjectVisible(bool temp) //this controls the visibility
     {
         gameObject.SetActive(temp);
@@ -165,6 +185,7 @@ public class Objective : NetworkBehaviour {
             associatedCodeObject2.SetActive(trapActive);
     }
 
+    
     public void DecoupleTrap() //This handles the UI side of the minigame
     {
         if (activeOverseer != null && activeOverseer.GetNumTrap() > 0)
@@ -173,13 +194,13 @@ public class Objective : NetworkBehaviour {
         }
 
         GameObjectVisible(trapActive);
-
+        CmdSetTrapActive(false);
         //old networking stuff
 
         //Debug.Log(trapActive);
         //gameObject.SetActive(trapActive);
         //if (trapActive == false)
-            //GameObject.Find("Objective").GetComponentInChildren<Objective>().gameObject.SetActive(false);
+        //GameObject.Find("Objective").GetComponentInChildren<Objective>().gameObject.SetActive(false);
     }
 
     public int GetRoomID()
