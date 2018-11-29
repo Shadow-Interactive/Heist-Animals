@@ -330,11 +330,28 @@ public class OverSeerControl : NetworkBehaviour {
                 rightPress = true;
 
         }
-      //  else
-      //  {
-            cameraLook.x += Input.GetAxis(mouseX);
-            cameraLook.y += Input.GetAxis(mouseY);
-    //    }
+        else
+        {
+            if (XBoxInput.getConnected())
+            {
+                cameraLook.x = XBoxInput.getLeftStickXAxis();
+                cameraLook.y = XBoxInput.getLeftStickYAxis() * -1;
+
+                zAxis = XBoxInput.getRightStickYAxis() * -1f;
+
+                if (XBoxInput.getButtonA())
+                    trapPress = true;
+                if (XBoxInput.getButtonLB())
+                    leftPress = true;
+                if (XBoxInput.getButtonRB())
+                    rightPress = true;
+            }
+            else
+            {
+                cameraLook.x += Input.GetAxis(mouseX);
+                cameraLook.y += Input.GetAxis(mouseY);
+            }
+        }
 
         //clamp the camera's y rotation to prevent weird camera angles
         cameraLook.y = Mathf.Clamp(cameraLook.y, CAM_Y_MIN, CAM_Y_MAX);
@@ -440,7 +457,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             }
 
-            if (controller.connected)
+            if (controller.connected || XBoxInput.getConnected())
             {
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                 {
@@ -488,7 +505,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
             {
-                if (controller.connected)
+                if (controller.connected || XBoxInput.getConnected())
                 {
                     totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.x, 1, 85) + cameraLook.y, Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.y, 0, 359) + cameraLook.x, 0);
                 }
