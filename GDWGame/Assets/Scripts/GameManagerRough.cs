@@ -8,8 +8,8 @@ using UnityEngine.Networking;
 public class GameManagerRough : NetworkBehaviour {
 
     //this will get moved
-    double theTimerSeconds = 0;
-    int theTimer = 0;
+    double theTimerSeconds = 60;
+    int theTimer = 4;
     bool gameOver = false;
     public GameObject gameoverScreen;
     public Text timerText;
@@ -20,15 +20,17 @@ public class GameManagerRough : NetworkBehaviour {
     [SyncVar] int player2Score = 0; //this specifically is to make it easier to test
 
     bool loadProperties = false;
-    int gameTimeLimit = 5;
+    int gameTimeLimit = -1;
+    bool theGameOver = false;
 
     // Use this for initialization
     void Start () {
-        theTimer = 0;
+        theTimer = 4;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         if (!loadProperties)
         {
@@ -42,26 +44,34 @@ public class GameManagerRough : NetworkBehaviour {
 
         }
 
-        if (theTimerSeconds % 60 >= 59.6)
-        {
-            theTimer++;
-            theTimerSeconds = 0;
-        }
+        if (!theGameOver)
+        { 
+            if (theTimerSeconds <= 0)
+            {
+                theTimer--;
+                theTimerSeconds = 60;
+            }
 
-        if (theTimerSeconds < 9)
-            timerText.text = theTimer.ToString(NoDecimals) + withZero + theTimerSeconds.ToString(NoDecimals);
-        else
+            if (theTimerSeconds < 9)
+                timerText.text = theTimer.ToString(NoDecimals) + withZero + theTimerSeconds.ToString(NoDecimals);
+            else
             timerText.text = theTimer.ToString(NoDecimals) + withoutZero + theTimerSeconds.ToString(NoDecimals);
 
+            theTimerSeconds -= 1 * Time.deltaTime;
 
-        if (theTimer >= gameTimeLimit)
-        {
-            GameOver();
+            if (theTimer <= gameTimeLimit)
+            {
+                theGameOver = true;
+                GameOver();
+            }
+            if (theTimerSeconds <= 0)
+            {
+                theTimer--;
+                theTimerSeconds = 60;
+            }
         }
 
-        theTimerSeconds += 1 * Time.deltaTime;
-        
-	}
+    }
 
     public void GameOver()
     {
