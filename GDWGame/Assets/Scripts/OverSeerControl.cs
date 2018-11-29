@@ -68,6 +68,8 @@ public class OverSeerControl : NetworkBehaviour {
     [HideInInspector] public Objective R1currentObjective;
     [HideInInspector] public Objective R2currentObjective;
 
+    public Material run2mat;
+
     // Use this for initialization
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -110,19 +112,46 @@ public class OverSeerControl : NetworkBehaviour {
         ogRotation.Add(cam14.transform.rotation.eulerAngles);
         ogRotation.Add(cam15.transform.rotation.eulerAngles);
 
-
-        if (camChoice)
-            totalCamera[0].GetComponentInChildren<Camera>().enabled = true;
-        else
-            totalCamera[0].GetComponentInChildren<Camera>().enabled = false;
-
-        for (int i = 1; i < totalCamera.Count; i++)
+        if (OverID == 1)
         {
-            totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+            if (camChoice)
+                totalCamera[3].GetComponentInChildren<Camera>().enabled = true;
+            else
+                totalCamera[3].GetComponentInChildren<Camera>().enabled = false;
+
+            for (int i = 0; i < 3; i++)
+            {
+                totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+            }
+
+            for (int i = 4; i < totalCamera.Count; i++)
+            {
+                totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+            }
+            camRoomName = "Room4";
+            trapSelect = 4;
+        }
+        else if (OverID == 2)
+        {
+            if (camChoice)
+                totalCamera[11].GetComponentInChildren<Camera>().enabled = true;
+            else
+                totalCamera[11].GetComponentInChildren<Camera>().enabled = false;
+
+            for (int i = 0; i < 11; i++)
+            {
+                totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+            }
+
+            for (int i = 12; i < totalCamera.Count; i++)
+            {
+                totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
+            }
+            camRoomName = "Room12";
+            trapSelect = 12;
         }
 
-       theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
-       camRoomName = "Room1";
+        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
     }
 
     void findFOV(int x)
@@ -133,7 +162,10 @@ public class OverSeerControl : NetworkBehaviour {
 
     public void LoadProperties()
     {
-        currentCamera = 0;
+        if (OverID == 1)
+            currentCamera = 3;
+        else if (OverID == 2)
+            currentCamera = 11;
         gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
 
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
@@ -143,6 +175,7 @@ public class OverSeerControl : NetworkBehaviour {
 
         initRM = true;
         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
+
 
 		//BECAUSE IT MIGHTVE BEEN MAKING MULTIPLE STUFF
 		//the dumbstuff
@@ -187,11 +220,13 @@ public class OverSeerControl : NetworkBehaviour {
             trapButton = GameObject.FindGameObjectWithTag("TrapButton").GetComponent<DigitalInput>();
             leftButton = GameObject.FindGameObjectWithTag("LeftArrow").GetComponent<DigitalInput>();
             rightButton = GameObject.FindGameObjectWithTag("RightArrow").GetComponent<DigitalInput>();
-            camRoomName = "Room1";
-            trapSelect = 1;
+            //camRoomName = "Room1";
+            //trapSelect = 1;
             LoadProperties();
             
         }
+
+        GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
@@ -444,7 +479,7 @@ public class OverSeerControl : NetworkBehaviour {
                         float temp = totalCamera[i].GetComponentInChildren<Camera>().fieldOfView;
 
                         if (temp < 70)
-                            temp += zAxis * zoomSpeed * Time.deltaTime;
+                            temp += zoomSpeed * Time.deltaTime;
 
                         totalCamera[i].GetComponentInChildren<Camera>().fieldOfView = temp;
                     }

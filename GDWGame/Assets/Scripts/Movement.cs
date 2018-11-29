@@ -38,6 +38,9 @@ public class Movement : NetworkBehaviour {
     Animator theAnimator;
     private float idleTime;
 
+    public Material run1mat;
+    public Material run2mat;
+
     // Use this for initialization
     void Start () {
 
@@ -49,33 +52,37 @@ public class Movement : NetworkBehaviour {
             if (isServer)
             {
                
-                gameObject.transform.position = new Vector3(0f, 1f, 0f);
+                gameObject.transform.position = new Vector3(35f, 1f, -27f);
                 gameObject.tag = "RunnerOne";
                 gameObject.name = "RunnerOne";
+                gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
 
             }
             else
             {
                 
-                gameObject.transform.position = new Vector3(0f, 1f, 1f);
+                gameObject.transform.position = new Vector3(-48f, 1f, -1.8f);
                 gameObject.tag = "RunnerTwo";
                 gameObject.name = "RunnerTwo";
-                
+                gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+
             }
         }
         else
         {
             if (isServer)
             {
-                gameObject.transform.position = new Vector3(0f, 1f, 1f);
+                gameObject.transform.position = new Vector3(-48f, 1f, -1.8f);
                 gameObject.tag = "RunnerTwo";
                 gameObject.name = "RunnerTwo";
+                gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
             }
             else
             {
-                gameObject.transform.position = new Vector3(0f, 1f, 0f);
+                gameObject.transform.position = new Vector3(35f, 1f, -27f);
                 gameObject.tag = "RunnerOne";
                 gameObject.name = "RunnerOne";
+                gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
             }
         }
 
@@ -94,6 +101,10 @@ public class Movement : NetworkBehaviour {
             NoDownWardForceCam.enabled = false;
             return;
         }
+
+        if (gameObject.name == "RunnerTwo")
+            gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+
 
         //fill moveInput with keyboard input
         moveInput.x = Input.GetAxisRaw("Horizontal");

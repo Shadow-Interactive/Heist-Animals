@@ -17,6 +17,7 @@ public class CustomSpawn : NetworkLobbyManager
 
     //prefab int
     public int choice;
+    public Material run2mat;
     
     void Start()
     {
@@ -35,65 +36,58 @@ public class CustomSpawn : NetworkLobbyManager
 
         Debug.Log("Testing 21321321");
 
-        GameObject _temp;
+        GameObject ourPlayer;
 
         if (conn.connectionId == 0)
         {
             //Player 1: They can use the choice variable currently, easier for testing as they are the host
-            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[choice],
-                startPositions[conn.connectionId].position,
-                Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[choice], startPositions[0].position, Quaternion.identity);
 
 			if (choice == 1)
 			{
-				_temp.GetComponent<OverseerCanvasManager>().overseerID = 0;
-				_temp.GetComponent<OverSeerControl>().OverID = 1;
+				ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = 1;
+				ourPlayer.GetComponent<OverSeerControl>().OverID = 1;
 				//print(_temp.GetComponent<OverSeerControl>().OverID);
 				print("does get here");
 			}
 			else
-				_temp.GetComponent<PlayerLogic>().runID = 1;
+				ourPlayer.GetComponent<PlayerLogic>().runID = 1;
 
-			return _temp;
+			return ourPlayer;
         }
         else if (conn.connectionId == 1)
         {
             //Player 2: They are coded to be an overseer currently
-            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[1],
-                startPositions[conn.connectionId].position,
-                Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[1], startPositions[1].position, Quaternion.identity);
 
-			_temp.GetComponent<OverseerCanvasManager>().overseerID = 1;
-			_temp.GetComponent<OverSeerControl>().OverID = 1;
-			print(_temp.GetComponent<OverSeerControl>().OverID);
+            ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = 1;
+            ourPlayer.GetComponent<OverSeerControl>().OverID = 1;
+            print(ourPlayer.GetComponent<OverSeerControl>().OverID);
 
-			return _temp;
+            return ourPlayer;
             
         }
         else if (conn.connectionId == 2)
         {
             //Player 3: They are coded to be a runner currently
-            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[0],
-                startPositions[conn.connectionId].position,
-                Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[0], startPositions[2].position, Quaternion.identity);
 
-			_temp.GetComponent<PlayerLogic>().runID = 2;
+            ourPlayer.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+            ourPlayer.GetComponent<PlayerLogic>().runID = 2;
 
-			return _temp;
+			return ourPlayer;
 
         }
         else if (conn.connectionId == 3)
         {
             //Player 4: They are coded to be an overseer currently
-            _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[1],
-                startPositions[conn.connectionId].position,
-                Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[1], startPositions[3].position, Quaternion.identity);
 
-			_temp.GetComponent<OverseerCanvasManager>().overseerID = 2;
-			_temp.GetComponent<OverSeerControl>().OverID = 2;
-			print(_temp.GetComponent<OverSeerControl>().OverID);
+			ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = 2;
+			ourPlayer.GetComponent<OverSeerControl>().OverID = 2;
+			print(ourPlayer.GetComponent<OverSeerControl>().OverID);
 
-			return _temp;
+			return ourPlayer;
 
         }
         else return null;

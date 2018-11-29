@@ -3070,6 +3070,8 @@ MonoBehaviour:
   overTheShoulder: {fileID: 4029851249492966}
   spawnIn: 0
   disableMovement: 0
+  run1mat: {fileID: 2100000, guid: 6dabffeeefe73094599967e98d14618a, type: 2}
+  run2mat: {fileID: 2100000, guid: dd4aa6a8d66202d48a680a643d24e378, type: 2}
 --- !u!114 &114349773253270800
 MonoBehaviour:
   m_ObjectHideFlags: 1
