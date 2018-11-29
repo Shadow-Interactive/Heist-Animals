@@ -121,7 +121,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (zapHealth <= 0)
         {
-            theObjManager.DeactivateMinigame();
+            theObjManager.onZapOrQuit();
             theRoomManager.Teleport(ref playerPosition, ref roomInt);
             Restore();
         }
@@ -418,10 +418,10 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void SetActivation(bool temp)
     {
-        if (gameObject.name == runnerOneStr)
+        if (gameObject.name == runnerOneStr && R1currentObjective != null)
             R1currentObjective.minigameActivated = temp;
 
-        if (gameObject.name == runnerTwoStr)
+        if (gameObject.name == runnerTwoStr && R2currentObjective != null)
             R2currentObjective.minigameActivated = temp;
     }
 
