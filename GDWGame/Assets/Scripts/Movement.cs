@@ -35,6 +35,9 @@ public class Movement : NetworkBehaviour {
 
     [HideInInspector] public bool disableMovement = false;
 
+    Animator theAnimator;
+    private float idleTime;
+
     // Use this for initialization
     void Start () {
 
@@ -76,6 +79,7 @@ public class Movement : NetworkBehaviour {
             }
         }
 
+        theAnimator = GetComponent<Animator>();
         
     }
     // Update is called once per frame
@@ -96,6 +100,21 @@ public class Movement : NetworkBehaviour {
         moveInput.y = Input.GetAxisRaw("Vertical");
 
         moveInput.Normalize();
+
+        theAnimator.SetFloat("MoveVertical", moveInput.y);
+        theAnimator.SetFloat("MoveHorizontal", moveInput.x);
+
+        //this is so we don't go to idle when switching between horizontal and vertical inputs
+        if (moveInput.x == 0 && moveInput.y == 0)
+            idleTime += Time.deltaTime;
+        else
+            idleTime = 0;
+
+        if (idleTime >= 0.1)
+            theAnimator.SetBool("Moving", false);
+        else
+            theAnimator.SetBool("Moving", true);
+
 
         //vector containing moveInput
         Vector3 playerControl = new Vector3(moveInput.x, 0, moveInput.y);
@@ -122,7 +141,7 @@ public class Movement : NetworkBehaviour {
         playerCam.LookAt(overTheShoulder);
 
         //setup the Y rotation only camera to properly get line of sight for character movement and velocity
-        noDownWardForce.position = new Vector3(playerCam.position.x, cameraTarget.position.y, playerCam.position.z) + cameraRotateOnlyY * new Vector3(0, 0, 0);
+        noDownWardForce.position = new Vector3(cameraTarget.position.x, cameraTarget.position.y, cameraTarget.position.z) + cameraRotateOnlyY * new Vector3(0, 0, 0);
         noDownWardForce.LookAt(cameraTarget);
 
 
@@ -133,8 +152,12 @@ public class Movement : NetworkBehaviour {
         moveInDirectionOfCam.y = 0;
 
         if (!disableMovement)
+        {
             //set the velocity of the rigidbody
             GetComponent<Rigidbody>().velocity = moveInDirectionOfCam * speed * Time.deltaTime;
+            theAnimator.SetBool("Hacking", false);
+        }
+
         //print(GetComponent<Rigidbody>().velocity);
 
         if (Input.GetKeyUp(KeyCode.Escape))

@@ -23,6 +23,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     // Use this for initialization
     void Start () {
         thePlayer = GetComponentInParent<PlayerLogic>();
+        print(thePlayer);
 	}
 
     void IncrementCounter()
@@ -41,6 +42,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void InputNumber(int num)
     {
+        print("Pls :(");
         playerCodes[currentCode] = num;
         theNumbers[currentCode].GetComponentInChildren<Text>().text = num.ToString();
         IncrementCounter();
@@ -87,9 +89,9 @@ public class PlayerObjectiveManager : NetworkBehaviour {
         thePlayer.SetMovement(false);
         thePlayer.SetActivation(false);
         if (thePlayer.name == runner0ne)
-            thePlayer.R1currentObjective.DecoupleTrap();
+            thePlayer.R1currentObjective.RpcDecoupleTrap();
         if (thePlayer.name == runnerTwo)
-            thePlayer.R2currentObjective.DecoupleTrap();
+            thePlayer.R2currentObjective.RpcDecoupleTrap();
         smoke = false;
     }
 

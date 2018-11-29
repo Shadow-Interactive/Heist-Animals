@@ -41,10 +41,10 @@ public class Objective : NetworkBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown("i"))
-        {
-            DecoupleTrap();
-        }
+      //if (Input.GetKeyDown("i"))
+      //{
+      //    RpcDecoupleTrap();
+      //}
 
         GameObjectVisibleNetwork();
 
@@ -67,7 +67,9 @@ public class Objective : NetworkBehaviour {
                 activePlayer = collision.gameObject.GetComponentInChildren<PlayerObjectiveManager>();
                 activePlayer.ActivateMinigame();
                 ActivateMinigame();
-            }
+
+				activePlayer.thePlayer.currstate = 4;
+			}
         }
     }
 
@@ -108,7 +110,6 @@ public class Objective : NetworkBehaviour {
             if (associatedCodeObject2 != null)
             {
                 //associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
-
                 associatedCodeObject2.SetSprite(i, theImages[trapCode[i]]);
             }
         }
@@ -122,6 +123,10 @@ public class Objective : NetworkBehaviour {
 
     public void ActivateObject(OverSeerControl activeO, RoomManager theRoomManager)
     {
+        if (activeO == null)
+        {
+            print("dsadsada");
+        }
          activeOverseer = activeO;
 
          if (activeOverseer.GetNumTrap() < 4)
@@ -194,14 +199,14 @@ public class Objective : NetworkBehaviour {
             associatedCodeObject2.SetActive(trapActive);
     }
     
-    public void DecoupleTrap() //This handles the UI side of the minigame
+    [ClientRpc]
+    public void RpcDecoupleTrap() //This handles the UI side of the minigame
     {
         minigameActivated = false;
         if (activeOverseer != null && activeOverseer.GetNumTrap() > 0)
         {
-            print("hallaluyah");
-            // activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
-            CmdDecouple();
+             activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+            //CmdDecouple();
         }
 
         GameObjectVisible(trapActive);

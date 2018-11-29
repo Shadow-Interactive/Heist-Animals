@@ -39,7 +39,9 @@ public class RoomScript : NetworkBehaviour
             {
                 doorCooldown = false;
                 doorTimer = 0;
-                ChangeSecurityColor(Convert.ToInt32(trapActivated));
+                CmdChangeColor(Convert.ToInt32(trapActivated));
+
+                //ChangeSecurityColor(Convert.ToInt32(trapActivated));
             }
         }
     }
@@ -74,13 +76,28 @@ public class RoomScript : NetworkBehaviour
             CmdTrapActivate(false);
         }
         doorCooldown = true;
-        ChangeSecurityColor(2);
+        // ChangeSecurityColor(2);
+        CmdChangeColor(2);
     }
 
     [Command]
     void CmdTrapActivate(bool takeIn)
     {
         trapActivated = takeIn;
+    }
+
+    [Command]
+    void CmdChangeColor(int color)
+    {
+       // securityBox = GetComponent<NetworkIdentity>();        // get the object's network ID
+        //securityBox.GetComponent<Renderer>().material.color = theColors[color];
+        RpcChangeColor(color);
+    }
+
+    [ClientRpc]
+    void RpcChangeColor(int color)
+    {
+        securityBox.GetComponent<Renderer>().material.color = theColors[color];
     }
 
     public void ChangeSecurityColor(int color)

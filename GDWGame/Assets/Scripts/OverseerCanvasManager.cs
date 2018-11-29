@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Linq;
 
 public class OverseerCanvasManager : NetworkBehaviour
 {
@@ -16,7 +17,6 @@ public class OverseerCanvasManager : NetworkBehaviour
     private List<GameObject> codeVisuals = new List<GameObject>();
     private List<GameObject> trapImages = new List<GameObject>();
 
-    public GameObject emptyTrapIcons;
     GameObject[] theImages = new GameObject[4];
     GameObject codePrefab;
     GameObject shockImage, empImage;
@@ -26,13 +26,19 @@ public class OverseerCanvasManager : NetworkBehaviour
     
     [HideInInspector] public int numTrapActivated = 0, currentTrap = 0;
     public RawImage minimapPoint;
-    RawImage[] trapIcons;
+    public RawImage[] trapIcons;
 
     Vector3[] pointPositions = new Vector3[15];
     public Text currentRoom;
 
+	public Text T1;
+	public Text T2;
+	public Text T3;
+	public Text T4;
+	public Text T5;
+	Queue<string> messageQ = new Queue<string>();
 
-    string[] theRoomTexts = new string[15];
+	string[] theRoomTexts = new string[15];
     string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2";
 
     public Canvas cursorCanvas;
@@ -51,6 +57,8 @@ public class OverseerCanvasManager : NetworkBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+        
+
         if (EMP)
         {
             empTimer += Time.deltaTime;
@@ -62,12 +70,14 @@ public class OverseerCanvasManager : NetworkBehaviour
                 screenBlocker.SetActive(EMP);
             }
         }
+		consoleMessages();
+		//Debug.Log(messageQ.Count);
 
-      //  currentRoom.text = gameObject.name;
+		//  currentRoom.text = gameObject.name;
 
-    }
+	}
 
-    public void LoadProperties(RoomManager theRoomManager)
+	public void LoadProperties(RoomManager theRoomManager)
     {
 
         //print(overseerID + " the id");
@@ -91,9 +101,7 @@ public class OverseerCanvasManager : NetworkBehaviour
         {
             AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
         }
-
-        //more ui stuff here
-        trapIcons = emptyTrapIcons.GetComponentsInChildren<RawImage>();
+        
 
         pointPositions[0] = new Vector3(-7.9f, -5.4f, 0);
         pointPositions[1] = new Vector3(13.9f, -5.4f, 0);
@@ -140,7 +148,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     {
         GameObject trapObj = GameObject.Instantiate(codePrefab);
         trapObj.transform.parent = trapCanvas.transform;
-        trapObj.transform.position = new Vector3(trapPos.x, -1, trapPos.z);
+        trapObj.transform.position = new Vector3(trapPos.x, -0.5f, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)
@@ -245,4 +253,49 @@ public class OverseerCanvasManager : NetworkBehaviour
         currentRoom.text = help;
 
     }
+
+	//call in the update function
+	public void consoleMessages()
+	{
+		if (messageQ.Count == 0)
+		{
+			messageQ.Enqueue("die ");
+			messageQ.Enqueue(" hey");
+			messageQ.Enqueue("fuck this");
+			messageQ.Enqueue("ass");
+			//	messageQ.Enqueue("");
+
+			Debug.Log("it gets to this point");
+		}
+		if (messageQ.Count < 4)
+		{
+			//clean this shit up
+			removeOldConsoleMessage();
+			//T1.text = messageQ.ElementAt(0);
+			//T2.text = messageQ.ElementAt(1);
+			//T3.text = messageQ.ElementAt(2);
+			//T4.text = messageQ.ElementAt(3);
+		}
+
+		//top to bottom t4 the newes
+		T1.text = messageQ.ElementAt(0);
+		T2.text = messageQ.ElementAt(1);
+		T3.text = messageQ.ElementAt(2);
+		T4.text = messageQ.ElementAt(3);
+		//	T5.text = overseerID.ToString();
+
+
+	}
+
+	//puts a new message on the q to display
+	public void newConsoleMessage(string k)
+	{
+		messageQ.Enqueue(k);
+	}
+
+	//removes old messages on the q
+	public void removeOldConsoleMessage()
+	{
+		messageQ.Dequeue();
+	}
 }

@@ -14,7 +14,7 @@ public class PlayerLogic : NetworkBehaviour {
     [SyncVar]
     [HideInInspector] public Vector3 playerPosition;
     [HideInInspector] public bool shockTrap = false;
-    [HideInInspector] public int numTreasures = 0;
+    [HideInInspector] [SyncVar] public int numTreasures = 0;
 
     //data that is obtained
     public Slider zapperSlider;
@@ -28,12 +28,22 @@ public class PlayerLogic : NetworkBehaviour {
     [HideInInspector] public Objective R2currentObjective;
     GameObject networkZapper;
     public Text scoreText;
-    int activeBulletNum = 14, numBullets = 15; 
+    int activeBulletNum = 14, numBullets = 15;
+
+	public int currstate;
+	[SyncVar]
+	public int runID;
+
+	[HideInInspector]
+	private enum runnerStates
+	{
+		neutral = 0, isTrapped = 1, isZapped = 2, isTeleported = 3, isObtainedObjective = 4, isDisarmedTrap = 5
+	}
 
 
-    //private variables
-    //strings
-    string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
+	//private variables
+	//strings
+	string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
     string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap", 
         O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7",
         strBulletPool = "BulletPool";
@@ -52,14 +62,21 @@ public class PlayerLogic : NetworkBehaviour {
 
     bool initRM = false;
 
+    //object pooling variables
     List<GameObject> theBullets = new List<GameObject>();
     TheBulletPool bulletPool;
+
+    //animator for shooting mask
+    Animator theAnimator;
+    float shootTime;
 
     // Use this for initialization
     void Start () {
         roomInt = 8;
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
         playerTag = gameObject.tag;
+
+        theAnimator = GetComponent<Animator>();
 
 
     }
@@ -84,6 +101,7 @@ public class PlayerLogic : NetworkBehaviour {
         if (!initRM)
         {
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+            theAnimator = GetComponent<Animator>();
             initRM = true;
         }
 
@@ -96,6 +114,8 @@ public class PlayerLogic : NetworkBehaviour {
         ZapperUpdate();
 
         TrapAffectUpdate();
+
+        shootAnimUpdate();
 
         if (zapHealth <= 0)
         {
@@ -174,7 +194,12 @@ public class PlayerLogic : NetworkBehaviour {
                 //swing and a miss
                 break;
         }
-    }
+
+		//som event comsole stuff
+		print("player logic currstate" + currstate);
+		if (currstate != 0)
+			currstate = 0;
+	}
 
     //updating the key inputs
     private void KeyInputUpdate()
@@ -232,11 +257,24 @@ public class PlayerLogic : NetworkBehaviour {
         }
     }
 
+    private void shootAnimUpdate()
+    {
+        if (shootTime < 1)
+        {
+            shootTime += Time.deltaTime;
+            if (shootTime > 0.4)
+                theAnimator.SetBool("IdleShoot", false);
+        }
+    }
+
     //shoots the zapper
     private void Shoot()
     {
-       
-       zapperSlider.value--;
+        
+        theAnimator.SetBool("IdleShoot", true);
+        shootTime = 0;
+        theAnimator.SetTrigger("Shooting");
+        zapperSlider.value--;
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetPosition(transform.position + transform.forward * 0.25f, thePlayerMovement.playerCam.rotation);
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetActive(true);
         //activeBulletNum--;
@@ -252,7 +290,7 @@ public class PlayerLogic : NetworkBehaviour {
         //if (isServer)
         //NetworkServer.Spawn(bullet);
         var bullet = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableBullet(position);
-        bullet.transform.position = (bullet.transform.position + transform.forward * 0.25f);
+        bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 0.3f, bullet.transform.position.z) + transform.forward * 0.2f;
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
 
@@ -288,7 +326,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
-        GameObject.Find(theName).GetComponent<Objective>().DecoupleTrap();
+        GameObject.Find(theName).GetComponent<Objective>().RpcDecoupleTrap();
     }
 
     //I want the sweet relief of death
@@ -383,8 +421,13 @@ public class PlayerLogic : NetworkBehaviour {
         {
             if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
             {
-                SetTrap(other.GetComponentInParent<RoomScript>().trapType);
-            }
+                if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
+                {
+                    theAnimator.Play("Shock/Teleport");
+                    SetTrap(other.GetComponentInParent<RoomScript>().trapType);
+                }
+				currstate = (int)runnerStates.isTrapped;
+			}
         }
         else if (other.CompareTag(zapStr))
         {
@@ -398,11 +441,11 @@ public class PlayerLogic : NetworkBehaviour {
                 //{
                 //    return;
                 //}
-                if ((gameObject.name == runnerOneStr && R1currentObjective != null && !R1currentObjective.minigameActivated)
-                    || (gameObject.name == runnerTwoStr && R2currentObjective != null && !R2currentObjective.minigameActivated))
-                {
+             //if ((gameObject.name == runnerOneStr && !R1currentObjective.minigameActivated)
+             //    || (gameObject.name == runnerTwoStr && !R2currentObjective.minigameActivated))
+             //{
                     zapHealth--;
-                }
+                //}
 
                 SoundManager.setPlaying(true, 2);
                 SoundManager.setLoop(2, false);
@@ -416,26 +459,45 @@ public class PlayerLogic : NetworkBehaviour {
 
                 SoundManager.playSound(2, Time.deltaTime);
 
-                //Debug.Log(zapHealth);
-            }
+				currstate = (int)runnerStates.isZapped;
+
+				//Debug.Log(zapHealth);
+			}
             
         }
         if (other.CompareTag(treasureStr))
         {
-            numTreasures += other.GetComponent<Treasure>().ScoreWorth; 
+            //CmdScore();
+            numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
         }
+    }
+
+    [Command]
+    void CmdScore(int score)
+    {
+        RpcScore(score);
+
+    }
+
+    [ClientRpc]
+    void RpcScore(int score)
+    {
+        numTreasures += score;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag(trapStr))
         {
+            theAnimator.SetBool("Hacking", true);
             if (gameObject.name == runnerOneStr)
             {
                 GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
                 R1currentObjective = collision.gameObject.GetComponent<Objective>();
+				
+
             }
 
             if (gameObject.name == runnerTwoStr)
@@ -443,8 +505,17 @@ public class PlayerLogic : NetworkBehaviour {
                 GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().otherTrapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
                 R2currentObjective = collision.gameObject.GetComponent<Objective>();
             }
+
             //currentObjective = collision.gameObject.GetComponent<Objective>();
             //print(currentObjective.objTrapType);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag(trapStr))
+        {
+            theAnimator.SetBool("Hacking", false);
         }
     }
 

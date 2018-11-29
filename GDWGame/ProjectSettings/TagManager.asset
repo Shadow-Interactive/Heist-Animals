@@ -23,6 +23,13 @@ TagManager:
   - C12
   - C14
   - C15
+  - Ardunity
+  - CamX
+  - CamY
+  - Zoom
+  - TrapButton
+  - LeftArrow
+  - RightArrow
   layers:
   - Default
   - TransparentFX
