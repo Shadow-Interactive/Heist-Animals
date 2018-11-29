@@ -89,9 +89,9 @@ public class PlayerObjectiveManager : NetworkBehaviour {
         thePlayer.SetMovement(false);
         thePlayer.SetActivation(false);
         if (thePlayer.name == runner0ne)
-            thePlayer.R1currentObjective.DecoupleTrap();
+            thePlayer.R1currentObjective.RpcDecoupleTrap();
         if (thePlayer.name == runnerTwo)
-            thePlayer.R2currentObjective.DecoupleTrap();
+            thePlayer.R2currentObjective.RpcDecoupleTrap();
         smoke = false;
     }
 

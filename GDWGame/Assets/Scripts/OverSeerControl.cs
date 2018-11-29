@@ -170,7 +170,7 @@ public class OverSeerControl : NetworkBehaviour {
             
         }
 
-        theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
+        //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
 
         //for deactivating traps :)

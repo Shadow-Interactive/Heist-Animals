@@ -139,7 +139,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     {
         GameObject trapObj = GameObject.Instantiate(codePrefab);
         trapObj.transform.parent = trapCanvas.transform;
-        trapObj.transform.position = new Vector3(trapPos.x, -1, trapPos.z);
+        trapObj.transform.position = new Vector3(trapPos.x, -0.5f, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)

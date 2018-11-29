@@ -14,7 +14,7 @@ public class PlayerLogic : NetworkBehaviour {
     [SyncVar]
     [HideInInspector] public Vector3 playerPosition;
     [HideInInspector] public bool shockTrap = false;
-    [HideInInspector] public int numTreasures = 0;
+    [HideInInspector] [SyncVar] public int numTreasures = 0;
 
     //data that is obtained
     public Slider zapperSlider;
@@ -311,7 +311,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
-        GameObject.Find(theName).GetComponent<Objective>().DecoupleTrap();
+        GameObject.Find(theName).GetComponent<Objective>().RpcDecoupleTrap();
     }
 
     //I want the sweet relief of death
@@ -425,11 +425,11 @@ public class PlayerLogic : NetworkBehaviour {
                 //{
                 //    return;
                 //}
-                if ((gameObject.name == runnerOneStr && R1currentObjective != null && !R1currentObjective.minigameActivated)
-                    || (gameObject.name == runnerTwoStr && R2currentObjective != null && !R2currentObjective.minigameActivated))
-                {
+             //if ((gameObject.name == runnerOneStr && !R1currentObjective.minigameActivated)
+             //    || (gameObject.name == runnerTwoStr && !R2currentObjective.minigameActivated))
+             //{
                     zapHealth--;
-                }
+                //}
 
                 SoundManager.setPlaying(true, 2);
                 SoundManager.setLoop(2, false);
@@ -449,10 +449,24 @@ public class PlayerLogic : NetworkBehaviour {
         }
         if (other.CompareTag(treasureStr))
         {
-            numTreasures += other.GetComponent<Treasure>().ScoreWorth; 
+            //CmdScore();
+            numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
         }
+    }
+
+    [Command]
+    void CmdScore(int score)
+    {
+        RpcScore(score);
+
+    }
+
+    [ClientRpc]
+    void RpcScore(int score)
+    {
+        numTreasures += score;
     }
 
     private void OnCollisionEnter(Collision collision)

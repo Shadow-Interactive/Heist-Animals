@@ -173,7 +173,6 @@ public class RoomManager : NetworkBehaviour
             }
         }
         
-
         for (int i = 0; i < ObjectiveLength(); i++)
         {
             theObjectives[i].UpdateSprites(theImages);
