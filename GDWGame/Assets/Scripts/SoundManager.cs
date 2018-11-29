@@ -73,7 +73,7 @@ namespace SoundEngine
             soundPath = Application.dataPath + "/Audio/";
             initFMOD();
             setListenerUp(0f, 1f, 0f);
-            createSound(soundPath + "Sneaky-Beaky Like.mp3", 0);
+            createSound(soundPath + "Background.mp3", 0);
             createSound(soundPath + "ZapperFire.mp3", 1);
             createSound(soundPath + "ZapperHit.mp3", 2);
 
@@ -82,11 +82,11 @@ namespace SoundEngine
             createSound(soundPath + "Hack Fail.mp3", 15);
 
             
-            setVolume(0f, 0);
+            setVolume(10f, 0);
             setLoop(0, true);
             setMono(0);
             setPlaying(true, 0);
-            //playSound(0, Time.deltaTime);
+            playSound(0, Time.deltaTime);
         }
         
         // Update is called once per frame
@@ -112,7 +112,7 @@ namespace SoundEngine
             else
             {
                 setPlaying(true, _channel);
-                //playSound(0, Time.deltaTime);
+                playSound(0, Time.deltaTime);
                // print("Start playing again\n");
             }
         }
