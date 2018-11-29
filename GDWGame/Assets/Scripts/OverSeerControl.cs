@@ -58,7 +58,12 @@ public class OverSeerControl : NetworkBehaviour {
 
     int currentCamera = 0;
 
-    public OverseerCanvasManager theCanvasManager;
+	[SyncVar] public int OverID;
+	PlayerLogic run1; //friendly
+	PlayerLogic run2; //enemy
+	ObserverPattern.EventConsole eventConsole;
+
+	public OverseerCanvasManager theCanvasManager;
 
     [HideInInspector] public Objective R1currentObjective;
     [HideInInspector] public Objective R2currentObjective;
@@ -139,7 +144,25 @@ public class OverSeerControl : NetworkBehaviour {
         initRM = true;
         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
 
-    }
+		//BECAUSE IT MIGHTVE BEEN MAKING MULTIPLE STUFF
+		//the dumbstuff
+		run1 = GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponent<PlayerLogic>();
+		run2 = GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponent<PlayerLogic>();
+
+
+		if (OverID == 1)
+		{
+			eventConsole = new ObserverPattern.EventConsole(run1, run2);
+			Debug.Log("event console 1 assigned");
+		}
+		else if (OverID == 2)
+		{
+			eventConsole = new ObserverPattern.EventConsole(run2, run1);
+			print("event console 2 assigned");
+		}
+		eventConsole.init();
+
+	}
 
 
     // Update is called once per frame
@@ -444,7 +467,45 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
-        camRoomName = roomStr + trapSelect.ToString();
+
+		//EVENT CONSOLE BULLSHIT
+		//	to send stuff on the canvas queue
+		//if (eventConsole.repetitiveshit() != null)
+		//{
+		//	theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
+		//	//print("it gets to this point FUUUCk");
+		//}
+		//print(eventConsole.repetitiveshit());
+
+		theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+		theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+
+		if (run1 == null || run2 == null)
+		{
+			theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
+			theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+			theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+
+		}
+		else
+		{
+			theCanvasManager.T4.text = "gets to this point";
+			if (OverID == 1)
+			{
+				theCanvasManager.T5.text = run1.currstate.ToString();
+			}
+			else if (OverID == 2)
+			{
+				theCanvasManager.T5.text = run2.currstate.ToString();
+			}
+		}
+		//theCanvasManager.T5.text = "gets to this point";
+
+
+
+		Debug.Log(OverID);
+
+		camRoomName = roomStr + trapSelect.ToString();
     }
 
     public void roleChose(OverSeerControl script)

@@ -43,10 +43,18 @@ public class CustomSpawn : NetworkLobbyManager
             _temp = (GameObject)GameObject.Instantiate(spawnPrefabs[choice],
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
-            if (choice == 1)
-            _temp.GetComponent<OverseerCanvasManager>().overseerID = 0;
 
-            return _temp;
+			if (choice == 1)
+			{
+				_temp.GetComponent<OverseerCanvasManager>().overseerID = 0;
+				_temp.GetComponent<OverSeerControl>().OverID = 1;
+				//print(_temp.GetComponent<OverSeerControl>().OverID);
+				print("does get here");
+			}
+			else
+				_temp.GetComponent<PlayerLogic>().runID = 1;
+
+			return _temp;
         }
         else if (conn.connectionId == 1)
         {
@@ -55,8 +63,11 @@ public class CustomSpawn : NetworkLobbyManager
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
 
-            _temp.GetComponent<OverseerCanvasManager>().overseerID = 1;
-            return _temp;
+			_temp.GetComponent<OverseerCanvasManager>().overseerID = 1;
+			_temp.GetComponent<OverSeerControl>().OverID = 1;
+			print(_temp.GetComponent<OverSeerControl>().OverID);
+
+			return _temp;
             
         }
         else if (conn.connectionId == 2)
@@ -66,7 +77,9 @@ public class CustomSpawn : NetworkLobbyManager
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
 
-            return _temp;
+			_temp.GetComponent<PlayerLogic>().runID = 2;
+
+			return _temp;
 
         }
         else if (conn.connectionId == 3)
@@ -76,8 +89,11 @@ public class CustomSpawn : NetworkLobbyManager
                 startPositions[conn.connectionId].position,
                 Quaternion.identity);
 
-            _temp.GetComponent<OverseerCanvasManager>().overseerID = 2;
-            return _temp;
+			_temp.GetComponent<OverseerCanvasManager>().overseerID = 2;
+			_temp.GetComponent<OverSeerControl>().OverID = 2;
+			print(_temp.GetComponent<OverSeerControl>().OverID);
+
+			return _temp;
 
         }
         else return null;

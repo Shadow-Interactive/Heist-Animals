@@ -28,12 +28,22 @@ public class PlayerLogic : NetworkBehaviour {
     [HideInInspector] public Objective R2currentObjective;
     GameObject networkZapper;
     public Text scoreText;
-    int activeBulletNum = 14, numBullets = 15; 
+    int activeBulletNum = 14, numBullets = 15;
+
+	public int currstate;
+	[SyncVar]
+	public int runID;
+
+	[HideInInspector]
+	private enum runnerStates
+	{
+		neutral = 0, isTrapped = 1, isZapped = 2, isTeleported = 3, isObtainedObjective = 4, isDisarmedTrap = 5
+	}
 
 
-    //private variables
-    //strings
-    string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
+	//private variables
+	//strings
+	string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
     string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap", 
         O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7",
         strBulletPool = "BulletPool";
@@ -184,7 +194,12 @@ public class PlayerLogic : NetworkBehaviour {
                 //swing and a miss
                 break;
         }
-    }
+
+		//som event comsole stuff
+		print("player logic currstate" + currstate);
+		if (currstate != 0)
+			currstate = 0;
+	}
 
     //updating the key inputs
     private void KeyInputUpdate()
@@ -411,7 +426,8 @@ public class PlayerLogic : NetworkBehaviour {
                     theAnimator.Play("Shock/Teleport");
                     SetTrap(other.GetComponentInParent<RoomScript>().trapType);
                 }
-            }
+				currstate = (int)runnerStates.isTrapped;
+			}
         }
         else if (other.CompareTag(zapStr))
         {
@@ -443,8 +459,10 @@ public class PlayerLogic : NetworkBehaviour {
 
                 SoundManager.playSound(2, Time.deltaTime);
 
-                //Debug.Log(zapHealth);
-            }
+				currstate = (int)runnerStates.isZapped;
+
+				//Debug.Log(zapHealth);
+			}
             
         }
         if (other.CompareTag(treasureStr))
@@ -478,6 +496,8 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
                 R1currentObjective = collision.gameObject.GetComponent<Objective>();
+				
+
             }
 
             if (gameObject.name == runnerTwoStr)
@@ -485,6 +505,7 @@ public class PlayerLogic : NetworkBehaviour {
                 GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().otherTrapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
                 R2currentObjective = collision.gameObject.GetComponent<Objective>();
             }
+
             //currentObjective = collision.gameObject.GetComponent<Objective>();
             //print(currentObjective.objTrapType);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Linq;
 
 public class OverseerCanvasManager : NetworkBehaviour
 {
@@ -30,8 +31,14 @@ public class OverseerCanvasManager : NetworkBehaviour
     Vector3[] pointPositions = new Vector3[15];
     public Text currentRoom;
 
+	public Text T1;
+	public Text T2;
+	public Text T3;
+	public Text T4;
+	public Text T5;
+	Queue<string> messageQ = new Queue<string>();
 
-    string[] theRoomTexts = new string[15];
+	string[] theRoomTexts = new string[15];
     string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2";
 
     public Canvas cursorCanvas;
@@ -63,12 +70,14 @@ public class OverseerCanvasManager : NetworkBehaviour
                 screenBlocker.SetActive(EMP);
             }
         }
+		consoleMessages();
+		//Debug.Log(messageQ.Count);
 
-      //  currentRoom.text = gameObject.name;
+		//  currentRoom.text = gameObject.name;
 
-    }
+	}
 
-    public void LoadProperties(RoomManager theRoomManager)
+	public void LoadProperties(RoomManager theRoomManager)
     {
 
         //print(overseerID + " the id");
@@ -244,4 +253,49 @@ public class OverseerCanvasManager : NetworkBehaviour
         currentRoom.text = help;
 
     }
+
+	//call in the update function
+	public void consoleMessages()
+	{
+		if (messageQ.Count == 0)
+		{
+			messageQ.Enqueue("die ");
+			messageQ.Enqueue(" hey");
+			messageQ.Enqueue("fuck this");
+			messageQ.Enqueue("ass");
+			//	messageQ.Enqueue("");
+
+			Debug.Log("it gets to this point");
+		}
+		if (messageQ.Count < 4)
+		{
+			//clean this shit up
+			removeOldConsoleMessage();
+			//T1.text = messageQ.ElementAt(0);
+			//T2.text = messageQ.ElementAt(1);
+			//T3.text = messageQ.ElementAt(2);
+			//T4.text = messageQ.ElementAt(3);
+		}
+
+		//top to bottom t4 the newes
+		T1.text = messageQ.ElementAt(0);
+		T2.text = messageQ.ElementAt(1);
+		T3.text = messageQ.ElementAt(2);
+		T4.text = messageQ.ElementAt(3);
+		//	T5.text = overseerID.ToString();
+
+
+	}
+
+	//puts a new message on the q to display
+	public void newConsoleMessage(string k)
+	{
+		messageQ.Enqueue(k);
+	}
+
+	//removes old messages on the q
+	public void removeOldConsoleMessage()
+	{
+		messageQ.Dequeue();
+	}
 }

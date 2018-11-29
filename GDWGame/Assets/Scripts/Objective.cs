@@ -67,7 +67,9 @@ public class Objective : NetworkBehaviour {
                 activePlayer = collision.gameObject.GetComponentInChildren<PlayerObjectiveManager>();
                 activePlayer.ActivateMinigame();
                 ActivateMinigame();
-            }
+
+				activePlayer.thePlayer.currstate = 4;
+			}
         }
     }
 
