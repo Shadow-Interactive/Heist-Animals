@@ -470,15 +470,14 @@ public class OverSeerControl : NetworkBehaviour {
 
 		//EVENT CONSOLE BULLSHIT
 		//	to send stuff on the canvas queue
-		//if (eventConsole.repetitiveshit() != null)
-		//{
-		//	theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
-		//	//print("it gets to this point FUUUCk");
-		//}
+
+		//theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+		//theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+
+		
 		//print(eventConsole.repetitiveshit());
 
-		theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-		theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+		//theCanvasManager.T3.text = eventConsole.repetitiveshit();
 
 		if (run1 == null || run2 == null)
 		{
@@ -489,16 +488,34 @@ public class OverSeerControl : NetworkBehaviour {
 		}
 		else
 		{
-			theCanvasManager.T4.text = "gets to this point";
-			if (OverID == 1)
+			//theCanvasManager.T4.text = "gets to this point";
+			//if (OverID == 1)
+			//{
+			//	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+			//	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
+				
+			//}
+			//else if (OverID == 2)
+			//{
+			//	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+			//	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
+				
+			//}
+
+			if (run1.currstate!=0||run2.currstate!=0)
 			{
-				theCanvasManager.T5.text = run1.currstate.ToString();
+				theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
+				print("it gets to this point FUUUCk");
+				print(run1.currstate.ToString());
+				theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
+				run1.currstate = 0;
+				run2.currstate = 0;
 			}
-			else if (OverID == 2)
-			{
-				theCanvasManager.T5.text = run2.currstate.ToString();
-			}
+			
 		}
+		
+		theCanvasManager.consoleMessages();
+
 		//theCanvasManager.T5.text = "gets to this point";
 
 

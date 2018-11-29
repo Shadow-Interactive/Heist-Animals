@@ -70,7 +70,7 @@ public class OverseerCanvasManager : NetworkBehaviour
                 screenBlocker.SetActive(EMP);
             }
         }
-		consoleMessages();
+		//consoleMessages();
 		//Debug.Log(messageQ.Count);
 
 		//  currentRoom.text = gameObject.name;
@@ -259,15 +259,15 @@ public class OverseerCanvasManager : NetworkBehaviour
 	{
 		if (messageQ.Count == 0)
 		{
-			messageQ.Enqueue("die ");
-			messageQ.Enqueue(" hey");
-			messageQ.Enqueue("fuck this");
-			messageQ.Enqueue("ass");
+			messageQ.Enqueue("1");
+			messageQ.Enqueue("2");
+			messageQ.Enqueue("3");
+			messageQ.Enqueue("4");
 			//	messageQ.Enqueue("");
 
 			Debug.Log("it gets to this point");
 		}
-		if (messageQ.Count < 4)
+		if (messageQ.Count > 4)
 		{
 			//clean this shit up
 			removeOldConsoleMessage();
@@ -282,7 +282,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 		T2.text = messageQ.ElementAt(1);
 		T3.text = messageQ.ElementAt(2);
 		T4.text = messageQ.ElementAt(3);
-		//	T5.text = overseerID.ToString();
+		//T5.text = messageQ.Count.ToString();
 
 
 	}

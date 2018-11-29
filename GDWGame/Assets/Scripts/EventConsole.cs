@@ -127,23 +127,23 @@ namespace ObserverPattern
 		//enemy announcements
 		public string eTeleported()
 		{
-			return "player got teleported";
+			return "enemy got teleported";
 		}
 		public string eZapped()
 		{
-			return "player got zapped";
+			return "enemy got zapped";
 		}
 		public string eObjective()
 		{
-			return "player got an objective";
+			return "enemy got an objective";
 		}
 		public string eTrapped()
 		{
-			return "player got trapped";
+			return "enemy got trapped";
 		}
 		public string eDisarmed()
 		{
-			return "player disarmed the trap";
+			return "enemy disarmed the trap";
 		}
 	}
 
@@ -173,7 +173,7 @@ namespace ObserverPattern
 		{
 			//friendly
 			if (p1.currstate == 1)
-				return (gameEvent.fTrapped() + " event console works.");
+				return gameEvent.fTrapped();
 			else if (p1.currstate == 2)
 				return gameEvent.fZapped();
 			else if (p1.currstate == 3)
@@ -182,8 +182,8 @@ namespace ObserverPattern
 				return gameEvent.fObjective();
 			else if (p1.currstate == 5)
 				return gameEvent.fDisarmed();
-			else if (p1.currstate == 0)
-				return ("Nothing Happens hopefully event console works");
+			//else if (p1.currstate == 0)
+			//	return ("nun1");
 
 			//enemy
 			else if (p2.currstate == 1)
@@ -196,6 +196,8 @@ namespace ObserverPattern
 				return gameEvent.eObjective();
 			else if (p2.currstate == 5)
 				return gameEvent.eDisarmed();
+			//else if (p2.currstate == 6)
+			//	return ("nun2");
 			else
 				return null;
 

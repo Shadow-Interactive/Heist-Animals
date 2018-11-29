@@ -24,7 +24,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
     // Use this for initialization
     void Start() {
         thePlayer = GetComponentInParent<PlayerLogic>();
-        print(thePlayer);
+       // print(thePlayer);
     }
 
     void IncrementCounter()

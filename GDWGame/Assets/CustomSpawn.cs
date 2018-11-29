@@ -65,7 +65,7 @@ public class CustomSpawn : NetworkLobbyManager
 
 			_temp.GetComponent<OverseerCanvasManager>().overseerID = 1;
 			_temp.GetComponent<OverSeerControl>().OverID = 1;
-			print(_temp.GetComponent<OverSeerControl>().OverID);
+			//print(_temp.GetComponent<OverSeerControl>().OverID);
 
 			return _temp;
             
@@ -91,7 +91,7 @@ public class CustomSpawn : NetworkLobbyManager
 
 			_temp.GetComponent<OverseerCanvasManager>().overseerID = 2;
 			_temp.GetComponent<OverSeerControl>().OverID = 2;
-			print(_temp.GetComponent<OverSeerControl>().OverID);
+			//print(_temp.GetComponent<OverSeerControl>().OverID);
 
 			return _temp;
 
