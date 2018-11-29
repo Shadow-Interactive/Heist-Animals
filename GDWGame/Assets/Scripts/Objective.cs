@@ -176,14 +176,14 @@ public class Objective : NetworkBehaviour {
         if (associatedCodeObject1 != null)
         {
             associatedCodeObject1.SetActive(temp);
-            //associatedCodeObject1.gameObject.SetActive(temp);
+            associatedCodeObject1.gameObject.SetActive(temp);
 
         }
 
         if (associatedCodeObject2 != null)
         {
             associatedCodeObject2.SetActive(temp);
-            //associatedCodeObject1.gameObject.SetActive(temp);
+            associatedCodeObject1.gameObject.SetActive(temp);
 
         }
 
@@ -193,12 +193,20 @@ public class Objective : NetworkBehaviour {
     {
         gameObject.SetActive(trapActive);
         if (associatedCodeObject1 != null)
-        associatedCodeObject1.SetActive(trapActive);
+        {
+            associatedCodeObject1.SetActive(trapActive);
+            associatedCodeObject1.gameObject.SetActive(trapActive);
+        }
+
 
         if (associatedCodeObject2 != null)
+        {
             associatedCodeObject2.SetActive(trapActive);
-    }
-    
+            associatedCodeObject1.gameObject.SetActive(trapActive);
+        }
+        }
+
+
     [ClientRpc]
     public void RpcDecoupleTrap() //This handles the UI side of the minigame
     {
@@ -212,7 +220,6 @@ public class Objective : NetworkBehaviour {
         GameObjectVisible(trapActive);
         CmdSetTrapActive(false);
         //old networking stuff
-        
     }
 
     public int GetRoomID()

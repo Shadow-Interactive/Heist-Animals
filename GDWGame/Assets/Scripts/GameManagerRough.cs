@@ -66,23 +66,19 @@ public class GameManagerRough : NetworkBehaviour {
     public void GameOver()
     {
         gameoverScreen.SetActive(true);
+
         if (isServer)
         {
             if (RunnerOne != null)
             {
-                // print("beepbooprunnerone");
                 player1Score = RunnerOne.numTreasures;
-                // if (isServer) print("Runner1!" + RunnerOne.numTreasures);
             }
 
             if (RunnerTwo != null)
             {
-                // print("beepbooprunner2");
                 player2Score = RunnerTwo.numTreasures;
-                //  if (isServer) print("Runner2!" + RunnerTwo.numTreasures);
-
             }
-       }
+        }
 
         Score1.text = player1Score.ToString(NoDecimals);
         Score2.text = player2Score.ToString(NoDecimals);
@@ -93,8 +89,5 @@ public class GameManagerRough : NetworkBehaviour {
             WinningText.text = Team2Wins;
         else
             WinningText.text = Tie;
-
-        
     }
-
 }

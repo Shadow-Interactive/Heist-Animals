@@ -34,6 +34,8 @@ public class PlayerLogic : NetworkBehaviour {
 	[SyncVar]
 	public int runID;
 
+    public PlayerObjectiveManager theObjManager; //why'd i bother encapsulating the code if it was gonna be made obsolete like this T_T
+
 	[HideInInspector]
 	private enum runnerStates
 	{
@@ -119,6 +121,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (zapHealth <= 0)
         {
+            theObjManager.DeactivateMinigame();
             theRoomManager.Teleport(ref playerPosition, ref roomInt);
             Restore();
         }
@@ -336,6 +339,13 @@ public class PlayerLogic : NetworkBehaviour {
         //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         //  GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
         GameObject.Find(theName).GetComponent<Objective>().trapActive = true;
+    }
+
+    //I want the sweet relief of death x 2
+    [Command]
+    public void CmdActivateDoor(string theName, bool temp)
+    {
+        GameObject.Find(theName).GetComponent<RoomScript>().DoorTrapActive(temp);
     }
 
     public IEnumerator DeactivateBullet(GameObject bullet, float seconds)

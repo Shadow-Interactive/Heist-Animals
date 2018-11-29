@@ -326,8 +326,8 @@ public class OverSeerControl : NetworkBehaviour {
                 }
                 else if (clickHit.transform.CompareTag(securityStr))
                 {
-                    Debug.Log(camRoomName);
-                    Debug.Log(trapSelect);
+                    //Debug.Log(camRoomName);
+                    //Debug.Log(trapSelect);
                     clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick(gameObject);
                 }
             }
@@ -503,7 +503,7 @@ public class OverSeerControl : NetworkBehaviour {
 
 
 
-		Debug.Log(OverID);
+		//Debug.Log(OverID);
 
 		camRoomName = roomStr + trapSelect.ToString();
     }
@@ -542,7 +542,10 @@ public class OverSeerControl : NetworkBehaviour {
     {
         //camRoomName = ("Room" + trapSelect.ToString());
         //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated = !GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated;
-        GameObject.Find(theName).GetComponent<RoomScript>().trapActivated = !GameObject.Find(theName).GetComponent<RoomScript>().trapActivated;
+        bool ugh = !GameObject.Find(theName).GetComponent<RoomScript>().trapActivated;
+        GameObject.Find(theName).GetComponent<RoomScript>().trapActivated = ugh;
+        GameObject.Find(theName).GetComponent<RoomScript>().DoorTrapActive(ugh);
+
         //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().doorCooldown = true;
     }
 

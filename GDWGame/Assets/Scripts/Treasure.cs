@@ -8,7 +8,6 @@ public class Treasure : MonoBehaviour {
     public int ScoreWorth = 1; //not properly in use
     bool regen = false;
     float regenTimer = 0, regenLimit = 0;
-    bool ohgodhwy = false;
 
     public void TreasureOnClick(Texture[] theImages, OverSeerControl theOverseer, RoomManager theRoomManager)
     {

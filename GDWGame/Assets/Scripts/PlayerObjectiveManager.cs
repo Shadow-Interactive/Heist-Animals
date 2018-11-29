@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 using SoundEngine;
 
 public class PlayerObjectiveManager : NetworkBehaviour {
-    
+
     public GameObject minigameCanvas;
     public RawImage[] theNumbers;
     public Text timerText;
@@ -19,12 +19,13 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     [HideInInspector] public PlayerLogic thePlayer;
     [HideInInspector] public bool smoke = false; //this is bad bleh
+    string zapStr = "Zap";
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         thePlayer = GetComponentInParent<PlayerLogic>();
         print(thePlayer);
-	}
+    }
 
     void IncrementCounter()
     {
@@ -94,8 +95,9 @@ public class PlayerObjectiveManager : NetworkBehaviour {
             thePlayer.R2currentObjective.RpcDecoupleTrap();
         smoke = false;
     }
-
-    void ResetMinigameNumbers()
+    
+   
+void ResetMinigameNumbers()
     {
         attemptCounter = 0;
         attemptNum = normalAttempt;
