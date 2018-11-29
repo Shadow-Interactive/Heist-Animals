@@ -534,7 +534,7 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1475820220758676, guid: 7e29ac98347d44141a5b0363b351fbd4, type: 2}
-  - {fileID: 1537034751883168, guid: 04ce5589ff0c6b24e981dfc7927a7f98, type: 2}
+  - {fileID: 1551235212681042, guid: 5a13291a84ef5f247be28cfa2d8fd977, type: 2}
   - {fileID: 1617729459345444, guid: c1c42e4e8155ea94faabfabb8c4d07b7, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
@@ -605,6 +605,7 @@ MonoBehaviour:
   overseer: {fileID: 0}
   Spawn: {fileID: 4572195713969698, guid: eb00a210de8b3554aaf5cc124aa9715d, type: 2}
   choice: 0
+  run2mat: {fileID: 2100000, guid: dd4aa6a8d66202d48a680a643d24e378, type: 2}
 --- !u!1 &753434289
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,7 +701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &927062743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -856,7 +857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &951125041
 RectTransform:
   m_ObjectHideFlags: 0

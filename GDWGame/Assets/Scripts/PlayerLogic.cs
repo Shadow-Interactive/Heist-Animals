@@ -121,7 +121,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (zapHealth <= 0)
         {
-            theObjManager.DeactivateMinigame();
+            theObjManager.onZapOrQuit();
             theRoomManager.Teleport(ref playerPosition, ref roomInt);
             Restore();
         }
@@ -281,21 +281,21 @@ public class PlayerLogic : NetworkBehaviour {
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetPosition(transform.position + transform.forward * 0.25f, thePlayerMovement.playerCam.rotation);
         //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetActive(true);
         //activeBulletNum--;
-        CmdSpawnBullet(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation, gameObject.tag);
+        CmdSpawnBullet(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation, runID);
         //print("Pew" + activeBulletNum);
         //networkZapper = Instantiate(Zapper, transform.position, thePlayerMovement.playerCam.rotation);
 
         //Debug.Log(Bullet.GetComponent<ZapperScript>().zapperTag);
     }
     [ClientRpc]
-    void RpcShootBullet(Vector3 position, Quaternion rotation, string tagForBullet)
+    void RpcShootBullet(Vector3 position, Quaternion rotation, int IDforBullet)
     {
         //if (isServer)
         //NetworkServer.Spawn(bullet);
         var bullet = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableBullet(position);
         bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 0.3f, bullet.transform.position.z) + transform.forward * 0.2f;
         bullet.transform.rotation = rotation;
-        bullet.GetComponent<ZapperScript>().zapperTag = tagForBullet;
+        bullet.GetComponent<ZapperScript>().zapperID = IDforBullet;
 
         SoundManager.setPlaying(true, 1);
         SoundManager.setLoop(1, false);
@@ -315,10 +315,10 @@ public class PlayerLogic : NetworkBehaviour {
 
     //lovely commands for all the lovely stuff
     [Command]
-    void CmdSpawnBullet(Vector3 position, Quaternion rotation, string tagForBullet)
+    void CmdSpawnBullet(Vector3 position, Quaternion rotation, int IDforBullet)
     {
         //GameObject Bullet = Instantiate(Zapper, transform.position + transform.forward * 0.25f, rotation);
-        RpcShootBullet(position, rotation, tagForBullet);
+        RpcShootBullet(position, rotation, IDforBullet);
         //NetworkServer.Spawn(bullet);
  
     }
@@ -418,10 +418,10 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void SetActivation(bool temp)
     {
-        if (gameObject.name == runnerOneStr)
+        if (gameObject.name == runnerOneStr && R1currentObjective != null)
             R1currentObjective.minigameActivated = temp;
 
-        if (gameObject.name == runnerTwoStr)
+        if (gameObject.name == runnerTwoStr && R2currentObjective != null)
             R2currentObjective.minigameActivated = temp;
     }
 
@@ -441,7 +441,7 @@ public class PlayerLogic : NetworkBehaviour {
         }
         else if (other.CompareTag(zapStr))
         {
-            if (other.GetComponent<ZapperScript>().zapperTag != gameObject.tag)
+            if (other.GetComponent<ZapperScript>().zapperID != runID)
             {
 
                 //Destroy(other.gameObject);

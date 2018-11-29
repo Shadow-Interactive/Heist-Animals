@@ -95,6 +95,17 @@ public class PlayerObjectiveManager : NetworkBehaviour {
             thePlayer.R2currentObjective.RpcDecoupleTrap();
         smoke = false;
     }
+
+    public void onZapOrQuit()
+    {
+        ClearAll();
+        minigameCanvas.SetActive(false);
+        ResetMinigameNumbers();
+        thePlayer.setCursor(true);
+        thePlayer.SetMovement(false);
+        thePlayer.SetActivation(false);
+        smoke = false;
+    }
     
    
 void ResetMinigameNumbers()

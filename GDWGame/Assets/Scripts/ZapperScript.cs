@@ -9,6 +9,7 @@ public class ZapperScript : NetworkBehaviour {
 
     [SyncVar]
     public string zapperTag;
+    [SyncVar] public int zapperID;
     bool active;
 
 	// Use this for initialization
