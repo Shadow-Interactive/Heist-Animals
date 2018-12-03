@@ -278,10 +278,10 @@ public class OverseerCanvasManager : NetworkBehaviour
 		}
 
 		//top to bottom t4 the newes
-		T1.text = messageQ.ElementAt(0);
-		T2.text = messageQ.ElementAt(1);
-		T3.text = messageQ.ElementAt(2);
-		T4.text = messageQ.ElementAt(3);
+		T1.text = messageQ.ElementAt(3);
+		T2.text = messageQ.ElementAt(2);
+		T3.text = messageQ.ElementAt(1);
+		T4.text = messageQ.ElementAt(0);
 		//T5.text = messageQ.Count.ToString();
 
 

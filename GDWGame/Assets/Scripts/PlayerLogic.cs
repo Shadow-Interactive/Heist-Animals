@@ -481,6 +481,7 @@ public class PlayerLogic : NetworkBehaviour {
             numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
+			currstate = (int)runnerStates.isObtainedObjective;
         }
     }
 
