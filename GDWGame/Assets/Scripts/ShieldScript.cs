@@ -22,9 +22,11 @@ public class ShieldScript : MonoBehaviour {
         {
             //print("ughitworks??");
            Vector3 contactPt = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-           // other.GetComponent<ZapperScript>().Ricochet(contactPt);
+            // other.GetComponent<ZapperScript>().Ricochet(contactPt);
             // other.GetComponent<ZapperScript>().SetActive(false); //THIS WILL GET CLEANED UP I SWEARRR
-            other.transform.rotation = new Quaternion(other.transform.rotation.x, other.transform.rotation.y-180,other.transform.rotation.z, 0);
+            //  other.transform.rotation = new Quaternion(other.transform.rotation.x, other.transform.rotation.y-180,other.transform.rotation.z, 0);
+            other.transform.rotation = new Quaternion(other.transform.rotation.x, (other.transform.rotation.y * (-1)), other.transform.rotation.z, 1);
+
         }
 
 
