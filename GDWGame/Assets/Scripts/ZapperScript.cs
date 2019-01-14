@@ -45,4 +45,30 @@ public class ZapperScript : NetworkBehaviour {
         return active; 
     }
 
+    public void Ricochet(Vector3 PointOfContact)
+    {
+        transform.position = Vector3.Reflect(PointOfContact, -gameObject.transform.forward);
+        print("Old rotation " + transform.forward);
+
+        //  CmdRicochet(PointOfContact);
+    }
+
+    [Command]
+    public void CmdRicochet(Vector3 PointOfContact)
+    {
+        RpcRicochet(PointOfContact);
+
+    }
+
+    [ClientRpc]
+    void RpcRicochet(Vector3 PointOfContact)
+    {
+        transform.position = Vector3.Reflect(PointOfContact, -gameObject.transform.forward);
+        // transform.forward = -transform.forward;
+        // print("Old rotation " + transform.forward);
+        // transform.Rotate(0, 0, 180);
+        // print("new rotation " + transform.forward);
+
+
+    }
 }

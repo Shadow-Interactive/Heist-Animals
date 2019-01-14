@@ -30,7 +30,6 @@ public enum ColourTypes
 
 public class RoomManager : NetworkBehaviour
 {
-    public string strZap = "Zap";
     public RoomScript[] theRooms;
     public Objective[] theObjectives;
 
@@ -43,10 +42,8 @@ public class RoomManager : NetworkBehaviour
     public List<GameObject> securityBoxes = new List<GameObject>();
 
     public Texture[] theImages = new Texture[10];
-    float ohgodwhy = 0;
+    float deactivateTimer = 0;
     bool usingTimer = true;
-
-    float killmetimer = 0;
 
     //public MeshFilter wiredMesh, reinforcedMesh, smokeMesh;
     // public Material wiredMat, reinforcedMat, smokeMat;
@@ -153,13 +150,13 @@ public class RoomManager : NetworkBehaviour
         //ASK ATIYA FOR DETAILS
         if (usingTimer == true)
         {
-            ohgodwhy += Time.deltaTime;
+            deactivateTimer += Time.deltaTime;
 
-            if (ohgodwhy > 1)
+            if (deactivateTimer > 1)
             {
                 DeactivateTraps();
                 usingTimer = false;
-                ohgodwhy = 0;
+                deactivateTimer = 0;
             }
         }
 

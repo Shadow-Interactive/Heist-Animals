@@ -6,6 +6,13 @@ using UnityEngine.Networking;
 
 using SoundEngine;
 
+public enum CurrentAbility
+{
+    zapper = 0,
+    shield = 1,
+    perk = 2//not used
+}
+
 public class PlayerLogic : NetworkBehaviour {
 
     //data that is shared
@@ -19,8 +26,11 @@ public class PlayerLogic : NetworkBehaviour {
     //data that is obtained
     public Slider zapperSlider;
     public Image zapperFill;
+    public RawImage theShieldImg; //these 3 are for specific 
+    public GameObject[] PlayerUI; //this is how we set which ui is active in the screen. important cuz itll include misc images. in an array for optimization sake
     public GameObject Zapper;
     public Movement thePlayerMovement;
+    public GameObject theShield;
     RoomManager theRoomManager;
     public GameObject lightningSprite;
     OverSeerControl theOverSeer;
@@ -42,13 +52,14 @@ public class PlayerLogic : NetworkBehaviour {
 		neutral = 0, isTrapped = 1, isZapped = 2, isTeleported = 3, isObtainedObjective = 4, isDisarmedTrap = 5
 	}
 
+    CurrentAbility theCurrentAbility = CurrentAbility.zapper;
 
-	//private variables
-	//strings
-	string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
+    //private variables
+    //strings
+    string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
     string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap", 
         O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7",
-        strBulletPool = "BulletPool";
+        strBulletPool = "BulletPool", strMouseScrollWheel = "Mouse ScrollWheel";
 
     //ints, floats and bools used in logic
     int zapperAmount = 3,  shockAttempts = 0;
@@ -80,7 +91,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         theAnimator = GetComponent<Animator>();
 
-
+       Shield(false);
     }
 
     public void SetRunnerTag(string theTag)
@@ -207,11 +218,16 @@ public class PlayerLogic : NetworkBehaviour {
     //updating the key inputs
     private void KeyInputUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && zapperReload == false && shockTrap == false)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (zapperSlider.value > 0 && activeBulletNum >= 0)
+            if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
             {
                 Shoot();
+            }
+            else if (theCurrentAbility == CurrentAbility.shield)
+            {
+                Shield(true);
+                theShieldImg.gameObject.SetActive(true);
             }
 
             if (zapperSlider.value <= 0)
@@ -222,9 +238,71 @@ public class PlayerLogic : NetworkBehaviour {
 
             if (activeBulletNum < 0)
             {
-                activeBulletNum = numBullets - 1 ;
+                activeBulletNum = numBullets - 1;
             }
         }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            Shield(false);
+            theShieldImg.gameObject.SetActive(false);
+        }
+
+        if (Input.GetAxis(strMouseScrollWheel) > 0)
+        {
+            if ((int)theCurrentAbility > 0)
+                theCurrentAbility--;
+            //print(theCurrentAbility);
+            ActivateSpecificUI((int)theCurrentAbility);
+        }
+
+        if (Input.GetAxis(strMouseScrollWheel) < 0)
+        {
+            if ((int)theCurrentAbility < 1)
+                theCurrentAbility++;
+            //    print(theCurrentAbility);
+            ActivateSpecificUI((int)theCurrentAbility);
+        }
+    }
+
+    //shoots the zapper
+    private void Shoot()
+    {
+        if (zapperSlider.value > 0 && activeBulletNum >= 0)
+        {
+            theAnimator.SetBool("IdleShoot", true);
+            shootTime = 0;
+            theAnimator.SetTrigger("Shooting");
+            zapperSlider.value--;
+            CmdSpawnBullet(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation, runID);
+        }
+    }
+
+    //activates the shield
+    public void Shield(bool active)
+    {
+        CmdActivateShield(active);
+    }
+
+    //for the shield
+    [ClientRpc]
+    void RpcActivateShield(bool active)
+    {
+        theShield.SetActive(active);
+    }
+
+    [Command]
+    void CmdActivateShield(bool active)
+    {
+        RpcActivateShield(active);
+    }
+
+    public void ActivateSpecificUI(int theAbility)
+    {
+        for (int i = 0; i < PlayerUI.Length; i++)
+            if (i == theAbility) PlayerUI[i].gameObject.SetActive(true);
+            else PlayerUI[i].gameObject.SetActive(false);
+        //dont kill me lmao
     }
 
     //updating anything involving the zapper
@@ -270,23 +348,8 @@ public class PlayerLogic : NetworkBehaviour {
         }
     }
 
-    //shoots the zapper
-    private void Shoot()
-    {
-        
-        theAnimator.SetBool("IdleShoot", true);
-        shootTime = 0;
-        theAnimator.SetTrigger("Shooting");
-        zapperSlider.value--;
-        //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetPosition(transform.position + transform.forward * 0.25f, thePlayerMovement.playerCam.rotation);
-        //theBullets[activeBulletNum].GetComponent<ZapperScript>().SetActive(true);
-        //activeBulletNum--;
-        CmdSpawnBullet(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation, runID);
-        //print("Pew" + activeBulletNum);
-        //networkZapper = Instantiate(Zapper, transform.position, thePlayerMovement.playerCam.rotation);
+   
 
-        //Debug.Log(Bullet.GetComponent<ZapperScript>().zapperTag);
-    }
     [ClientRpc]
     void RpcShootBullet(Vector3 position, Quaternion rotation, int IDforBullet)
     {
@@ -395,16 +458,7 @@ public class PlayerLogic : NetworkBehaviour {
                 break;
         }
     }
-
-    public void Scramble()
-    {
-       //if (gameObject.name == runnerOneStr)
-       //R1currentObjective = theRoomManager.Scramble(R1currentObjective);
-       //
-       //if (gameObject.name == runnerTwoStr)
-       //R2currentObjective = theRoomManager.Scramble(R2currentObjective);
-       
-    }
+    
 
     public bool GetActivation()
     {
