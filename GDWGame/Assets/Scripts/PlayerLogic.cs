@@ -52,7 +52,7 @@ public class PlayerLogic : NetworkBehaviour {
 		neutral = 0, isTrapped = 1, isZapped = 2, isTeleported = 3, isObtainedObjective = 4, isDisarmedTrap = 5
 	}
 
-    CurrentAbility theCurrentAbility = CurrentAbility.zapper;
+    [SyncVar] CurrentAbility theCurrentAbility = CurrentAbility.zapper;
 
     //private variables
     //strings
@@ -92,6 +92,7 @@ public class PlayerLogic : NetworkBehaviour {
         theAnimator = GetComponent<Animator>();
 
        Shield(false);
+        theCurrentAbility = CurrentAbility.zapper;
     }
 
     public void SetRunnerTag(string theTag)
@@ -254,6 +255,7 @@ public class PlayerLogic : NetworkBehaviour {
                 theCurrentAbility--;
             //print(theCurrentAbility);
             ActivateSpecificUI((int)theCurrentAbility);
+            Shield(false);
         }
 
         if (Input.GetAxis(strMouseScrollWheel) < 0)
@@ -262,6 +264,8 @@ public class PlayerLogic : NetworkBehaviour {
                 theCurrentAbility++;
             //    print(theCurrentAbility);
             ActivateSpecificUI((int)theCurrentAbility);
+            Shield(false);
+
         }
     }
 
@@ -295,6 +299,8 @@ public class PlayerLogic : NetworkBehaviour {
     void CmdActivateShield(bool active)
     {
         RpcActivateShield(active);
+        theShield.SetActive(active);
+
     }
 
     public void ActivateSpecificUI(int theAbility)

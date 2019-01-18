@@ -748,7 +748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7bcc2069e45ee4dab5ba5dacc6020c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strZap: Zap
   theRooms:
   - {fileID: 1397607454}
   - {fileID: 1286384065}
