@@ -265,7 +265,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 			messageQ.Enqueue("4");
 			//	messageQ.Enqueue("");
 
-			Debug.Log("it gets to this point");
+			//Debug.Log("it gets to this point");
 		}
 		if (messageQ.Count > 4)
 		{

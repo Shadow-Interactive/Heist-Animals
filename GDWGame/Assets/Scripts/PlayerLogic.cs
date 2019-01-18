@@ -211,7 +211,7 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
 		//som event comsole stuff
-		print("player logic currstate " + currstate);
+		//print("player logic currstate " + currstate);
 		//if (currstate != 0)
 		//	currstate = 0;
 	}

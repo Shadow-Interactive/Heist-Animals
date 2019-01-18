@@ -204,7 +204,7 @@ public class Movement : NetworkBehaviour {
     {
         script.spawnIn = !script.spawnIn;
         this.spawnIn = script.spawnIn;
-        Debug.Log(spawnIn);
+     //   Debug.Log(spawnIn);
     }
 
     public void SetCursor(bool newMouse)

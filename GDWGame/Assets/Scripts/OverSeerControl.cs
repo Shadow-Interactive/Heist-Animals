@@ -186,7 +186,7 @@ public class OverSeerControl : NetworkBehaviour {
 		if (OverID == 1)
 		{
 			eventConsole = new ObserverPattern.EventConsole(run1, run2);
-			Debug.Log("event console 1 assigned");
+			//Debug.Log("event console 1 assigned");
 		}
 		else if (OverID == 2)
 		{
@@ -582,7 +582,7 @@ public class OverSeerControl : NetworkBehaviour {
         script.camChoice = !script.camChoice;
         //script2.spawnIn = false;
         this.camChoice = script.camChoice;
-        Debug.Log(camChoice);
+     //   Debug.Log(camChoice);
     }
 
     public int GetNumTrap()

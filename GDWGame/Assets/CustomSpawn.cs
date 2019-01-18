@@ -34,7 +34,7 @@ public class CustomSpawn : NetworkLobbyManager
         RegisterStartPosition(Spawn);
         RegisterStartPosition(Spawn);
 
-        Debug.Log("Testing 21321321");
+       //Debug.Log("Testing 21321321");
 
         GameObject ourPlayer;
 
