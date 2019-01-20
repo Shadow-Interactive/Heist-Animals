@@ -13,6 +13,7 @@ public class Objective : NetworkBehaviour {
     public RoomScript currentRoom;
 
     PlayerLogic runner1, runner2; //players for syncing objectives
+    public Collider[]colliders;
 
     //public variables
     [SyncVar] public TrapTypes objTrapType;
@@ -24,10 +25,13 @@ public class Objective : NetworkBehaviour {
 
     //private/contained variables
     Vector3 objectivePosition;
-    string runnerStr = "RunnerOne", runner2Str = "RunnerTwo";
+    string runnerStr = "RunnerOne", runner2Str = "RunnerTwo", objStr = "ObjectiveLocationTrigger";
 
     [SyncVar] public int trapID = 0;
+    public string roomLocationTag = "";
+    bool roomFound = false;
 
+    public Treasure theTreasure; //this will get cleaned i swear//ifihavetime
     // Use this for initialization
     void Start () {
 		for (int i = 0; i <4; i++)
@@ -72,6 +76,25 @@ public class Objective : NetworkBehaviour {
 			}
         }
     }
+
+  // private void OnTriggerEnter(Collider other)
+  // {
+  //     if (other.CompareTag(objStr))
+  //     {
+  //         roomLocationTag = other.GetComponent<ObjectiveLocationTrigger>().locationTag;
+  //         print("on trigger enter + " + other.GetComponent<ObjectiveLocationTrigger>().locationTag);
+  //     }
+  // }
+  //
+  // private void OnTriggerStay(Collider other)
+  // {
+  //     if (other.CompareTag(objStr))
+  //     {
+  //         roomLocationTag = other.GetComponent<ObjectiveLocationTrigger>().locationTag;
+  //         print("on trigger stay + " + other.GetComponent<ObjectiveLocationTrigger>().locationTag);
+  //
+  //     }
+  // }
 
     private void OnCollisionExit(Collision collision)
     {
@@ -123,6 +146,25 @@ public class Objective : NetworkBehaviour {
 
     public void ActivateObject(OverSeerControl activeO, RoomManager theRoomManager)
     {
+        //https://answers.unity.com/questions/1467445/check-if-the-center-of-an-object-is-inside-a-trigg.html
+        colliders = Physics.OverlapSphere(transform.position, 0.0f);
+        int i = 0;
+        while(!roomFound && i < colliders.Length)
+        {
+       
+            //this has the potential to cause bugs later on down the line
+            if (colliders[i].CompareTag(objStr))
+            {
+                roomLocationTag = colliders[i].GetComponent<ObjectiveLocationTrigger>().locationTag;
+                //print("success!" + roomLocationTag);
+                roomFound = true;
+            }
+            i++;
+        }
+        if (!roomFound) roomLocationTag = "hallway";
+       
+        roomFound = false;
+
         if (activeO == null)
         {
             print("dsadsada");
@@ -140,7 +182,7 @@ public class Objective : NetworkBehaviour {
             GameObjectVisible(true);
 
             activeOverseer.CmdTrapSelect(trapNum);
-            activeOverseer.ObjectiveActivate(ref currentObjectID, GetRoomID());
+            activeOverseer.ObjectiveActivate(ref currentObjectID, GetLocationID());
             Reshuffle(theRoomManager);
         }
     }
@@ -167,7 +209,7 @@ public class Objective : NetworkBehaviour {
     [ClientRpc]
     public void RpcDecouple()
     {
-        activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+        activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetLocationID());
     }
 
     public void GameObjectVisible(bool temp) //this controls the visibility
@@ -187,6 +229,7 @@ public class Objective : NetworkBehaviour {
 
         }
 
+       
     }
 
     public void GameObjectVisibleNetwork() //this controls the visibility
@@ -213,7 +256,7 @@ public class Objective : NetworkBehaviour {
         minigameActivated = false;
         if (activeOverseer != null && activeOverseer.GetNumTrap() > 0)
         {
-             activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetRoomID());
+             activeOverseer.DecoupleTrap(currentObjectID, Color.red, GetLocationID());
             //CmdDecouple();
         }
 
@@ -222,8 +265,26 @@ public class Objective : NetworkBehaviour {
         //old networking stuff
     }
 
-    public int GetRoomID()
+    public string GetLocationID()
     {
-        return currentRoom.roomTag;
+        return roomLocationTag;
+    }
+
+    [Command]
+    public void CmdDrop(Vector3 newPosition)
+    {
+        RpcDrop(newPosition);
+    }
+
+    [ClientRpc]
+    public void RpcDrop(Vector3 newPosition)
+    {
+        trapActive = false;
+        CmdSetTrapActive(false);
+        transform.parent.position = new Vector3(newPosition.x,0.6f, newPosition.z);
+       // transform.position = new Vector3(newPosition.x, 0.6f, newPosition.z);
+        //theTreasure.transform.position = new Vector3(newPosition.x, 0.6f, newPosition.z);
+        theTreasure.Activate();
+        GameObjectVisible(false);
     }
 }

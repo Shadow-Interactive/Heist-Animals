@@ -56,7 +56,7 @@ public class RoomManager : NetworkBehaviour
     [HideInInspector] [SyncVar] public int reshuffleID = 0;
 
     bool initRm = false;
-
+    [SyncVar] [HideInInspector] public bool updateUIPosition = false; //hacky solution but simplest one i could think of
     void Start()
     {
         //LoadProperties();
@@ -65,7 +65,6 @@ public class RoomManager : NetworkBehaviour
 
     void LoadProperties()
     {
-
         GameObject wiredMesh = Resources.Load("Wired") as GameObject;
         theMeshes[0] = wiredMesh.GetComponent<MeshFilter>().sharedMesh; //wiredMesh.sharedMesh; //
 
@@ -108,24 +107,29 @@ public class RoomManager : NetworkBehaviour
                 theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
-        
     }
 
-
-    public void Teleport(ref Vector3 position, ref int roomInt)
+    public void Teleport(ref Vector3 position, ref int roomInt, ref List<int> pickedUpObjectives)
     {
+        updateUIPosition = true;
+        Vector3 dropPosition = new Vector3(position.x, position.y, position.z); 
         int temp = Random.Range(0, theRooms.Length);
         position = theRooms[temp].transform.position;
         roomInt = temp;
-        //print("Player teleported to room #" + roomInt);
 
+       if (pickedUpObjectives.Count > 0)
+       {
+           ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count-1], dropPosition);
+           pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
+       }
+       
+        //print("Player teleported to room #" + roomInt);
     }
 
     public Objective Scramble(Objective currentObjective)
     {
         for (int i = 0; i < theObjectives.Length; i++)
         {
-            
             if (currentObjective != theObjectives[i] && theObjectives[i].gameObject.activeSelf)
             {
                 //print("BeepBoop the new code is: " + theObjectives[i].trapCode[0] + " " + theObjectives[i].trapCode[1] + " " + theObjectives[i].trapCode[2] + " " + theObjectives[i].trapCode[3]);
@@ -241,5 +245,11 @@ public class RoomManager : NetworkBehaviour
     private void OnApplicationQuit()
     {
         DeactivateTraps();
+    }
+
+    public void ObjectiveDrop(int index, Vector3 position)
+    {//makes treasure visible
+        //changes position
+        theObjectives[index].CmdDrop(position);
     }
 }

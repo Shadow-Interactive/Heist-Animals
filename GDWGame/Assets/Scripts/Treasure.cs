@@ -44,7 +44,6 @@ public class Treasure : MonoBehaviour {
 
     private void Update()
     {
-
         if (regen)
         {
             regenTimer += Time.deltaTime;
@@ -55,5 +54,10 @@ public class Treasure : MonoBehaviour {
                 regen = false;
             }
         }
+    }
+
+    public int GetTrapID()
+    {
+        return minigame.GetComponent<Objective>().trapID;
     }
 }

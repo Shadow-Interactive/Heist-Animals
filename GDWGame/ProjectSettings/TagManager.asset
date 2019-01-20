@@ -30,6 +30,8 @@ TagManager:
   - TrapButton
   - LeftArrow
   - RightArrow
+  - Shield
+  - ObjectiveLocationTrigger
   layers:
   - Default
   - TransparentFX

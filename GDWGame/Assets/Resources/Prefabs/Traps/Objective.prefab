@@ -224,11 +224,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b931dbef4e94c9f4db207df2df08ab82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  associatedCodeObject: {fileID: 0}
+  associatedCodeObject1: {fileID: 0}
+  associatedCodeObject2: {fileID: 0}
   currentRoom: {fileID: 0}
+  colliders: []
   objTrapType: 0
+  trapActive: 1
+  trapNum: 0
   minigameActivated: 0
   currentObjectID: 0
+  trapID: 0
+  roomLocationTag: 
+  theTreasure: {fileID: 114421700840971264}
 --- !u!114 &114421700840971264
 MonoBehaviour:
   m_ObjectHideFlags: 1

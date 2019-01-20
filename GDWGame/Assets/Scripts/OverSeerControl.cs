@@ -70,6 +70,8 @@ public class OverSeerControl : NetworkBehaviour {
 
     public Material run2mat;
 
+    int UIUpdateCounter = 0; //this is really hacky im sorryyy im rushing T_T 
+
     // Use this for initialization
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -223,6 +225,23 @@ public class OverSeerControl : NetworkBehaviour {
             //camRoomName = "Room1";
             //trapSelect = 1;
             LoadProperties();
+            
+        }
+
+        if (theRoomManager.updateUIPosition)
+        {
+            if (UIUpdateCounter > 1) //imusingthistomakesurebothoverseersupdate
+                                     //thebettersolutionwouldvebeentouseaneventmanager
+                                     //butimworrieditwontworkoverunetforgivemeeee
+            {
+                theRoomManager.updateUIPosition = false;
+                UIUpdateCounter = 0;
+            }
+            else
+            {
+                UpdateAllUI();
+                UIUpdateCounter++;
+            }
             
         }
 
@@ -518,15 +537,13 @@ public class OverSeerControl : NetworkBehaviour {
                 SoundManager.setListenerForward(cast.x, cast.y, cast.z);
             }
         }
-
-
+        
 		//EVENT CONSOLE BULLSHIT
 		//	to send stuff on the canvas queue
 
 		//theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
 		//theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
-
-		
+        
 		//print(eventConsole.repetitiveshit());
 
 		//theCanvasManager.T3.text = eventConsole.repetitiveshit();
@@ -563,15 +580,11 @@ public class OverSeerControl : NetworkBehaviour {
 				run1.currstate = 0;
 				run2.currstate = 0;
 			}
-			
 		}
 		
 		theCanvasManager.consoleMessages();
 
 		//theCanvasManager.T5.text = "gets to this point";
-
-
-
 		//Debug.Log(OverID);
 
 		camRoomName = roomStr + trapSelect.ToString();
@@ -590,18 +603,18 @@ public class OverSeerControl : NetworkBehaviour {
         return theCanvasManager.numTrapActivated;
     }
 
-    public void ObjectiveActivate(ref int currentObjectID, int ID)
+    public void ObjectiveActivate(ref int currentObjectID, string location)
     {
         theCanvasManager.numTrapActivated++;
         currentObjectID = theCanvasManager.currentTrap;
-        theCanvasManager.SetTrapIconActive(currentObjectID, Color.green, ID);
+        theCanvasManager.SetTrapIconActive(currentObjectID, Color.green, location);
         theCanvasManager.SetCurrentlyActive();        
     }
 
-    public void DecoupleTrap(int currentObjectID, Color theColor, int ID)
+    public void DecoupleTrap(int currentObjectID, Color theColor, string location)
     {
         theCanvasManager.numTrapActivated--;
-        theCanvasManager.SetTrapIconActive(currentObjectID, theColor, ID);
+        theCanvasManager.SetTrapIconActive(currentObjectID, theColor, location);
         theCanvasManager.SetCurrentlyActive();
         theCanvasManager.PrintCode(gameObject.name);
     }
@@ -640,10 +653,13 @@ public class OverSeerControl : NetworkBehaviour {
     public void CmdTrapSelect(int num)
     {
         GameObject.Find("TheNetworkTrap").GetComponent<TrapForNetwork>().trapToGoAway = num;
-        //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-        //GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
-        //currentObjective.trapActive = !currentObjective.trapActive;
-        //currentObjective.DeActivate();
+    }
 
+    void UpdateAllUI()
+    {
+        for (int i = 0; i < theRoomManager.theObjectives.Length; i++)
+        {
+            theCanvasManager.ChangeTrapLocation(i,theRoomManager.theObjectives[i].transform.position);
+        }
     }
 }
