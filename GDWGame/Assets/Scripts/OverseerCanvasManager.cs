@@ -152,11 +152,12 @@ public class OverseerCanvasManager : NetworkBehaviour
         else if (gameObject.name == strO2)
             theRoomManager.theObjectives[codeIndex].associatedCodeObject2 = trapObj.GetComponent<CodeVisual>();
 
-        for (int i = 0; i < 4; i++)
-        {
-            // print(theRoomManager.theImages[theCode[i]]);
-            trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[i]]);// theRoomManager.theImages[theCode[i]]);
-        }
+        //i dont think we need this here, it was giving me errors
+      //for (int i = 0; i < 4; i++)
+      //{
+      //    print(theRoomManager.theImages[theCode[i]]);
+      //    trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[0]]);// theRoomManager.theImages[theCode[i]]);
+      //}
 
         codeVisuals.Add(trapObj);
     }
