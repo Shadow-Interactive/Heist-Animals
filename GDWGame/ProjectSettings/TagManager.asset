@@ -30,6 +30,9 @@ TagManager:
   - TrapButton
   - LeftArrow
   - RightArrow
+  - Shield
+  - Wired
+  - BulletPool
   layers:
   - Default
   - TransparentFX

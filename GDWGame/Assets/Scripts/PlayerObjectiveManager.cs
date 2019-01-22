@@ -282,7 +282,7 @@ void ResetMinigameNumbers()
         attemptNum = trapAttempt;
     }
 
-    public void SmokeBombTrap()
+    public void RandomizeCaseTrap()
     {
         smoke = true;
     }

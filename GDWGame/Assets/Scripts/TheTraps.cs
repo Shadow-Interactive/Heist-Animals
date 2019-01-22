@@ -32,10 +32,10 @@ public class ReinforcedCase : TrapBase
     }
 }
 
-public class SmokeBomb : TrapBase
+public class RandomizeCase : TrapBase
 {
     public override void Execute(PlayerObjectiveManager thePlayer)
     {
-        thePlayer.SmokeBombTrap();
+        thePlayer.RandomizeCaseTrap();
     }
 }

@@ -87,7 +87,7 @@ public class RoomManager : NetworkBehaviour
         theTraps[1].theMesh = theMeshes[1];
         theTraps[1].theMaterial = theMaterials[1];
 
-        theTraps[2] = new SmokeBomb();
+        theTraps[2] = new RandomizeCase();
         theTraps[2].theMesh = theMeshes[2];
         theTraps[2].theMaterial = theMaterials[2];
 

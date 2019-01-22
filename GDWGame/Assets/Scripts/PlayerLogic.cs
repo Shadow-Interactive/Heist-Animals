@@ -10,7 +10,7 @@ public enum CurrentAbility
 {
     zapper = 0,
     shield = 1,
-    perk = 2//not used
+    smokebomb = 2
 }
 
 public class PlayerLogic : NetworkBehaviour {
@@ -25,10 +25,12 @@ public class PlayerLogic : NetworkBehaviour {
 
     //data that is obtained
     public Slider zapperSlider;
+    public Slider smokeSlider;
     public Image zapperFill;
     public RawImage theShieldImg; //these 3 are for specific 
     public GameObject[] PlayerUI; //this is how we set which ui is active in the screen. important cuz itll include misc images. in an array for optimization sake
     public GameObject Zapper;
+    public GameObject smokeBomb;
     public Movement thePlayerMovement;
     public GameObject theShield;
     RoomManager theRoomManager;
@@ -39,8 +41,10 @@ public class PlayerLogic : NetworkBehaviour {
     GameObject networkZapper;
     public Text scoreText;
     int activeBulletNum = 14, numBullets = 15;
+    bool canUseSmokeBomb = true; //what a name
+    float smokeCooldownTime = 0.0f;
 
-	public int currstate;
+    public int currstate;
 	[SyncVar]
 	public int runID;
 
@@ -130,6 +134,9 @@ public class PlayerLogic : NetworkBehaviour {
         TrapAffectUpdate();
 
         shootAnimUpdate();
+
+        if (!canUseSmokeBomb)
+            SmokeCooldown();
 
         if (zapHealth <= 0)
         {
@@ -230,6 +237,15 @@ public class PlayerLogic : NetworkBehaviour {
                 Shield(true);
                 theShieldImg.gameObject.SetActive(true);
             }
+            else if (theCurrentAbility == CurrentAbility.smokebomb)
+            {
+                if (canUseSmokeBomb)
+                {
+                    Smoke();
+                    canUseSmokeBomb = false;
+                    smokeSlider.value = 0;
+                }
+            }
 
             if (zapperSlider.value <= 0)
             {
@@ -249,7 +265,7 @@ public class PlayerLogic : NetworkBehaviour {
             theShieldImg.gameObject.SetActive(false);
         }
 
-        if (Input.GetAxis(strMouseScrollWheel) > 0)
+            if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
             if ((int)theCurrentAbility > 0)
                 theCurrentAbility--;
@@ -260,7 +276,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (Input.GetAxis(strMouseScrollWheel) < 0)
         {
-            if ((int)theCurrentAbility < 1)
+            if ((int)theCurrentAbility < 2)
                 theCurrentAbility++;
             //    print(theCurrentAbility);
             ActivateSpecificUI((int)theCurrentAbility);
@@ -279,6 +295,28 @@ public class PlayerLogic : NetworkBehaviour {
             theAnimator.SetTrigger("Shooting");
             zapperSlider.value--;
             CmdSpawnBullet(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation, runID);
+        }
+    }
+
+    //use the smoke bomb
+    private void Smoke()
+    {
+        //smokeBomb.transform.position = thePlayerMovement.transform.position;
+        //GameObject bomb = Instantiate(smokeBomb, transform.position + transform.forward * 0.25f, transform.rotation);
+        //GameObject bomb = Instantiate(smokeBomb, new Vector3(transform.position.x, 1, transform.position.z), transform.rotation);
+        //bomb.GetComponent<SmokeBomb>().SetActive(true);
+        CmdSpawnSmoke(thePlayerMovement.transform.position, thePlayerMovement.playerCam.rotation);
+    }
+
+    //function to control the cooldown of the smoke bomb
+    private void SmokeCooldown()
+    {
+        smokeCooldownTime += Time.deltaTime;
+        smokeSlider.value += Time.deltaTime;
+        if (smokeCooldownTime >= 60)
+        {
+            canUseSmokeBomb = true;
+            smokeCooldownTime = 0.0f;
         }
     }
 
@@ -382,6 +420,16 @@ public class PlayerLogic : NetworkBehaviour {
         StartCoroutine(DeactivateBullet(bullet, 3));
     }
 
+    [ClientRpc]
+    void RpcUseSmokeBomb(Vector3 position, Quaternion rotation)
+    {
+        var smokebomb = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableSmokeBomb(position);
+        //smokebomb.transform.position = new Vector3(smokebomb.transform.position.x, smokebomb.transform.position.y + 0.3f, smokebomb.transform.position.z) + transform.forward * 0.2f;
+        //smokebomb.transform.rotation = rotation;
+
+        //sounds will go here
+    }
+
     //lovely commands for all the lovely stuff
     [Command]
     void CmdSpawnBullet(Vector3 position, Quaternion rotation, int IDforBullet)
@@ -390,6 +438,16 @@ public class PlayerLogic : NetworkBehaviour {
         RpcShootBullet(position, rotation, IDforBullet);
         //NetworkServer.Spawn(bullet);
  
+    }
+
+    //smoke bomb command
+    [Command]
+    void CmdSpawnSmoke(Vector3 position, Quaternion rotation)
+    {
+        //GameObject Bullet = Instantiate(Zapper, transform.position + transform.forward * 0.25f, rotation);
+        RpcUseSmokeBomb(position, rotation);
+        //NetworkServer.Spawn(bullet);
+
     }
 
     //commands work when tied to player objects
