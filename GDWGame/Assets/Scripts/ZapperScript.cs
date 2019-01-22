@@ -22,8 +22,6 @@ public class ZapperScript : NetworkBehaviour {
         if (active)
         {
             gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 20f;
-
-            
         }
     }
 
@@ -31,7 +29,6 @@ public class ZapperScript : NetworkBehaviour {
     {
         active = temp;
         gameObject.SetActive(temp);
-
     }
 
     public void SetPosition(Vector3 position, Quaternion rotation)

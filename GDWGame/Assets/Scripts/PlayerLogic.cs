@@ -43,6 +43,8 @@ public class PlayerLogic : NetworkBehaviour {
     int activeBulletNum = 14, numBullets = 15;
     bool canUseSmokeBomb = true; //what a name
     float smokeCooldownTime = 0.0f;
+    List<int> pickedUpObjectives = new List<int>(); //the reason why im using ints instead of gameobjects is cuz
+    //each objective has a tag associated with it, instead of potentially wasting memory by keeping a list of ints, i can save that memory by keeping track of the tags for the objective
 
     public int currstate;
 	[SyncVar]
@@ -86,6 +88,8 @@ public class PlayerLogic : NetworkBehaviour {
     //animator for shooting mask
     Animator theAnimator;
     float shootTime;
+    bool pickupAllowed = true; 
+    float pickupTimer = 0; //to make sure that the player doesnt pick up objective while teleporting
 
     // Use this for initialization
     void Start () {
@@ -137,13 +141,6 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (!canUseSmokeBomb)
             SmokeCooldown();
-
-        if (zapHealth <= 0)
-        {
-            theObjManager.onZapOrQuit();
-            theRoomManager.Teleport(ref playerPosition, ref roomInt);
-            Restore();
-        }
 
         //for deactivating runner 1 traps :)
         switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
@@ -226,6 +223,10 @@ public class PlayerLogic : NetworkBehaviour {
     //updating the key inputs
     private void KeyInputUpdate()
     {
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
@@ -380,6 +381,16 @@ public class PlayerLogic : NetworkBehaviour {
                 shockTimer = 0;
             }
         }
+
+        if (!pickupAllowed)
+        {
+            pickupTimer += Time.deltaTime;
+            if (pickupTimer>2)
+            {
+                pickupTimer = 0;
+                pickupAllowed = true;
+            }
+        }
     }
 
     private void shootAnimUpdate()
@@ -391,9 +402,7 @@ public class PlayerLogic : NetworkBehaviour {
                 theAnimator.SetBool("IdleShoot", false);
         }
     }
-
-   
-
+    
     [ClientRpc]
     void RpcShootBullet(Vector3 position, Quaternion rotation, int IDforBullet)
     {
@@ -491,7 +500,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (shockAttempts >= 3)
         {
-            theRoomManager.Teleport(ref playerPosition, ref roomInt);
+            Teleport();
             Restore();
         }
     }
@@ -561,19 +570,22 @@ public class PlayerLogic : NetworkBehaviour {
         {
             if (other.GetComponent<ZapperScript>().zapperID != runID && theCurrentAbility != CurrentAbility.shield)
             {
-
-                //Destroy(other.gameObject);
                 other.gameObject.SetActive(false);
-
-                //if (!isServer)
-                //{
-                //    return;
-                //}
-             //if ((gameObject.name == runnerOneStr && !R1currentObjective.minigameActivated)
-             //    || (gameObject.name == runnerTwoStr && !R2currentObjective.minigameActivated))
-             //{
-                    zapHealth--;
-                //}
+                
+                zapHealth--;
+                
+                if (zapHealth <= 0)
+                {
+                    pickupAllowed = false;
+                    theObjManager.onZapOrQuit();
+                    Teleport();
+                    if (numTreasures > 0)
+                    {
+                        numTreasures--;
+                        scoreText.text = numTreasures.ToString();
+                    }
+                    Restore();
+                }
 
                 SoundManager.setPlaying(true, 2);
                 SoundManager.setLoop(2, false);
@@ -593,12 +605,13 @@ public class PlayerLogic : NetworkBehaviour {
 			}
             
         }
-        if (other.CompareTag(treasureStr))
+        else if (other.CompareTag(treasureStr) && pickupAllowed)
         {
             //CmdScore();
             numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
+            pickedUpObjectives.Add(other.GetComponent<Treasure>().GetTrapID());
 			currstate = (int)runnerStates.isObtainedObjective;
         }
     }
@@ -681,7 +694,7 @@ public class PlayerLogic : NetworkBehaviour {
         trapHealth--;
         if (trapHealth <= 0)
         {
-            theRoomManager.Teleport(ref playerPosition, ref roomInt);
+            Teleport();
             trapHealth = 3;
         }
 
@@ -698,6 +711,12 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
         return bulletCounter >= 3 ? true : false;
+    }
+
+    void Teleport()
+    {
+        playerPosition = transform.position;
+        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
     }
     
 }

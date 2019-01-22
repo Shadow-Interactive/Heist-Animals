@@ -23,7 +23,6 @@ public class RoomScript : NetworkBehaviour
     PlayerLogic runner1, runner2; //players for syncing objectives
     string runnerStr = "RunnerOne", runner2Str = "RunnerTwo";
 
-
     // Use this for initialization
     void Start()
     {
@@ -32,9 +31,8 @@ public class RoomScript : NetworkBehaviour
         theColors[2] = Color.yellow;
         ChangeSecurityColor(Convert.ToInt32(trapActivated));
 
-        runner1 = GameObject.Find("RunnerOne").GetComponent<PlayerLogic>();
-        runner1 = GameObject.Find("RunnerTwo").GetComponent<PlayerLogic>();
-
+      //  runner1 = GameObject.Find("RunnerOne").GetComponent<PlayerLogic>();
+     //   runner2 = GameObject.Find("RunnerTwo").GetComponent<PlayerLogic>();
     }
 
     public void Update()
@@ -79,8 +77,8 @@ public class RoomScript : NetworkBehaviour
             CmdTrapActivate(wut);
             RpcTrapActivate(wut);
         
-        if (runner1 != null) runner1.CmdActivateDoor(gameObject.name, wut);
-        if (runner2 != null) runner2.CmdActivateDoor(gameObject.name, wut);
+     //   if (runner1 != null) runner1.CmdActivateDoor(gameObject.name, wut);
+      //  if (runner2 != null) runner2.CmdActivateDoor(gameObject.name, wut);
 
         doorCooldown = true;
         // ChangeSecurityColor(2);

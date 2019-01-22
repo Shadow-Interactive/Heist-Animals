@@ -26,7 +26,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     
     [HideInInspector] public int numTrapActivated = 0, currentTrap = 0;
     public RawImage minimapPoint;
-    public RawImage[] trapIcons;
+    public RawImage[] trapIcons = new RawImage[4];
 
     Vector3[] pointPositions = new Vector3[15];
     public Text currentRoom;
@@ -57,8 +57,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        
-
+       
         if (EMP)
         {
             empTimer += Time.deltaTime;
@@ -74,7 +73,6 @@ public class OverseerCanvasManager : NetworkBehaviour
 		//Debug.Log(messageQ.Count);
 
 		//  currentRoom.text = gameObject.name;
-
 	}
 
 	public void LoadProperties(RoomManager theRoomManager)
@@ -134,15 +132,12 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[12] = "Hallway 5";
         theRoomTexts[13] = "Room 5";
         theRoomTexts[14] = "Room 4";
-
-
-       //// currentRoom.text = gameObject.name;
-       //for (int i = 0; i < codeVisuals.Count; i++)
-       //{
-       //    codeVisuals[i].SetActive(false);
-       //}
     }
     
+    public void ChangeTrapLocation(int index, Vector3 position) //for when the objective is dropping
+    {
+        codeVisuals[index].transform.position = new Vector3(position.x, -0.5f, position.z);
+    }
 
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
     {
@@ -157,11 +152,12 @@ public class OverseerCanvasManager : NetworkBehaviour
         else if (gameObject.name == strO2)
             theRoomManager.theObjectives[codeIndex].associatedCodeObject2 = trapObj.GetComponent<CodeVisual>();
 
-        for (int i = 0; i < 4; i++)
-        {
-            // print(theRoomManager.theImages[theCode[i]]);
-            trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[i]]);// theRoomManager.theImages[theCode[i]]);
-        }
+        //i dont think we need this here, it was giving me errors
+      //for (int i = 0; i < 4; i++)
+      //{
+      //    print(theRoomManager.theImages[theCode[i]]);
+      //    trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[0]]);// theRoomManager.theImages[theCode[i]]);
+      //}
 
         codeVisuals.Add(trapObj);
     }
@@ -180,12 +176,12 @@ public class OverseerCanvasManager : NetworkBehaviour
         minimapPoint.GetComponent<RectTransform>().anchoredPosition = pointPositions[positionIndex];
     }
 
-    public void SetTrapIconActive(int trapIndex, Color activeColor, int roomNum)
+    public void SetTrapIconActive(int trapIndex, Color activeColor, string location)
     {
         trapIcons[trapIndex].color = activeColor;
 
         if (activeColor != Color.red)
-            trapIcons[trapIndex].GetComponentInChildren<Text>().text = roomStr + roomNum.ToString();
+            trapIcons[trapIndex].GetComponentInChildren<Text>().text = location;
         else
             trapIcons[trapIndex].GetComponentInChildren<Text>().text = defaultText;
 
@@ -298,4 +294,5 @@ public class OverseerCanvasManager : NetworkBehaviour
 	{
 		messageQ.Dequeue();
 	}
+    
 }
