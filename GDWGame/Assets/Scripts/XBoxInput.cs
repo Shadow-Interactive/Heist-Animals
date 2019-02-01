@@ -6,97 +6,98 @@ using System.Runtime.InteropServices;
 
 namespace XBOX
 {
-    public class XBoxInput : MonoBehaviour
+    enum Buttons
     {
-        const string DLLName = "XBoxInput DLL";
+        A = 0x5800,
+        B = 0x5801,
+        X = 0x5802,
+        Y = 0x5803,
+        RB = 0x5804,
+        LB = 0x5805,
+        LTrig = 0x5806,
+        RTrig = 0x5807,
+
+        DPadUp = 0x5810,
+        DPadDown = 0x5811,
+        DPadLeft = 0x5812,
+        DPadRight = 0x5813,
+        Start = 0x5814,
+        Select = 0x5815,
+        L3 = 0x5816,
+        R3 = 0x5817,
+    };
+
+    public class XInput : MonoBehaviour
+    {
+        const string DLLName = "XInput1_4 Wrapper";
 
         [DllImport(DLLName)]
-        public static extern void initXBOX();
+        public static extern void initDLL();
 
         [DllImport(DLLName)]
-        public static extern void getPackets(int _index = 0);
+        public static extern bool GetConnected(int index = 0);
 
         [DllImport(DLLName)]
-        public static extern bool getConnected(int _index = 0);
+        public static extern bool DownloadPackets(int num_controllers = 1);
 
         [DllImport(DLLName)]
-        public static extern float getLeftStickXAxis(int _index = 0);
+        public static extern void UpdateController(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern float getLeftStickYAxis(int _index = 0);
+        public static extern bool GetKeyPressed(int _index, int _button);
 
         [DllImport(DLLName)]
-        public static extern float getRightStickXAxis(int _index = 0);
+        public static extern bool GetKeyReleased(int _index, int _button);
 
         [DllImport(DLLName)]
-        public static extern float getRightStickYAxis(int _index = 0);
+        public static extern bool GetKeyHeld(int _index, int _button);
 
         [DllImport(DLLName)]
-        public static extern float getLeftTrigger(int _index = 0);
+        public static extern float GetLeftX(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern bool getButtonLB(int _index = 0);
+        public static extern float GetLeftY(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern bool getButtonRB(int _index = 0);
+        public static extern float GetRightX(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern float getRightTrigger(int _index = 0);
+        public static extern float GetRightY(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern bool getButtonR3(int _index = 0);
+        public static extern float GetLeftTrigger(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern bool getButtonL3(int _index = 0);
+        public static extern float GetRightTrigger(int _index = 0);
 
         [DllImport(DLLName)]
-        public static extern bool getButtonStart(int _index = 0);
+        public static extern bool SetVibration(int _index, int lMotor, int rMotor);
 
         [DllImport(DLLName)]
-        public static extern bool getButtonSelect(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonLeft(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonRight(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonUp(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonDown(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonA(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonB(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonX(int _index = 0);
-
-        [DllImport(DLLName)]
-        public static extern bool getButtonY(int _index = 0);
+        public static extern void cleanDLL();
 
         // Use this for initialization
         void Start()
         {
-            initXBOX();
+            initDLL();
         }
 
         // Update is called once per frame
         void Update()
         {
-            if(getConnected())
-            {
-                getPackets();
+            DownloadPackets();
 
-                if (getButtonB())
-                {
-                    Application.Quit();
-                }
+            if (!GetConnected())
+            {
+                Debug.Log("Controller not Connected");
             }
+            else
+                UpdateController();
+        }
+
+        private void OnDestroy()
+        {
+            cleanDLL();
         }
     }
 }

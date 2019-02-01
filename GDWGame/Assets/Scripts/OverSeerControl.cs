@@ -351,18 +351,18 @@ public class OverSeerControl : NetworkBehaviour {
         }
         else
         {
-            if (XBoxInput.getConnected())
+            if (XBoxInput.GetConnected())
             {
-                cameraLook.x = XBoxInput.getLeftStickXAxis();
-                cameraLook.y = XBoxInput.getLeftStickYAxis() * -1;
+                cameraLook.x = XBoxInput.GetRightX();
+                cameraLook.y = XBoxInput.GetRightY() * -1;
 
-                zAxis = XBoxInput.getRightStickYAxis() * -1f;
+                zAxis = XBoxInput.GetLeftY() * -1f;
 
-                if (XBoxInput.getButtonA())
+                if (XBoxInput.GetKeyPressed(0, (int)Buttons.A))
                     trapPress = true;
-                if (XBoxInput.getButtonLB())
+                if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
                     leftPress = true;
-                if (XBoxInput.getButtonRB())
+                if (XBoxInput.GetKeyPressed(0, (int)Buttons.RB))
                     rightPress = true;
             }
             else
@@ -476,7 +476,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             }
 
-            if (controller.connected || XBoxInput.getConnected())
+            if (controller.connected || XBoxInput.GetConnected())
             {
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                 {
@@ -524,7 +524,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
             {
-                if (controller.connected || XBoxInput.getConnected())
+                if (controller.connected || XBoxInput.GetConnected())
                 {
                     totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.x, 1, 85) + cameraLook.y, Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.y, 0, 359) + cameraLook.x, 0);
                 }
