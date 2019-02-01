@@ -5,16 +5,13 @@ using UnityEngine;
 public class CameraClipping : MonoBehaviour {
 
     float cameraDistance = 1.7f;
-    float closestCamToPlayerPos = 0.25f;
     Vector3 camPos;
     public Vector3 originalPos;
-    public Vector3 newPos;
-    float clipPos;
-    float offSet = 1;
     bool behind = false;
     bool wall = false;
     bool rightRay = false;
     bool leftRay = false;
+    bool Aim = false;
     Vector3 ADS;
     Vector3 ADSnormalized;
 
@@ -25,7 +22,6 @@ public class CameraClipping : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         camPos = transform.localPosition.normalized;
-        clipPos = transform.localPosition.magnitude;
         originalPos = transform.localPosition;
 
         wall = false;
@@ -33,7 +29,7 @@ public class CameraClipping : MonoBehaviour {
         leftRay = false;
         behind = false;
 
-        ADS = transform.parent.localPosition + new Vector3(1.5f, -3f, 8f);
+        ADS = transform.parent.localPosition; // + new Vector3(1.5f, -3f, 8f);
         ADSnormalized = ADS.normalized * -1;
         ADSnormalized += new Vector3(0.5f, 0, 0);
     }
@@ -95,7 +91,8 @@ public class CameraClipping : MonoBehaviour {
             leftRay = false;
             rightRay = false;
             behind = false;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * 15.0f);
+            if (!Aim)
+                transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * 15.0f);
             
             //transform.localPosition = originalPos;
             //clipPos = cameraDistance;
@@ -103,7 +100,12 @@ public class CameraClipping : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.R))
         {
+            Aim = true;
             transform.localPosition = Vector3.Lerp(transform.localPosition, ADS, Time.deltaTime * 2.0f);
+        }
+        else
+        {
+            Aim = false;
         }
  
 
