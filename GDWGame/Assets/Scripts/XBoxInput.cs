@@ -27,7 +27,7 @@ namespace XBOX
         R3 = 0x5817,
     };
 
-    public class XInput : MonoBehaviour
+    public class XBoxInput : MonoBehaviour
     {
         const string DLLName = "XInput1_4 Wrapper";
 
