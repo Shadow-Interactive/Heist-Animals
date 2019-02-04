@@ -25,6 +25,15 @@ namespace XBOX
         Select = 0x5815,
         L3 = 0x5816,
         R3 = 0x5817,
+
+        LS_Up = 0x5820,
+        LS_Down = 0x5821,
+        LS_Right = 0x5822,
+        LS_Left = 0x5823,
+        LS_Up_Left = 0x5824,
+        LS_Up_Rght = 0x5825,
+        LS_Down_Right = 0x5826,
+        LS_Down_Left = 0x5827,
     };
 
     public class XBoxInput : MonoBehaviour

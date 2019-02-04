@@ -29,6 +29,7 @@ public class OverSeerControl : NetworkBehaviour {
     public float test;
 
     private float zoomSpeed = 80.0f;
+    private float lookSpeed = 2.0f;
     private float zAxis;
 
     //can optimize later
@@ -353,8 +354,8 @@ public class OverSeerControl : NetworkBehaviour {
         {
             if (XBoxInput.GetConnected())
             {
-                cameraLook.x = XBoxInput.GetRightX();
-                cameraLook.y = XBoxInput.GetRightY() * -1;
+                cameraLook.x = lookSpeed * XBoxInput.GetRightX();
+                cameraLook.y = lookSpeed * XBoxInput.GetRightY() * -1;
 
                 zAxis = XBoxInput.GetLeftY() * -1f;
 
