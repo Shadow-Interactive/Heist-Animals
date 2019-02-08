@@ -89,7 +89,7 @@ namespace XBOX
 
             if (!GetConnected())
             {
-                Debug.Log("Controller not Connected");
+                //Debug.Log("Controller not Connected");
             }
             else
                 UpdateController();

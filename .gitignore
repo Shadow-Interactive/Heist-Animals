@@ -34,3 +34,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+GDWGame/Assets/plugins/XInput1_4 Wrapper\.dll\.meta
