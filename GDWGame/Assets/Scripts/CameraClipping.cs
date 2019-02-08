@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using XBOX;
+
 public class CameraClipping : MonoBehaviour {
 
     float cameraDistance = 1.7f;
@@ -39,7 +41,7 @@ public class CameraClipping : MonoBehaviour {
 
         //destination our camera raycast will go
         //camPos = transform.localPosition.normalized;
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.R) || XBoxInput.GetLeftTrigger() >= 0.99f)
         {
             cameraDistance = 1.3f;
             noClipPositionBehind = transform.parent.TransformPoint(new Vector3(ADSnormalized.x, ADSnormalized.y, ADSnormalized.z - 0.25f) * cameraDistance);

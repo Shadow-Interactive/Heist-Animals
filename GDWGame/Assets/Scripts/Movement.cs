@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 
 using SoundEngine;
+using XBOX;
 
 public class Movement : NetworkBehaviour {
 
@@ -106,9 +107,18 @@ public class Movement : NetworkBehaviour {
             gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
 
-        //fill moveInput with keyboard input
-        moveInput.x = Input.GetAxisRaw("Horizontal");
-        moveInput.y = Input.GetAxisRaw("Vertical");
+        if(XBoxInput.GetConnected())
+        {
+            //fill moveInput with XBox Left Stick
+            moveInput.x = XBoxInput.GetLeftX();
+            moveInput.y = XBoxInput.GetLeftY();
+        }
+        else
+        {
+            //fill moveInput with keyboard input
+            moveInput.x = Input.GetAxisRaw("Horizontal");
+            moveInput.y = Input.GetAxisRaw("Vertical");
+        }
 
         moveInput.Normalize();
 
@@ -130,9 +140,17 @@ public class Movement : NetworkBehaviour {
         //vector containing moveInput
         Vector3 playerControl = new Vector3(moveInput.x, 0, moveInput.y);
 
-        //fill cameraLook with mouse input
-        cameraLook.x += Input.GetAxis("Mouse X");
-        cameraLook.y += Input.GetAxis("Mouse Y");
+        if(XBoxInput.GetConnected())
+        {
+            cameraLook.x += XBoxInput.GetRightX();
+            cameraLook.y += XBoxInput.GetRightY();
+        }
+        else
+        {
+            //fill cameraLook with mouse input
+            cameraLook.x += Input.GetAxis("Mouse X");
+            cameraLook.y += Input.GetAxis("Mouse Y");
+        }
 
         //clamp the camera's y rotation to prevent weird camera angles
         cameraLook.y = Mathf.Clamp(cameraLook.y, CAM_Y_MIN, CAM_Y_MAX);

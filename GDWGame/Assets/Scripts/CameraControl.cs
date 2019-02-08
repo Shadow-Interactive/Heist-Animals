@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using XBOX;
+
 public class CameraControl : MonoBehaviour {
 
     public GameObject player;
@@ -15,9 +17,17 @@ public class CameraControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        cameraLook.x += Input.GetAxis("Mouse X");
-        cameraLook.y += Input.GetAxis("Mouse Y");
+        
+        if(XBoxInput.GetConnected())
+        {
+            cameraLook.x += XBoxInput.GetRightX();
+            cameraLook.y += XBoxInput.GetRightY();
+        }
+        else
+        {
+            cameraLook.x += Input.GetAxis("Mouse X");
+            cameraLook.y += Input.GetAxis("Mouse Y");
+        }
 
         cameraLook.y = Mathf.Clamp(cameraLook.y, -50.0f, 50.0f);
 ;

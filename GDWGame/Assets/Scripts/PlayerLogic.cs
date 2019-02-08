@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 using SoundEngine;
+using XBOX;
 
 public enum CurrentAbility
 {
@@ -132,6 +133,8 @@ public class PlayerLogic : NetworkBehaviour {
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
         KeyInputUpdate();
+
+        ControllerInputUpdate();
 
         ZapperUpdate();
 
@@ -266,7 +269,7 @@ public class PlayerLogic : NetworkBehaviour {
             theShieldImg.gameObject.SetActive(false);
         }
 
-            if (Input.GetAxis(strMouseScrollWheel) > 0)
+        if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
             if ((int)theCurrentAbility > 0)
                 theCurrentAbility--;
@@ -283,6 +286,76 @@ public class PlayerLogic : NetworkBehaviour {
             ActivateSpecificUI((int)theCurrentAbility);
             Shield(false);
 
+        }
+    }
+
+    private bool ControllerInputUpdate()
+    {
+        if(XBoxInput.GetConnected())
+        {
+            if(XBoxInput.GetKeyPressed(0, (int)Buttons.RTrig))
+            {
+                if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
+                {
+                    Shoot();
+                }
+                else if (theCurrentAbility == CurrentAbility.shield)
+                {
+                    Shield(true);
+                    theShieldImg.gameObject.SetActive(true);
+                }
+                else if (theCurrentAbility == CurrentAbility.smokebomb)
+                {
+                    if (canUseSmokeBomb)
+                    {
+                        Smoke();
+                        canUseSmokeBomb = false;
+                        smokeSlider.value = 0;
+                    }
+                }
+
+                if (zapperSlider.value <= 0)
+                {
+                    zapperReload = true;
+                    zapperFill.color = Color.red;
+                }
+
+                if (activeBulletNum < 0)
+                {
+                    activeBulletNum = numBullets - 1;
+                }
+            }
+
+            if(XBoxInput.GetKeyReleased(0, (int)Buttons.RTrig))
+            {
+                Shield(false);
+                theShieldImg.gameObject.SetActive(false);
+            }
+
+            if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
+            {
+                if ((int)theCurrentAbility > 0)
+                    theCurrentAbility--;
+                //print(theCurrentAbility);
+                ActivateSpecificUI((int)theCurrentAbility);
+                Shield(false);
+            }
+
+            if (XBoxInput.GetKeyPressed(0, (int)Buttons.RB))
+            {
+                if ((int)theCurrentAbility < 2)
+                    theCurrentAbility++;
+                //    print(theCurrentAbility);
+                ActivateSpecificUI((int)theCurrentAbility);
+                Shield(false);
+
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
