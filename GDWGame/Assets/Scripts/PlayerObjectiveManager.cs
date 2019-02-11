@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 using SoundEngine;
+using XBOX;
 
 public class PlayerObjectiveManager : NetworkBehaviour {
 
