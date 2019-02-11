@@ -20,6 +20,10 @@ public class OverSeerControl : NetworkBehaviour {
     bool trapPress;
     bool leftPress;
     bool rightPress;
+    bool radialPress;
+
+    bool ohmygoodness;
+    bool doNotMove;
 
     private const float CAM_Y_MIN = -80.0f;
     private const float CAM_Y_MAX = 20.0f;
@@ -31,6 +35,8 @@ public class OverSeerControl : NetworkBehaviour {
     private float zoomSpeed = 80.0f;
     private float lookSpeed = 2.0f;
     private float zAxis;
+
+    float timer = 0;
 
     //can optimize later
     public GameObject cam1, cam2, cam3, cam4, cam5, cam6, cam7, cam8, cam9, cam10, cam11, cam12, cam13, cam14, cam15;
@@ -78,6 +84,9 @@ public class OverSeerControl : NetworkBehaviour {
     // Use this for initialization
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
+
+        radialCamSelect.SetActive(false);
+        radialPress = false;
 
         gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
         //cam1.transform.position = new Vector3(-12.591f, 3.0f, -4.65f);
@@ -255,7 +264,7 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         //UNCOMMENT AFTER DONE TESTING OVERSEER
-        //GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+        GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
@@ -333,7 +342,7 @@ public class OverSeerControl : NetworkBehaviour {
 
 
 
-        if (!Input.GetKey(KeyCode.P) || )
+        if (!Input.GetKey(KeyCode.P) || !doNotMove)
         {
             if (controller.connected)
             {
@@ -341,8 +350,6 @@ public class OverSeerControl : NetworkBehaviour {
                     cameraLook.x = (controllerX.Value - .5f) * 2f;
                 else
                     cameraLook.x = 0;
-                cameraLook.x = lookSpeed * XBoxInput.GetRightX();
-                cameraLook.y = lookSpeed * XBoxInput.GetRightY() * -1;
 
                 if (controllerY.Value < .48f || controllerY.Value > .52f)
                     cameraLook.y = (controllerY.Value - .5f) * 2f;
@@ -366,8 +373,12 @@ public class OverSeerControl : NetworkBehaviour {
             {
                 if (XBoxInput.GetConnected())
                 {
-                    cameraLook.x = XBoxInput.GetRightX();
-                    cameraLook.y = XBoxInput.GetRightY() * -1;
+
+                    
+                    cameraLook.x = lookSpeed * XBoxInput.GetRightX();
+                    cameraLook.y = lookSpeed * XBoxInput.GetRightY() * -1;
+                    
+                    
 
                     zAxis = XBoxInput.GetLeftY() * -1f;
 
@@ -376,7 +387,7 @@ public class OverSeerControl : NetworkBehaviour {
                     if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
                         leftPress = true;
                     if (XBoxInput.GetKeyPressed(0, (int)Buttons.RB))
-                        rightPress = true;
+                        ohmygoodness = true;
                 }
                 else
                 {
@@ -393,30 +404,36 @@ public class OverSeerControl : NetworkBehaviour {
         //Debug.Log(totalCamera.Count);
         //array will be way more useful for this stuff later on
 
+        if (ohmygoodness)
+            doTimer();
+
         //https://answers.unity.com/questions/615771/how-to-check-if-click-mouse-on-object.html
         //to activate trap
-        if (Input.GetMouseButtonDown(0) || ( trapPress && !trapButton.Value))
+        if (!Input.GetKey(KeyCode.P))
         {
-            trapPress = false;
-            clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
-            //print(clickRay + " other ver " + totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter));
-
-            if (Physics.Raycast(clickRay, out clickHit))
+            if (Input.GetMouseButtonDown(0) || (trapPress && !trapButton.Value))
             {
-                if (clickHit.transform.CompareTag(treasureStr))
+                trapPress = false;
+                clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
+                //print(clickRay + " other ver " + totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter));
+
+                if (Physics.Raycast(clickRay, out clickHit))
                 {
-                    //atm, the overseer can only have 5 active traps at a time
-                    //CmdObjectiveTrap(clickHit.collider.gameObject.name);
-                    clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages, gameObject.GetComponent<OverSeerControl>(), theRoomManager);//, this.gameObject.GetComponent<OverSeerControl>());
+                    if (clickHit.transform.CompareTag(treasureStr))
+                    {
+                        //atm, the overseer can only have 5 active traps at a time
+                        //CmdObjectiveTrap(clickHit.collider.gameObject.name);
+                        clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages, gameObject.GetComponent<OverSeerControl>(), theRoomManager);//, this.gameObject.GetComponent<OverSeerControl>());
+                    }
+                    else if (clickHit.transform.CompareTag(securityStr))
+                    {
+                        //Debug.Log(camRoomName);
+                        //Debug.Log(trapSelect);
+                        clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick(gameObject);
+                    }
                 }
-                else if (clickHit.transform.CompareTag(securityStr))
-                {
-                    //Debug.Log(camRoomName);
-                    //Debug.Log(trapSelect);
-                    clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick(gameObject);
-                }
+
             }
-           
         }
 
         for (int i = 0; i < totalCamera.Count; i++)
@@ -459,7 +476,7 @@ public class OverSeerControl : NetworkBehaviour {
 
             if (Input.GetKeyUp(KeyCode.RightArrow) || (rightPress && rightButton.Value == false))
             {
-                
+
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                 {
                     rightPress = false;
@@ -508,7 +525,7 @@ public class OverSeerControl : NetworkBehaviour {
             }
             else
             {
-                if (Input.GetKey(KeyCode.UpArrow))
+                if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.P))
                 {
                     if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                     {
@@ -522,7 +539,7 @@ public class OverSeerControl : NetworkBehaviour {
                 }
 
 
-                if (Input.GetKey(KeyCode.DownArrow))
+                if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.P))
                 {
                     if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                     {
@@ -540,9 +557,10 @@ public class OverSeerControl : NetworkBehaviour {
             {
                 if (!Input.GetKey(KeyCode.P))
                 {
-                    if (controller.connected || XBoxInput.GetConnected())
+                    if (controller.connected || XBoxInput.GetConnected() && !doNotMove)
                     {
-                        totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.x, 1, 85) + cameraLook.y, Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.y, 0, 359) + cameraLook.x, 0);
+                        float controllerRotX = totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.x + cameraLook.y;
+                        totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(Mathf.Clamp(controllerRotX, 1, 85), Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.y, 0, 359) + cameraLook.x, 0);
                     }
                     else
                         totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(-cameraLook.y, ogRotation[i].y + cameraLook.x, 0);
@@ -556,17 +574,22 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
-        if (Input.GetKey(KeyCode.P))
+        if (Input.GetKey(KeyCode.P) || radialPress)
         {
+            doNotMove = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             radialCamSelect.SetActive(true);
+            radialPress = false;
+            
         }
-        else
+        else if (XBoxInput.GetKeyReleased(0, (int)Buttons.RB) || Input.GetKeyUp(KeyCode.P))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             radialCamSelect.SetActive(false);
+            radialPress = false;
+            doNotMove = false;
         }
 
         //else
@@ -575,61 +598,78 @@ public class OverSeerControl : NetworkBehaviour {
         //    Cursor.visible = false;
         //    radialCamSelect.SetActive(false);
         //}
-        
-		//EVENT CONSOLE BULLSHIT
-		//	to send stuff on the canvas queue
 
-		//theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-		//theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
-        
-		//print(eventConsole.repetitiveshit());
+        //EVENT CONSOLE BULLSHIT
+        //	to send stuff on the canvas queue
 
-		//theCanvasManager.T3.text = eventConsole.repetitiveshit();
+        //theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+        //theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+
+        //print(eventConsole.repetitiveshit());
+
+        //theCanvasManager.T3.text = eventConsole.repetitiveshit();
 
         //UNCOMMENT AFTER DONE TESTING OVERSEER
 
-		//if (run1 == null || run2 == null)
-		//{
-		//	theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
-		//	theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-		//	theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+        if (run1 == null || run2 == null)
+        {
+            theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
+            theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+            theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
 
-		//}
-		//else
-		//{
-		//	//theCanvasManager.T4.text = "gets to this point";
-		//	//if (OverID == 1)
-		//	//{
-		//	//	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-		//	//	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
-				
-		//	//}
-		//	//else if (OverID == 2)
-		//	//{
-		//	//	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-		//	//	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
-				
-		//	//}
+        }
+        else
+        {
+            //theCanvasManager.T4.text = "gets to this point";
+            //if (OverID == 1)
+            //{
+            //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+            //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
 
-		//	if (run1.currstate!=0||run2.currstate!=0)
-		//	{
-		//		theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
-		//		print("it gets to this point FUUUCk");
-		//		print(run1.currstate.ToString());
-		//		theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
-		//		run1.currstate = 0;
-		//		run2.currstate = 0;
-		//	}
-		//}
-		
-		//theCanvasManager.consoleMessages();
+            //}
+            //else if (OverID == 2)
+            //{
+            //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+            //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
 
-		//theCanvasManager.T5.text = "gets to this point";
-		//Debug.Log(OverID);
+            //}
 
-		camRoomName = roomStr + trapSelect.ToString();
+            if (run1.currstate != 0 || run2.currstate != 0)
+            {
+                theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
+                print("it gets to this point FUUUCk");
+                print(run1.currstate.ToString());
+                theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
+                run1.currstate = 0;
+                run2.currstate = 0;
+            }
+        }
+
+        theCanvasManager.consoleMessages();
+
+        //theCanvasManager.T5.text = "gets to this point";
+        //Debug.Log(OverID);
+
+        camRoomName = roomStr + trapSelect.ToString();
     }
 
+    void doTimer()
+    {
+        timer += Time.deltaTime;
+
+        if (timer < 1 && XBoxInput.GetKeyReleased(0, (int)Buttons.RB))
+        {
+            rightPress = true;
+            ohmygoodness = false;
+            timer = 0;
+        }
+        else if (timer >= 1)
+        {
+            radialPress = true;
+            ohmygoodness = false;
+            timer = 0;
+        }
+    }
     public void roleChose(OverSeerControl script)
     {
         script.camChoice = !script.camChoice;
@@ -703,6 +743,7 @@ public class OverSeerControl : NetworkBehaviour {
         }
     }
 
+    //the radial button calls this method to switch cameras
     public void SetCam(int theValue)
     {
         print(currentCamera);

@@ -22,7 +22,7 @@ public class CustomSpawn : NetworkLobbyManager
     void Start()
     {
         //prefab choice init
-        choice = 1;
+        choice = 0;
         
     }
    

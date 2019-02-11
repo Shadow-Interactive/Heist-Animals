@@ -34,6 +34,7 @@ public class CameraClipping : MonoBehaviour {
         ADS = transform.parent.localPosition; // + new Vector3(1.5f, -3f, 8f);
         ADSnormalized = ADS.normalized * -1;
         ADSnormalized += new Vector3(0.5f, 0, 0);
+        ADS += new Vector3(2.0f, -3f, -6f);
     }
 	
 	// Update is called once per frame
@@ -41,7 +42,7 @@ public class CameraClipping : MonoBehaviour {
 
         //destination our camera raycast will go
         //camPos = transform.localPosition.normalized;
-        if (Input.GetKey(KeyCode.R) || XBoxInput.GetLeftTrigger() >= 0.99f)
+        if (Input.GetMouseButton(1) || XBoxInput.GetLeftTrigger() >= 0.99f)
         {
             cameraDistance = 1.3f;
             noClipPositionBehind = transform.parent.TransformPoint(new Vector3(ADSnormalized.x, ADSnormalized.y, ADSnormalized.z - 0.25f) * cameraDistance);
@@ -100,7 +101,7 @@ public class CameraClipping : MonoBehaviour {
             //clipPos = cameraDistance;
         }
 
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetMouseButton(1) || XBoxInput.GetLeftTrigger() >= 0.99f)
         {
             Aim = true;
             transform.localPosition = Vector3.Lerp(transform.localPosition, ADS, Time.deltaTime * 2.0f);
