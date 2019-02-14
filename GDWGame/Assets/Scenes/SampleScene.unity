@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311912, g: 0.3807398, b: 0.3587271, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -837,6 +837,16 @@ MonoBehaviour:
   - {fileID: 1712892548}
   - {fileID: 1271143015}
   - {fileID: 964478454}
+  characterMeshes:
+  - {fileID: 4300000, guid: 93d0367d5f7c7ee4a893c09a6a940024, type: 3}
+  - {fileID: 4300000, guid: ec654a09f22f2e04584138315f55fe51, type: 3}
+  - {fileID: 4300000, guid: 25172c4dc173006418e476d2f3035cfd, type: 3}
+  - {fileID: 4300000, guid: 724ffa26193b000428e701fe0a51bcb9, type: 3}
+  characterMaterials:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   emptyObjectives: {fileID: 1587763739}
   emptyRooms: {fileID: 202591598}
   securityBoxes:
