@@ -37,6 +37,10 @@ public class RoomManager : NetworkBehaviour
     Material[] theMaterials = new Material[3];
     TrapBase[] theTraps = new TrapBase[3];
 
+    //the meshes and stuff
+    public Mesh[] characterMeshes = new Mesh[4];
+    public Material[] characterMaterials = new Material[4];
+
     public GameObject emptyObjectives;
     public GameObject emptyRooms;
     public List<GameObject> securityBoxes = new List<GameObject>();

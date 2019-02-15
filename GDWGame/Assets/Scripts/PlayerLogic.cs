@@ -92,6 +92,9 @@ public class PlayerLogic : NetworkBehaviour {
     bool pickupAllowed = true; 
     float pickupTimer = 0; //to make sure that the player doesnt pick up objective while teleporting
 
+    //for the character select
+    [SyncVar] int chosenCharacter;
+
     // Use this for initialization
     void Start () {
         roomInt = 8;
@@ -104,11 +107,30 @@ public class PlayerLogic : NetworkBehaviour {
         theCurrentAbility = CurrentAbility.zapper;
     }
 
+    public void SetChosenCharacter(int num)
+    {
+        chosenCharacter = num;
+    }
+
     public void SetRunnerTag(string theTag)
     {
         playerTag = theTag;
         gameObject.tag = theTag;
     }
+
+    [Command]
+    void CmdSetCharacter()
+    {
+        GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = theRoomManager.characterMeshes[chosenCharacter];
+        RpcSetCharacter();
+    }
+
+    [ClientRpc]
+    void RpcSetCharacter()
+    {
+        GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = theRoomManager.characterMeshes[chosenCharacter];
+    }
+
 
     // Update is called once per frame
     void Update () {
@@ -125,6 +147,7 @@ public class PlayerLogic : NetworkBehaviour {
         {
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
             theAnimator = GetComponent<Animator>();
+            CmdSetCharacter();
             initRM = true;
         }
 
