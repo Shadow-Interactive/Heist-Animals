@@ -54,10 +54,10 @@ public class LobbyUIManager : NetworkBehaviour
     
     public void SetTeam(int index, int number)
     {
-      if (isServer)
-          CmdSetTeam(index, number);
-      else
-           teamSelected[index] = number;
+        if (isServer)
+            CmdSetTeam(index, number);
+        else
+             teamSelected[index] = number;
 
         //how you're supposed to do it:
         //if (isServer)

@@ -58,29 +58,29 @@ public class CharacterSelect : NetworkBehaviour {
     //
     public void ChooseTeam() //in the button you'd set the variable to 1 or 2 to indication which team it is
     {
-        if (isServer)
-            CmdUpdateTeam();
-        else
-            ChooseTeamLogic();
+       if (isServer)
+           CmdUpdateTeam();
+       else
+           ChooseTeamLogic();
 
-       //if (this.isLocalPlayer == true) { return; }
-       //
-       //// the way you're supposed to do it:
-       //if (isServer)
-       //    {
-       //        RpcUpdateTeam();
-       //    }
-       //    else
-       //    {
-       //        CmdUpdateTeam();
-       //    }
+      // if (this.isLocalPlayer == true) { return; }
+      // 
+      // // the way you're supposed to do it:
+      // if (isServer)
+      //     {
+      //         RpcUpdateTeam();
+      //     }
+      //     else
+      //     {
+      //         CmdUpdateTeam();
+      //     }
     }
 
     [Command]
     void CmdUpdateTeam()
     {
-        //RpcUpdateTeam();
-        ChooseTeamLogic();
+        RpcUpdateTeam();
+        //ChooseTeamLogic();
     }
 
     [ClientRpc]
