@@ -30,6 +30,7 @@ public class PlayerLogic : NetworkBehaviour {
     public Image zapperFill;
     public RawImage theShieldImg; //these 3 are for specific 
     public GameObject[] PlayerUI; //this is how we set which ui is active in the screen. important cuz itll include misc images. in an array for optimization sake
+    public GameObject[] PlayerUIWrap;
     public GameObject Zapper;
     public GameObject smokeBomb;
     public Movement thePlayerMovement;
@@ -41,6 +42,7 @@ public class PlayerLogic : NetworkBehaviour {
     [HideInInspector] public Objective R2currentObjective;
     GameObject networkZapper;
     public Text scoreText;
+    public List<GameObject> theHealthUI;
     int activeBulletNum = 14, numBullets = 15;
     bool canUseSmokeBomb = true; //what a name
     float smokeCooldownTime = 0.0f;
@@ -72,8 +74,13 @@ public class PlayerLogic : NetworkBehaviour {
     int zapperAmount = 3,  shockAttempts = 0;
     [SyncVar]
     int zapHealth = 3;
+    int zapUI = 0;
     //[SyncVar] dont think I would need this...?
     int trapHealth = 3;
+
+    //UI Animators
+    Animator spriteAnim;
+    Animator AbilityAnim;
 
     float playerHeightAmount = 1.5f, shockTimer = 0;
     bool zapperReload = false;
@@ -97,6 +104,7 @@ public class PlayerLogic : NetworkBehaviour {
 
     // Use this for initialization
     void Start () {
+        zapUI = 0;
         roomInt = 8;
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
         playerTag = gameObject.tag;
@@ -148,6 +156,8 @@ public class PlayerLogic : NetworkBehaviour {
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
             theAnimator = GetComponent<Animator>();
             CmdSetCharacter();
+            AbilityAnim = playerCanvas.GetComponent<Animator>();
+            spriteAnim = playerCanvas.GetComponentInChildren<Animator>();
             initRM = true;
         }
 
@@ -294,20 +304,28 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
-            if ((int)theCurrentAbility > 0)
+            AbilityAnim.SetBool("SelSmokeUp", true);
+            if ((int)theCurrentAbility > 0 && (int)theCurrentAbility <= 2)
+            {
                 theCurrentAbility--;
-            //print(theCurrentAbility);
-            ActivateSpecificUI((int)theCurrentAbility);
+                //print(theCurrentAbility);
+                ActivateSpecificUI((int)theCurrentAbility);
+            }
             Shield(false);
+            //AbilityAnim.SetFloat("Speed Multiplier", -1.0f);
         }
 
         if (Input.GetAxis(strMouseScrollWheel) < 0)
         {
-            if ((int)theCurrentAbility < 2)
+            AbilityAnim.SetBool("SelShieldDown", true);
+            if ((int)theCurrentAbility < 2 && (int)theCurrentAbility >= 0)
+            {
                 theCurrentAbility++;
-            //    print(theCurrentAbility);
-            ActivateSpecificUI((int)theCurrentAbility);
+                //    print(theCurrentAbility);
+                ActivateSpecificUI((int)theCurrentAbility);
+            }
             Shield(false);
+            //AbilityAnim.SetFloat("Speed Multiplier", 1.0f);
 
         }
     }
@@ -440,10 +458,24 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void ActivateSpecificUI(int theAbility)
     {
-        for (int i = 0; i < PlayerUI.Length; i++)
-            if (i == theAbility) PlayerUI[i].gameObject.SetActive(true);
-            else PlayerUI[i].gameObject.SetActive(false);
-        //dont kill me lmao
+        if (theAbility == 0)
+        {
+            AbilityAnim.SetBool("SelZapper", true);
+            AbilityAnim.SetBool("SelShield", false);
+            AbilityAnim.SetBool("SelSmoke", false);
+        }
+        else if (theAbility == 1)
+        {
+            AbilityAnim.SetBool("SelShield", true);
+            AbilityAnim.SetBool("SelZapper", false);
+            AbilityAnim.SetBool("SelSmoke", false);
+        }
+        else if (theAbility == 2)
+        {
+            AbilityAnim.SetBool("SelSmoke", true);
+            AbilityAnim.SetBool("SelZapper", false);
+            AbilityAnim.SetBool("SelShield", false);
+        }
     }
 
     //updating anything involving the zapper
@@ -457,7 +489,7 @@ public class PlayerLogic : NetworkBehaviour {
             if (zapperSlider.value >= zapperAmount /*&& AreBulletsAvailable()*/)
             {
                 zapperSlider.value = zapperAmount;
-                zapperFill.color = Color.green;
+                zapperFill.color = Color.blue;
                 zapperReload = false;
             }
         }
@@ -594,11 +626,14 @@ public class PlayerLogic : NetworkBehaviour {
         shockAttempts++;
         lightningSprite.SetActive(true);
 
+
         if (shockAttempts >= 3)
         {
             Teleport();
             Restore();
         }
+        else
+            UpdateHealthUI();
     }
 
     //restores the players stats if the traps affects are done,
@@ -611,6 +646,10 @@ public class PlayerLogic : NetworkBehaviour {
             zapHealth = 3;
         if (shockAttempts >= 3)
             shockAttempts = 0;
+
+        theHealthUI[zapUI].SetActive(false);
+        zapUI = 0;
+        theHealthUI[zapUI].SetActive(true);
     }
 
     void SetTrap(RoomTraps theTrapTypes)
@@ -669,6 +708,8 @@ public class PlayerLogic : NetworkBehaviour {
                 other.gameObject.SetActive(false);
                 
                 zapHealth--;
+
+                UpdateHealthUI();
                 
                 if (zapHealth <= 0)
                 {
@@ -807,6 +848,14 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
         return bulletCounter >= 3 ? true : false;
+    }
+
+    void UpdateHealthUI()
+    {
+        spriteAnim.SetTrigger("Hit");
+        theHealthUI[zapUI].SetActive(false);
+        zapUI++;
+        theHealthUI[zapUI].SetActive(true);
     }
 
     void Teleport()

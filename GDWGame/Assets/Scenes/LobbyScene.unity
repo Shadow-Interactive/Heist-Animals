@@ -173,7 +173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &315780431
 Prefab:
@@ -280,7 +280,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4121727349719084, guid: d4efd16f0dc9dd24a96ac893b9d6e5f8, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1386194747604950, guid: d4efd16f0dc9dd24a96ac893b9d6e5f8, type: 2}
       propertyPath: m_IsActive
@@ -729,8 +729,8 @@ MonoBehaviour:
   m_OfflineScene: LobbyScene
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1329365756450652, guid: 7e29ac98347d44141a5b0363b351fbd4, type: 2}
-  - {fileID: 1402598412009670, guid: 5a13291a84ef5f247be28cfa2d8fd977, type: 2}
+  - {fileID: 1331220767072694, guid: 7e29ac98347d44141a5b0363b351fbd4, type: 2}
+  - {fileID: 1758012302398484, guid: 5a13291a84ef5f247be28cfa2d8fd977, type: 2}
   - {fileID: 0}
   m_CustomConfig: 1
   m_MaxConnections: 4
@@ -1435,7 +1435,7 @@ Transform:
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1484617106
 GameObject:

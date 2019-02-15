@@ -1,19 +1,7 @@
 fileFormatVersion: 2
-guid: ae5175f4f4ea97b4082101823d31de90
+guid: a23e1c35692ef344db5d414bc728dd83
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: runner-top-Sprite_sheet_0
-    21300002: runner-top-Sprite_sheet_1
-    21300004: runner-top-Sprite_sheet_2
-    21300006: runner-top-Sprite_sheet_3
-    21300008: runner-top-Sprite_sheet_4
-    21300010: runner-top-Sprite_sheet_5
-    21300012: runner-top-Sprite_sheet_6
-    21300014: runner-top-Sprite_sheet_7
-    21300016: runner-top-Sprite_sheet_8
-    21300018: runner-top-Sprite_sheet_9
-    21300020: runner-top-Sprite_sheet_10
-    21300022: runner-top-Sprite_sheet_11
+  fileIDToRecycleName: {}
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -52,13 +40,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 3000, w: 0}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -94,71 +82,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: runner-top-Sprite_sheet_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1500
-        height: 1410
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 46d061a2544373e479512eb6cabcf7e1
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: runner-top-Sprite_sheet_1
-      rect:
-        serializedVersion: 2
-        x: 1500
-        y: 0
-        width: 1500
-        height: 1410
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5bd8ae7ecd72844d80bf6d02d900da4
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: runner-top-Sprite_sheet_2
-      rect:
-        serializedVersion: 2
-        x: 3000
-        y: 0
-        width: 1500
-        height: 1410
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1a72a30420e6f8b4c80e72d95f9a2736
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 512efcdfbbf11bf4984d07a22112ee0e
+    spriteID: 
     vertices: []
     indices: 
     edges: []
