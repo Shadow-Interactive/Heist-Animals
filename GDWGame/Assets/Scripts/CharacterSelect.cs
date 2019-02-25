@@ -22,6 +22,8 @@ public class CharacterSelect : NetworkBehaviour {
     [HideInInspector] public int currentChoice = 0; //so that we can have a back button 
     [HideInInspector] [SyncVar] public bool ready = false; //this is to say that they're reaedy to start the actual game
     [HideInInspector] [SyncVar] public int index = 0;
+    [HideInInspector] [SyncVar] public bool inCharacterSelect = true;
+
 
     //for the specific buttons //the other two options are just buttons
     int characterCounter = 0; //this is to switch between the possible characters
@@ -45,6 +47,11 @@ public class CharacterSelect : NetworkBehaviour {
     public Text teamText, roleText, chosenTeamText, chosenRoleText, chosenCharacterText;
 
     public LobbyUIManager theLobbyManager; //im praying to god that this works
+    [SyncVar] bool loadProperties = false;
+    [SyncVar] bool setPositions = false;
+    [SyncVar] Vector3 uiPosition = new Vector3(0,0,0);
+    [SyncVar] string gameobjectName = "Player";
+    [SyncVar] int playerIndex = 0; 
 
 	// Use this for initialization
 	void Start () {
@@ -53,40 +60,163 @@ public class CharacterSelect : NetworkBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        if (inCharacterSelect)
+        {
+            HowDoesThisWork();
+            SettingPositions();
+
+            gameObject.name = gameobjectName;
+            notLocalPlayer.transform.position = uiPosition;
+            localPlayer.transform.position = uiPosition;
+        }
+
+    }
+
+    void SettingPositions()
+    {
+        if (!setPositions)
+        {
+            if (isServer)
+                RpcSettingPositions();
+            else
+                CmdSettingPositions();
+        }
+    }
+
+    public void DisableCharacterSelect()
+    {
+        if (isServer)
+            RpcSettingPositions();
+        else
+            CmdSettingPositions();
+    }
+
+    [Command]
+    void CmdDisableCharacterSelect()
+    {
+        RpcDisableCharacterSelect();
+    }
+
+    [ClientRpc]
+    void RpcDisableCharacterSelect()
+    {
+        inCharacterSelect = false;
+        notLocalPlayer.SetActive(false);
+        localPlayer.SetActive(false);
+    }
+
+    [Command]
+    void CmdSettingPositions()
+    {
+        RpcSettingPositions();
+    }
+
+    [ClientRpc]
+    void RpcSettingPositions()
+    {
+        if (theLobbyManager != null)
+        {
+            notLocalPlayer.transform.position = theLobbyManager.uiPositions[playerIndex];
+            localPlayer.transform.position = theLobbyManager.uiPositions[playerIndex];
+            uiPosition = theLobbyManager.uiPositions[playerIndex];
+            setPositions = true;
+        }
+    }
+
+    void HowDoesThisWork()
+    {
+        if (!loadProperties)
+        {
+            if (isServer)
+                RpcUpdateCharacter();
+            else
+                CmdUpdateCharacter();
+        }
+    }
+
+    [Command]
+    void CmdUpdateCharacter()
+    {
+        RpcUpdateCharacter();
+    }
+
+    [ClientRpc]
+    void RpcUpdateCharacter()
+    {
+        if(theLobbyManager==null)
+        {
+            theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (loadProperties == false && theLobbyManager.playerNumbers[i] == -1)
+                {
+                    theLobbyManager.playerNumbers[i] = i;
+                    gameobjectName = "Player" + i;
+                    print("Player" + i);
+                    playerIndex = i;
+                    loadProperties = true;
+                }
+            }
+        }
+    }
+    
+
+    void oldLoad()
+    {
+        if (theLobbyManager == null)
+        {
+            theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
+            theLobbyManager.oldPlayer = this;
+        }
+    }
+
+    void ProperLoad()
+    {
+        if (theLobbyManager == null)
+        {
+            bool pleaseWorkV2 = false;
+            theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
+            int i = 0;
+            while (!pleaseWorkV2)
+            {
+                if (theLobbyManager.actualPlayers[i] == null)
+                {
+                    theLobbyManager.actualPlayers[i] = this;
+                    localPlayer.transform.position = theLobbyManager.uiPositions[i];
+                    notLocalPlayer.transform.position = theLobbyManager.uiPositions[i];
+                    pleaseWorkV2 = true;
+                }
+                i = 0;
+            }
+        }
     }
     
     //
     public void ChooseTeam() //in the button you'd set the variable to 1 or 2 to indication which team it is
     {
-       if (isServer)
-           CmdUpdateTeam();
-       else
-           ChooseTeamLogic();
-
-      // if (this.isLocalPlayer == true) { return; }
-      // 
-      // // the way you're supposed to do it:
-      // if (isServer)
-      //     {
-      //         RpcUpdateTeam();
-      //     }
-      //     else
-      //     {
-      //         CmdUpdateTeam();
-      //     }
+        if (isServer)
+          {
+              RpcUpdateTeam();
+          }
+          else
+          {
+              CmdUpdateTeam();
+          }
     }
 
     [Command]
     void CmdUpdateTeam()
     {
         RpcUpdateTeam();
-        //ChooseTeamLogic();
     }
 
     [ClientRpc]
     void RpcUpdateTeam()
     {
         //theLobbyManager.SetTeam(index, num);
+        chosenTeamText.text = team.ToString();
         ChooseTeamLogic();
     }
 
@@ -95,16 +225,17 @@ public class CharacterSelect : NetworkBehaviour {
         //this makes sure that the team chosen won't revert back to null
         if (team == nullNumber) team = 0;
         else team = team == 0 ? 1 : 0;
-        theLobbyManager.SetTeam(index, team);
+        //theLobbyManager.SetTeam(index, team);
+        chosenTeamText.text = team.ToString();
+
     }
 
     public void ChooseRole() //in the button you'd set the variable to 0 or 1 to indicate the role it is
     {
-        if (isServer )
-           CmdUpdateRole();
+        if (isServer)
+            RpcUpdateRole();
         else
-            ChooseRoleLogic();
-
+            CmdUpdateRole();
     }
 
     [Command]
@@ -125,18 +256,20 @@ public class CharacterSelect : NetworkBehaviour {
         else role = role == 0 ? 1 : 0;
 
         //if (partner != null)
-            //partner.role = ( == 0 ? 1 : 0); //ternery operators amirite
-        
-        theLobbyManager.SetRole(index, role);
+        //partner.role = ( == 0 ? 1 : 0); //ternery operators amirite
+
+        //theLobbyManager.SetRole(index, role);
         //Advance();
+        chosenRoleText.text = role.ToString();
+
     }
 
     public void CharacterIncrementerRight()
     {
         if (isServer)
-            CmdCharacterIncrementerRight();
+            RpcCharacterIncrementerRight();
         else
-            RightIncrementLogic();
+            CmdCharacterIncrementerRight();
     }
 
     [Command]
@@ -165,10 +298,10 @@ public class CharacterSelect : NetworkBehaviour {
 
     public void CharacterIncrementerLeft()
     {
-      if (isServer)
-          CmdCharacterIncrementerLeft();
-      else
-            LeftIncrementLogic();
+        if (isServer)
+            RpcCharacterIncrementerLeft();
+        else
+            CmdCharacterIncrementerLeft();
     }
 
     [Command]
@@ -199,8 +332,8 @@ public class CharacterSelect : NetworkBehaviour {
     {
         chosenCharacter = (Characters)characterCounter;
         //theCharacter.color = theCharacterColors[characterCounter];
-        //chosenCharacterText.text = chosenCharacter.ToString();
-        theLobbyManager.SetCharacter(index, (int)chosenCharacter);
+        chosenCharacterText.text = chosenCharacter.ToString();
+      //  theLobbyManager.SetCharacter(index, (int)chosenCharacter);
     }
 
     //not using back or advance
@@ -212,7 +345,7 @@ public class CharacterSelect : NetworkBehaviour {
         {
             case 0:
                 team = nullNumber;
-                theLobbyManager.SetTeam(index, nullNumber);
+             //   theLobbyManager.SetTeam(index, nullNumber);
                 teamChosen.SetActive(false);
                 roleObject.SetActive(false);
                 //this does nothing lol 
@@ -220,11 +353,11 @@ public class CharacterSelect : NetworkBehaviour {
             case 1:
                 role = nullNumber;
                 roleChosen.SetActive(false);
-                theLobbyManager.SetRole(index, nullNumber);
+                //theLobbyManager.SetRole(index, nullNumber);
 
                 characterCounter = 0;
                 chosenCharacter = 0;
-                theLobbyManager.SetCharacter(index, 0);
+                //theLobbyManager.SetCharacter(index, 0);
                 theCharacter.color = Color.green;
                 characterObject.SetActive(false);
                 break;
