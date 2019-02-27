@@ -70,6 +70,12 @@ public class CharacterSelect : NetworkBehaviour {
             notLocalPlayer.transform.position = uiPosition;
             localPlayer.transform.position = uiPosition;
         }
+       else
+       {
+           inCharacterSelect = false;
+           notLocalPlayer.SetActive(false);
+           localPlayer.SetActive(false);
+       }
 
     }
 
@@ -86,6 +92,9 @@ public class CharacterSelect : NetworkBehaviour {
 
     public void DisableCharacterSelect()
     {
+        inCharacterSelect = false;
+        notLocalPlayer.SetActive(false);
+        localPlayer.SetActive(false);
         if (isServer)
             RpcSettingPositions();
         else
@@ -95,6 +104,9 @@ public class CharacterSelect : NetworkBehaviour {
     [Command]
     void CmdDisableCharacterSelect()
     {
+        inCharacterSelect = false;
+        notLocalPlayer.SetActive(false);
+        localPlayer.SetActive(false);
         RpcDisableCharacterSelect();
     }
 

@@ -77,10 +77,26 @@ public class CustomSpawn : NetworkLobbyManager
                  ourPlayer.GetComponent<PlayerLogic>().runID = team;
                  ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player1.chosenCharacter);
              }
-
+             
+            player1.DisableCharacterSelect();
             player1.inCharacterSelect = false;
-            player1.notLocalPlayer.SetActive(false);
-            player1.localPlayer.SetActive(false);
+
+            if (GameObject.Find("Player1"))
+            {
+                GameObject.Find("Player1").GetComponent<CharacterSelect>().inCharacterSelect = false;
+                GameObject.Find("Player1").GetComponent<CharacterSelect>().DisableCharacterSelect();
+
+            }
+            if (GameObject.Find("Player2"))
+            {
+                GameObject.Find("Player2").GetComponent<CharacterSelect>().inCharacterSelect = false;
+                GameObject.Find("Player2").GetComponent<CharacterSelect>().DisableCharacterSelect();
+            }
+            if (GameObject.Find("Player3"))
+            {
+                GameObject.Find("Player3").GetComponent<CharacterSelect>().inCharacterSelect = false;
+                GameObject.Find("Player3").GetComponent<CharacterSelect>().DisableCharacterSelect();
+            }
 
             return ourPlayer;
         }
@@ -109,8 +125,9 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player2.chosenCharacter);
             }
-
+            
             player2.DisableCharacterSelect();
+            player2.inCharacterSelect = false;
             
             return ourPlayer;
 
@@ -142,7 +159,8 @@ public class CustomSpawn : NetworkLobbyManager
             }
 
             player3.DisableCharacterSelect();
-            
+            player3.inCharacterSelect = false;
+
             return ourPlayer;
 
         }
@@ -173,6 +191,7 @@ public class CustomSpawn : NetworkLobbyManager
             }
 
             player4.DisableCharacterSelect();
+            player4.inCharacterSelect = false;
 
             return ourPlayer;
 
