@@ -1571,7 +1571,6 @@ MonoBehaviour:
   - {x: 300, y: 100, z: 0}
   - {x: 550, y: 100, z: 0}
   - {x: 800, y: 100, z: 0}
-  oldPlayer: {fileID: 0}
 --- !u!4 &1484617109
 Transform:
   m_ObjectHideFlags: 0
