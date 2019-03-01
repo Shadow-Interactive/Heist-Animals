@@ -1561,6 +1561,19 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 876468cfa64d30345957893404fbb631, type: 3}
   playerCanvas: {fileID: 1794624240}
   uiTest: {fileID: 1510491286}
+  teamString:
+  - 
+  - 
+  - 
+  roleString:
+  - 
+  - 
+  - 
+  characterString:
+  - 
+  - 
+  - 
+  - 
   actualPlayers:
   - {fileID: 0}
   - {fileID: 0}

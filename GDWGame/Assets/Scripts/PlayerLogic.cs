@@ -55,6 +55,8 @@ public class PlayerLogic : NetworkBehaviour {
 
     public PlayerObjectiveManager theObjManager; //why'd i bother encapsulating the code if it was gonna be made obsolete like this T_T
 
+    public RunnerParticleSystem theParticleSystem;
+
 	[HideInInspector]
 	private enum runnerStates
 	{
@@ -158,6 +160,7 @@ public class PlayerLogic : NetworkBehaviour {
             CmdSetCharacter();
             AbilityAnim = playerCanvas.GetComponent<Animator>();
             spriteAnim = playerCanvas.GetComponentInChildren<Animator>();
+            theParticleSystem.TeleportIn();
             initRM = true;
         }
 
@@ -861,6 +864,7 @@ public class PlayerLogic : NetworkBehaviour {
     void Teleport()
     {
         playerPosition = transform.position;
+        theParticleSystem.TeleportOut();
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
     }
     
