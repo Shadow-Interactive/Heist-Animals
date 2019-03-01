@@ -31,6 +31,7 @@ public enum ColourTypes
 public class RoomManager : NetworkBehaviour
 {
     public RoomScript[] theRooms;
+    public GameObject[] teleportPositions;
     public Objective[] theObjectives;
 
     Mesh[] theMeshes = new Mesh[3];
@@ -117,8 +118,8 @@ public class RoomManager : NetworkBehaviour
     {
         updateUIPosition = true;
         Vector3 dropPosition = new Vector3(position.x, position.y, position.z); 
-        int temp = Random.Range(0, theRooms.Length);
-        position = theRooms[temp].transform.position;
+        int temp = Random.Range(0, teleportPositions.Length);
+        position = teleportPositions[temp].transform.position;
         roomInt = temp;
 
        if (pickedUpObjectives.Count > 0)

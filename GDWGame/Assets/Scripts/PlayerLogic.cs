@@ -66,8 +66,8 @@ public class PlayerLogic : NetworkBehaviour {
     //private variables
     //strings
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
-    string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap", 
-        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7",
+    string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap",
+        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7", O8 = "Objective8", O9 = "Objective9",
         strBulletPool = "BulletPool", strMouseScrollWheel = "Mouse ScrollWheel";
 
     //ints, floats and bools used in logic
@@ -154,6 +154,7 @@ public class PlayerLogic : NetworkBehaviour {
         if (!initRM)
         {
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+            gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.grey);
             theAnimator = GetComponent<Animator>();
             CmdSetCharacter();
             AbilityAnim = playerCanvas.GetComponent<Animator>();
@@ -209,6 +210,14 @@ public class PlayerLogic : NetworkBehaviour {
                 R1currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
 
                 break;
+            case 8:
+                R1currentObjective = GameObject.Find(O8).GetComponentInChildren<Objective>();
+
+                break;
+            case 9:
+                R1currentObjective = GameObject.Find(O9).GetComponentInChildren<Objective>();
+
+                break;
             default:
                 //swing and a miss
                 break;
@@ -245,6 +254,14 @@ public class PlayerLogic : NetworkBehaviour {
                 R2currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
 
                 break;
+            case 8:
+                R2currentObjective = GameObject.Find(O8).GetComponentInChildren<Objective>();
+
+                break;
+            case 9:
+                R2currentObjective = GameObject.Find(O9).GetComponentInChildren<Objective>();
+
+                break;
             default:
                 //swing and a miss
                 break;
@@ -259,7 +276,7 @@ public class PlayerLogic : NetworkBehaviour {
     //updating the key inputs
     private void KeyInputUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
         }
@@ -304,7 +321,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
-            AbilityAnim.SetBool("SelSmokeUp", true);
+            //AbilityAnim.SetBool("SelSmokeUp", true);
             if ((int)theCurrentAbility > 0 && (int)theCurrentAbility <= 2)
             {
                 theCurrentAbility--;
@@ -537,7 +554,7 @@ public class PlayerLogic : NetworkBehaviour {
         //if (isServer)
         //NetworkServer.Spawn(bullet);
         var bullet = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableBullet(position);
-        bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 0.3f, bullet.transform.position.z) + transform.forward * 0.2f;
+        bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 2f, bullet.transform.position.z) + transform.forward * 0.2f;
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperID = IDforBullet;
 

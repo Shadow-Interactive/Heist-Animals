@@ -14,7 +14,7 @@ public class Movement : NetworkBehaviour {
     private const float CAM_Y_MIN = -30.0f;
     private const float CAM_Y_MAX = 30.0f;
     //player speed per second (expected 60 FPS)
-    public float speed = 2400.0f; //speed without time.Deltatime was 10
+    public float speed = 1600.0f; //speed without time.Deltatime was 10
 
     //camera variables for tracking camera position, target, and camera object itself
     public Transform cameraTarget;
@@ -53,7 +53,7 @@ public class Movement : NetworkBehaviour {
             if (isServer)
             {
                
-                gameObject.transform.position = new Vector3(35f, 1f, -27f);
+                gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
                 gameObject.tag = "RunnerOne";
                 gameObject.name = "RunnerOne";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
@@ -62,7 +62,7 @@ public class Movement : NetworkBehaviour {
             else
             {
                 
-                gameObject.transform.position = new Vector3(-48f, 1f, -1.8f);
+                gameObject.transform.position = new Vector3(18f, 2f, 61f);
                 gameObject.tag = "RunnerTwo";
                 gameObject.name = "RunnerTwo";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
@@ -73,14 +73,14 @@ public class Movement : NetworkBehaviour {
         {
             if (isServer)
             {
-                gameObject.transform.position = new Vector3(-48f, 1f, -1.8f);
+                gameObject.transform.position = new Vector3(18f, 2f, 61f);
                 gameObject.tag = "RunnerTwo";
                 gameObject.name = "RunnerTwo";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
             }
             else
             {
-                gameObject.transform.position = new Vector3(35f, 1f, -27f);
+                gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
                 gameObject.tag = "RunnerOne";
                 gameObject.name = "RunnerOne";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;

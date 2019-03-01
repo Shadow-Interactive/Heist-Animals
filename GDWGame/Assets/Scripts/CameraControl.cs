@@ -29,8 +29,8 @@ public class CameraControl : MonoBehaviour {
             cameraLook.y += Input.GetAxis("Mouse Y");
         }
 
-        cameraLook.y = Mathf.Clamp(cameraLook.y, -50.0f, 50.0f);
-;
+        cameraLook.y = Mathf.Clamp(cameraLook.y, -40.0f, 40.0f);
+
 
         Quaternion cameraRotate = Quaternion.Euler(-cameraLook.y, cameraLook.x, 0.0f);
         transform.rotation = cameraRotate;
@@ -44,7 +44,7 @@ public class CameraControl : MonoBehaviour {
     void camFollow()
     {
         Transform target = player.transform;
-        transform.position = Vector3.MoveTowards(transform.position, target.position + new Vector3(0, 1, 0), 120 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target.position + new Vector3(0, 4, 0), 120 * Time.deltaTime);
     }
 
 

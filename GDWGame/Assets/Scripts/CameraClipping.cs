@@ -34,7 +34,7 @@ public class CameraClipping : MonoBehaviour {
         ADS = transform.parent.localPosition; // + new Vector3(1.5f, -3f, 8f);
         ADSnormalized = ADS.normalized * -1;
         ADSnormalized += new Vector3(0.5f, 0, 0);
-        ADS += new Vector3(2.0f, -3f, -6f);
+        ADS += new Vector3(2.5f, -2f, -10f);
     }
 	
 	// Update is called once per frame
@@ -44,18 +44,18 @@ public class CameraClipping : MonoBehaviour {
         //camPos = transform.localPosition.normalized;
         if (Input.GetMouseButton(1) || XBoxInput.GetLeftTrigger() >= 0.99f)
         {
-            cameraDistance = 1.3f;
-            noClipPositionBehind = transform.parent.TransformPoint(new Vector3(ADSnormalized.x, ADSnormalized.y, ADSnormalized.z - 0.25f) * cameraDistance);
-            noClipPositionLeft = transform.parent.TransformPoint(new Vector3(ADSnormalized.x - 0.2f, ADSnormalized.y, ADSnormalized.z - 0.15f) * cameraDistance);
-            noClipPositionRight = transform.parent.TransformPoint(new Vector3(ADSnormalized.x + 0.2f, ADSnormalized.y, ADSnormalized.z - 0.15f) * cameraDistance);
+            cameraDistance = 1.1f;
+            noClipPositionBehind = transform.parent.TransformPoint(new Vector3(ADSnormalized.x, ADSnormalized.y, ADSnormalized.z - 0.05f) * cameraDistance);
+            noClipPositionLeft = transform.parent.TransformPoint(new Vector3(ADSnormalized.x - 0.2f, ADSnormalized.y, ADSnormalized.z - 0.02f) * cameraDistance);
+            noClipPositionRight = transform.parent.TransformPoint(new Vector3(ADSnormalized.x + 0.2f, ADSnormalized.y, ADSnormalized.z - 0.02f) * cameraDistance);
         }
         else
         {
-            cameraDistance = 1.7f;
+            cameraDistance = 1.3f;
             //three raycasts to check for collision
-            noClipPositionBehind = transform.parent.TransformPoint(new Vector3(camPos.x, camPos.y, camPos.z - 0.25f) * cameraDistance);
-            noClipPositionLeft = transform.parent.TransformPoint(new Vector3(camPos.x - 0.1f, camPos.y, camPos.z - 0.15f) * cameraDistance);
-            noClipPositionRight = transform.parent.TransformPoint(new Vector3(camPos.x + 0.1f, camPos.y, camPos.z - 0.15f) * cameraDistance);
+            noClipPositionBehind = transform.parent.TransformPoint(new Vector3(camPos.x, camPos.y, camPos.z - 0.05f) * cameraDistance);
+            noClipPositionLeft = transform.parent.TransformPoint(new Vector3(camPos.x - 0.1f, camPos.y, camPos.z - 0.02f) * cameraDistance);
+            noClipPositionRight = transform.parent.TransformPoint(new Vector3(camPos.x + 0.1f, camPos.y, camPos.z - 0.02f) * cameraDistance);
         }
 
         RaycastHit contact;
@@ -70,7 +70,7 @@ public class CameraClipping : MonoBehaviour {
         if (Physics.Linecast(transform.parent.position, noClipPositionBehind, out contact) && wall == false)
         {
             behind = true;
-            transform.position = Vector3.Lerp(transform.position, new Vector3(contact.point.x + contact.normal.x * 0.3f, contact.point.y + contact.normal.y * 0.15f, contact.point.z + contact.normal.z * 0.3f), Time.deltaTime * 25.0f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(contact.point.x + contact.normal.x * 0.3f, contact.point.y + contact.normal.y * 0.7f, contact.point.z + contact.normal.z * 0.3f), Time.deltaTime * 25.0f);
         }
         //raycast left diagonally
         else if (Physics.Linecast(transform.parent.position, noClipPositionLeft, out contact) && rightRay == false && behind == false)

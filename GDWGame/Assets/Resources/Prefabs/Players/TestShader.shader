@@ -3,10 +3,13 @@
 		_MainTex("Texture", 2D) = "white" {}
 		_Ramp("Ramp", 2D) = "white" {}
 		_NormalMap("Normal Map", 2D) = "bump" {}
+		_RimLight("Rim Light", Color) = (0.0, 0.0, 0.0, 0.0)
+		_RimStrength("Rim Strength", Range(0.0, 20.0)) = 5.0
 	}
 		SubShader{
 		Tags { "RenderType" = "Opaque" }
 		CGPROGRAM
+		
 		#pragma surface surf Ramp
 
 		#pragma target 3.0
@@ -26,14 +29,19 @@
 		struct Input {
 			float2 uv_MainTex;
 			float2 uv_NormalMap;
+			float3 viewDir;
 		};
 
 		sampler2D _MainTex;
 		sampler2D _NormalMap;
+		float4 _RimLight;
+		float _RimStrength;
 
 		void surf(Input IN, inout SurfaceOutput o) {
 			o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;
 			o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap));
+			half rLight = 1.0 - saturate(dot(normalize(IN.viewDir), o.Normal));
+			o.Emission = _RimLight.rgb * pow(rLight, _RimStrength);
 		}
 		ENDCG
 	}

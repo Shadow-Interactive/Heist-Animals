@@ -39,7 +39,7 @@ public class OverSeerControl : NetworkBehaviour {
     float timer = 0;
 
     //can optimize later
-    public GameObject cam1, cam2, cam3, cam4, cam5, cam6, cam7, cam8, cam9, cam10, cam11, cam12, cam13, cam14, cam15;
+    public GameObject cam1, cam2, cam3, cam4, cam5, cam6, cam7, cam8, cam9, cam10, cam11, cam12, cam13, cam14, cam15, cam16, cam17, cam18;
 
     private List<GameObject> totalCamera = new List<GameObject>();
 
@@ -54,7 +54,7 @@ public class OverSeerControl : NetworkBehaviour {
     string mouseX = "Mouse X", mouseY = "Mouse Y";
     string treasureStr = "Treasure", securityStr = "SecurityBox";
     string networkTrapStr = "TheNetworkTrap", roomStr = "Room",
-        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7";
+        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7", O8 = "Objective8", O9 = "Objective9";
     public string camRoomName;
 
     RaycastHit clickHit;
@@ -108,6 +108,9 @@ public class OverSeerControl : NetworkBehaviour {
         totalCamera.Add(cam13);
         totalCamera.Add(cam14);
         totalCamera.Add(cam15);
+        totalCamera.Add(cam16);
+        totalCamera.Add(cam17);
+        totalCamera.Add(cam18);
 
         //original rotations to reset to
         ogRotation.Add(cam1.transform.rotation.eulerAngles);
@@ -125,52 +128,55 @@ public class OverSeerControl : NetworkBehaviour {
         ogRotation.Add(cam13.transform.rotation.eulerAngles);
         ogRotation.Add(cam14.transform.rotation.eulerAngles);
         ogRotation.Add(cam15.transform.rotation.eulerAngles);
+        ogRotation.Add(cam16.transform.rotation.eulerAngles);
+        ogRotation.Add(cam17.transform.rotation.eulerAngles);
+        ogRotation.Add(cam18.transform.rotation.eulerAngles);
 
         if (OverID == 1)
         {
             if (camChoice)
-                totalCamera[3].GetComponentInChildren<Camera>().enabled = true;
+                totalCamera[9].GetComponentInChildren<Camera>().enabled = true;
             else
-                totalCamera[3].GetComponentInChildren<Camera>().enabled = false;
+                totalCamera[9].GetComponentInChildren<Camera>().enabled = false;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 9; i++)
             {
                 totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
             }
 
-            for (int i = 4; i < totalCamera.Count; i++)
+            for (int i = 10; i < totalCamera.Count; i++)
             {
                 totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
             }
-            camRoomName = "Room4";
-            trapSelect = 4;
+            camRoomName = "Room9";
+            trapSelect = 9;
         }
         else if (OverID == 2)
         {
             if (camChoice)
-                totalCamera[11].GetComponentInChildren<Camera>().enabled = true;
+                totalCamera[13].GetComponentInChildren<Camera>().enabled = true;
             else
-                totalCamera[11].GetComponentInChildren<Camera>().enabled = false;
+                totalCamera[13].GetComponentInChildren<Camera>().enabled = false;
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 13; i++)
             {
                 totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
             }
 
-            for (int i = 12; i < totalCamera.Count; i++)
+            for (int i = 14; i < totalCamera.Count; i++)
             {
                 totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
             }
             camRoomName = "Room12";
-            trapSelect = 12;
+            trapSelect = 13;
         }
 
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
 
         if (OverID == 1)
-            currentCamera = 3;
+            currentCamera = 9;
         else if (OverID == 2)
-            currentCamera = 11;
+            currentCamera = 13;
     }
 
     void findFOV(int x)
@@ -182,10 +188,10 @@ public class OverSeerControl : NetworkBehaviour {
     public void LoadProperties()
     {
         if (OverID == 1)
-            currentCamera = 3;
+            currentCamera = 5;
         else if (OverID == 2)
             currentCamera = 11;
-        gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
+        gameObject.transform.position = new Vector3(46.94304f, 9.81f, -33.79776f);
 
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
        
@@ -264,7 +270,18 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         //UNCOMMENT AFTER DONE TESTING OVERSEER
-        GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+        //GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+
+        //if (OverID == 1)
+        //{
+        //    GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+        //    GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+        //}
+        //else if (OverID == 2)
+        //{
+        //    GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+        //    GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+        //}
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
@@ -299,6 +316,14 @@ public class OverSeerControl : NetworkBehaviour {
             case 7:
                 R1currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
                 
+                break;
+            case 8:
+                R1currentObjective = GameObject.Find(O8).GetComponentInChildren<Objective>();
+
+                break;
+            case 9:
+                R1currentObjective = GameObject.Find(O9).GetComponentInChildren<Objective>();
+
                 break;
             default:
                 //swing and a miss
@@ -335,12 +360,18 @@ public class OverSeerControl : NetworkBehaviour {
                 R2currentObjective = GameObject.Find(O7).GetComponentInChildren<Objective>();
                 
                 break;
+            case 8:
+                R2currentObjective = GameObject.Find(O8).GetComponentInChildren<Objective>();
+
+                break;
+            case 9:
+                R2currentObjective = GameObject.Find(O9).GetComponentInChildren<Objective>();
+
+                break;
             default:
                 //swing and a miss
                 break;
         }
-
-
 
         if (!Input.GetKey(KeyCode.P) || !doNotMove)
         {
@@ -452,10 +483,10 @@ public class OverSeerControl : NetworkBehaviour {
 
                     if (totalCamera[i] == totalCamera[0])
                     {
-                        trapSelect = 15;
+                        trapSelect = 17;
                         totalCamera[totalCamera.Count - 1].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
-                        currentCamera = 14;
+                        currentCamera = 17;
                         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
                         break;
                     }
@@ -485,7 +516,7 @@ public class OverSeerControl : NetworkBehaviour {
                     totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(cameraLook.y, ogRotation[i].y + cameraLook.x, 0);
                     if (totalCamera[i] == totalCamera[totalCamera.Count - 1])
                     {
-                        trapSelect = 1;
+                        trapSelect = 0;
                         totalCamera[0].GetComponentInChildren<Camera>().enabled = true;
                         totalCamera[i].GetComponentInChildren<Camera>().enabled = false;
                         currentCamera = 0;
@@ -609,43 +640,43 @@ public class OverSeerControl : NetworkBehaviour {
 
         //theCanvasManager.T3.text = eventConsole.repetitiveshit();
 
-        //UNCOMMENT AFTER DONE TESTING OVERSEER
+        ////UNCOMMENT AFTER DONE TESTING OVERSEER
 
-        if (run1 == null || run2 == null)
-        {
-            theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
-            theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-            theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+        //if (run1 == null || run2 == null)
+        //{
+        //    theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
+        //    theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+        //    theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
 
-        }
-        else
-        {
-            //theCanvasManager.T4.text = "gets to this point";
-            //if (OverID == 1)
-            //{
-            //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-            //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
+        //}
+        //else
+        //{
+        //    //theCanvasManager.T4.text = "gets to this point";
+        //    //if (OverID == 1)
+        //    //{
+        //    //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+        //    //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
 
-            //}
-            //else if (OverID == 2)
-            //{
-            //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-            //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
+        //    //}
+        //    //else if (OverID == 2)
+        //    //{
+        //    //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+        //    //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
 
-            //}
+        //    //}
 
-            if (run1.currstate != 0 || run2.currstate != 0)
-            {
-                theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
-                print("it gets to this point FUUUCk");
-                print(run1.currstate.ToString());
-                theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
-                run1.currstate = 0;
-                run2.currstate = 0;
-            }
-        }
+        //    if (run1.currstate != 0 || run2.currstate != 0)
+        //    {
+        //        theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
+        //        print("it gets to this point FUUUCk");
+        //        print(run1.currstate.ToString());
+        //        theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
+        //        run1.currstate = 0;
+        //        run2.currstate = 0;
+        //    }
+        //}
 
-        theCanvasManager.consoleMessages();
+        //theCanvasManager.consoleMessages();
 
         //theCanvasManager.T5.text = "gets to this point";
         //Debug.Log(OverID);
@@ -750,7 +781,7 @@ public class OverSeerControl : NetworkBehaviour {
         totalCamera[currentCamera].GetComponentInChildren<Camera>().enabled = false;
         totalCamera[theValue].GetComponentInChildren<Camera>().enabled = true;
         currentCamera = theValue;
-        trapSelect = theValue + 1;
+        trapSelect = theValue;
         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
         //camRoomName = 
     }

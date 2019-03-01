@@ -28,7 +28,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     public RawImage minimapPoint;
     public RawImage[] trapIcons = new RawImage[4];
 
-    Vector3[] pointPositions = new Vector3[15];
+    Vector3[] pointPositions = new Vector3[18];
     public Text currentRoom;
 
 	public Text T1;
@@ -38,7 +38,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 	public Text T5;
 	Queue<string> messageQ = new Queue<string>();
 
-	string[] theRoomTexts = new string[15];
+	string[] theRoomTexts = new string[18];
     string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2";
 
     public Canvas cursorCanvas;
@@ -116,34 +116,40 @@ public class OverseerCanvasManager : NetworkBehaviour
         pointPositions[12] = new Vector3(-10.6f, -15f, 0);
         pointPositions[13] = new Vector3(-10.6f, -30.4f, 0);
         pointPositions[14] = new Vector3(-39.6f, -30.4f, 0);
+        pointPositions[15] = new Vector3(-10.6f, -15f, 0);
+        pointPositions[16] = new Vector3(-10.6f, -30.4f, 0);
+        pointPositions[17] = new Vector3(-39.6f, -30.4f, 0);
 
-        theRoomTexts[0] = "Room 8";
-        theRoomTexts[1] = "Room 9";
-        theRoomTexts[2] = "Hallway 1";
-        theRoomTexts[3] = "Room 6";
-        theRoomTexts[4] = "Hallway 2";
+        theRoomTexts[0] = "Foyer";
+        theRoomTexts[1] = "Hallway 1";
+        theRoomTexts[2] = "Hallway 2";
+        theRoomTexts[3] = "Hallway 3";
+        theRoomTexts[4] = "Hallway 4";
         theRoomTexts[5] = "Room 1";
-        theRoomTexts[6] = "Hallway 3";
-        theRoomTexts[7] = "Room 8";
-        theRoomTexts[8] = "Room 9";
-        theRoomTexts[9] = "Hallway 4";
-        theRoomTexts[10] = "Room 2";
-        theRoomTexts[11] = "Room 3";
-        theRoomTexts[12] = "Hallway 5";
-        theRoomTexts[13] = "Room 5";
-        theRoomTexts[14] = "Room 4";
+        theRoomTexts[6] = "Room 2";
+        theRoomTexts[7] = "Room 3";
+        theRoomTexts[8] = "Room 4";
+        theRoomTexts[9] = "Room 5";
+        theRoomTexts[10] = "Room 6";
+        theRoomTexts[11] = "Room 7";
+        theRoomTexts[12] = "Room 8";
+        theRoomTexts[13] = "Room 9";
+        theRoomTexts[14] = "Room 10";
+        theRoomTexts[15] = "Room 11";
+        theRoomTexts[16] = "Room 12";
+        theRoomTexts[17] = "Room 13";
     }
     
     public void ChangeTrapLocation(int index, Vector3 position) //for when the objective is dropping
     {
-        codeVisuals[index].transform.position = new Vector3(position.x, -0.5f, position.z);
+        codeVisuals[index].transform.position = new Vector3(position.x, 1.5f, position.z);
     }
 
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
     {
         GameObject trapObj = GameObject.Instantiate(codePrefab);
         trapObj.transform.parent = trapCanvas.transform;
-        trapObj.transform.position = new Vector3(trapPos.x, -0.5f, trapPos.z);
+        trapObj.transform.position = new Vector3(trapPos.x, 1.5f, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)
@@ -165,7 +171,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     void AddImage(Transform boxPos, Vector3 boxRotation, RoomTraps theType)
     {
         imageTemp = GameObject.Instantiate(theImages[(int)theType]);
-        imageTemp.transform.position = new Vector3(boxPos.position.x, boxPos.position.y + 1.7f, boxPos.position.z);
+        imageTemp.transform.position = new Vector3(boxPos.position.x, boxPos.position.y + 2f, boxPos.position.z);
         imageTemp.transform.eulerAngles = new Vector3(boxRotation.x, boxRotation.y + 90, boxRotation.z);
         imageTemp.transform.parent = trapCanvas.transform;
         trapImages.Add(imageTemp);
