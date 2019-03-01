@@ -264,7 +264,7 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         //UNCOMMENT AFTER DONE TESTING OVERSEER
-        GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+        //GameObject.FindGameObjectWithTag("RunnerOne").GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());

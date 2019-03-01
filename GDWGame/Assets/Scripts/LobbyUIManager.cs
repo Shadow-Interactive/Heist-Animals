@@ -125,7 +125,6 @@ public class LobbyUIManager : NetworkBehaviour
             if (GameObject.Find("Player3"))
             {
                 actualPlayers[3] = GameObject.Find("Player3").GetComponent<CharacterSelect>();
-                locatingPlayers = false;
             }
         }
     }

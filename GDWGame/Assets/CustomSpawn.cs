@@ -61,9 +61,9 @@ public class CustomSpawn : NetworkLobbyManager
             if (player1.team == 0) teamChoice = 0;
             else teamChoice = 2;
 
-            int team = player1.team + 1;
+            int team = player1.team +1;
             
-             ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice + teamChoice].position, Quaternion.identity);
+             ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice+teamChoice].position, Quaternion.identity);
             
              if (prefabChoice == 1) //1 for overseer
              {
@@ -109,9 +109,9 @@ public class CustomSpawn : NetworkLobbyManager
             if (player2.team == 0) teamChoice = 0;
             else teamChoice = 2;
             
-            int team = player2.team + 1;
+            int team = player2.team+1;
             
-            ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice + teamChoice].position, Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice+teamChoice].position, Quaternion.identity);
             
             if (prefabChoice == 1) //1 for overseer
             {
@@ -143,7 +143,7 @@ public class CustomSpawn : NetworkLobbyManager
             
             int team = player3.team + 1;
             
-            ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice + teamChoice].position, Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice+teamChoice].position, Quaternion.identity);
             
             if (prefabChoice == 1) //1 for overseer
             {
@@ -175,13 +175,12 @@ public class CustomSpawn : NetworkLobbyManager
             
             int team = player4.team + 1;
             
-            ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice + teamChoice].position, Quaternion.identity);
+            ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice+teamChoice].position, Quaternion.identity);
             
             if (prefabChoice == 1) //1 for overseer
             {
                 ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                 ourPlayer.GetComponent<OverSeerControl>().OverID = team;
-                //print(_temp.GetComponent<OverSeerControl>().OverID);
                 print("does get here");
             }
             else
@@ -228,6 +227,7 @@ public class CustomSpawn : NetworkLobbyManager
 
     void Update()
     {
+        if (theLobbyManager != null)
         theLobbyManager.UpdateUI();
         
     }

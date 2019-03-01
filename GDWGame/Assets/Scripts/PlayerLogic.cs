@@ -722,6 +722,7 @@ public class PlayerLogic : NetworkBehaviour {
                     if (numTreasures > 0)
                     {
                         numTreasures--;
+                        SetNumTreasure(numTreasures);
                         scoreText.text = numTreasures.ToString();
                     }
                     Restore();
@@ -749,24 +750,12 @@ public class PlayerLogic : NetworkBehaviour {
         {
             //CmdScore();
             numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
+            SetNumTreasure(numTreasures);
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
             pickedUpObjectives.Add(other.GetComponent<Treasure>().GetTrapID());
 			currstate = (int)runnerStates.isObtainedObjective;
         }
-    }
-
-    [Command]
-    void CmdScore(int score)
-    {
-        RpcScore(score);
-
-    }
-
-    [ClientRpc]
-    void RpcScore(int score)
-    {
-        numTreasures += score;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -867,5 +856,25 @@ public class PlayerLogic : NetworkBehaviour {
         theParticleSystem.TeleportOut();
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
     }
-    
+
+    void SetNumTreasure(int num)
+    {
+        if (isServer)
+            RpcSetNumTreasure(num);
+        else
+            CmdSetNumTreasure(num);
+    }
+
+    [Command]
+    void CmdSetNumTreasure(int num)
+    {
+        RpcSetNumTreasure(num);
+    }
+
+    [ClientRpc]
+    void RpcSetNumTreasure(int num)
+    {
+        numTreasures = num;
+    }
+
 }

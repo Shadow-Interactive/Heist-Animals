@@ -65,6 +65,7 @@ public class CharacterSelect : NetworkBehaviour {
         {
             if (theLobbyManager == null)
             {
+                if (GameObject.Find("LobbyUIManager"))
                 theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
             }
             else
@@ -211,12 +212,15 @@ public class CharacterSelect : NetworkBehaviour {
     void ChooseTeamLogic()
     {
         //this makes sure that the team chosen won't revert back to null
-        int desiredTeam = team;
-        int newteam = 0;
-        if (desiredTeam == nullNumber) desiredTeam = 0;
-        else desiredTeam = desiredTeam == 0 ? 1 : 0;
-        newteam = theLobbyManager.AvailableTeam(playerIndex, desiredTeam);
-        ThisIsADisasterTeam(newteam);
+        //int desiredTeam = team;
+        //int newteam = 0;
+        //if (desiredTeam == nullNumber) desiredTeam = 0;
+        //else desiredTeam = desiredTeam == 0 ? 1 : 0;
+        //newteam = theLobbyManager.AvailableTeam(playerIndex, desiredTeam);
+        //ThisIsADisasterTeam(newteam);
+
+        if (team == nullNumber) team = 0;
+        else team = team == 0 ? 1 : 0;
     }
 
     void ThisIsADisasterTeam(int num)
@@ -265,12 +269,16 @@ public class CharacterSelect : NetworkBehaviour {
 
     void ChooseRoleLogic()
     {
-        int desiredRole = role;
-        int newRole = 0;
-        if (desiredRole == nullNumber) desiredRole = 0;
-        else desiredRole = desiredRole == 0 ? 1 : 0;
-        newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
-        SetRole(newRole);
+        // int desiredRole = role;
+        // int newRole = 0;
+        // if (desiredRole == nullNumber) desiredRole = 0;
+        // else desiredRole = desiredRole == 0 ? 1 : 0;
+        // newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
+        // SetRole(newRole);
+
+        if (role == nullNumber) role = 0;
+        else role = role == 0 ? 1 : 0;
+        
 
     }
 
