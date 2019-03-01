@@ -748,7 +748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7bcc2069e45ee4dab5ba5dacc6020c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strZap: Zap
   theRooms:
   - {fileID: 1397607454}
   - {fileID: 1286384065}
@@ -768,6 +767,16 @@ MonoBehaviour:
   - {fileID: 1712892548}
   - {fileID: 1271143015}
   - {fileID: 964478454}
+  characterMeshes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  characterMaterials:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   emptyObjectives: {fileID: 1587763739}
   emptyRooms: {fileID: 202591598}
   securityBoxes:
@@ -794,6 +803,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: be3b5615ac564214abf2f080e047889d, type: 3}
   activateReshuffle: 0
   reshuffleID: 0
+  updateUIPosition: 0
 --- !u!114 &202591601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1248,6 +1258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Zapper: {fileID: 1617729459345444, guid: c1c42e4e8155ea94faabfabb8c4d07b7, type: 2}
+  SmokeBomb: {fileID: 0}
 --- !u!4 &323527742
 Transform:
   m_ObjectHideFlags: 0
@@ -3058,7 +3069,7 @@ MonoBehaviour:
   m_OfflineScene: 
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1617729459345444, guid: c1c42e4e8155ea94faabfabb8c4d07b7, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   m_CustomConfig: 0
   m_MaxConnections: 4
