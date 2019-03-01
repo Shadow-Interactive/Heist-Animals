@@ -117,7 +117,7 @@ public class RoomManager : NetworkBehaviour
     public void Teleport(ref Vector3 position, ref int roomInt, ref List<int> pickedUpObjectives)
     {
         updateUIPosition = true;
-        Vector3 dropPosition = new Vector3(position.x, position.y, position.z); 
+        Vector3 dropPosition = new Vector3(position.x, position.y + 1.5f, position.z); 
         int temp = Random.Range(0, teleportPositions.Length);
         position = teleportPositions[temp].transform.position;
         roomInt = temp;

@@ -210,8 +210,8 @@ public class OverSeerControl : NetworkBehaviour {
 
 		//BECAUSE IT MIGHTVE BEEN MAKING MULTIPLE STUFF
 		//the dumbstuff
-		//run1 = GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponent<PlayerLogic>();
-		//run2 = GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponent<PlayerLogic>();
+		//run1 = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+		//run2 = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
 
 
 		if (OverID == 1)
@@ -275,18 +275,18 @@ public class OverSeerControl : NetworkBehaviour {
             
         }
 
-        //UNCOMMENT AFTER DONE TESTING OVERSEER
-        //if (GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat) ;
+        ////UNCOMMENT AFTER DONE TESTING OVERSEER
+        //GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
         //if (OverID == 1)
         //{
-        //    GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-        //    GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
         //}
         //else if (OverID == 2)
         //{
-        //    GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-        //    GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
         //}
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
@@ -682,7 +682,7 @@ public class OverSeerControl : NetworkBehaviour {
         //    }
         //}
 
-        //theCanvasManager.consoleMessages();
+        theCanvasManager.consoleMessages();
 
         //theCanvasManager.T5.text = "gets to this point";
         //Debug.Log(OverID);
@@ -790,5 +790,27 @@ public class OverSeerControl : NetworkBehaviour {
         trapSelect = theValue;
         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
         //camRoomName = 
+    }
+
+  
+
+    [Command]
+    public void CmdSetTrapActive(int trapID, bool temp)
+    {
+        RpcSetTrapActive(trapID, temp);
+    }
+
+    [ClientRpc]
+    public void RpcSetTrapActive(int trapID, bool temp)
+    {
+         if (GameObject.Find("TheRoomManager"))
+         { 
+
+            theRoomManager = GameObject.Find("TheRoomManager").GetComponent<RoomManager>();
+            //the line of code that was causing errors goes here
+            theRoomManager.theObjectives[trapID].trapActive = temp;
+         }
+       
+
     }
 }

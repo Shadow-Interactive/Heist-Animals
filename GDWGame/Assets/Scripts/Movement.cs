@@ -54,7 +54,7 @@ public class Movement : NetworkBehaviour {
             {
                
                 gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
-                gameObject.tag = "RunnerOne";
+                gameObject.tag = "Runner";
                 gameObject.name = "RunnerOne";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
 
@@ -63,7 +63,7 @@ public class Movement : NetworkBehaviour {
             {
                 
                 gameObject.transform.position = new Vector3(18f, 2f, 61f);
-                gameObject.tag = "RunnerTwo";
+                gameObject.tag = "Runner";
                 gameObject.name = "RunnerTwo";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
@@ -74,14 +74,14 @@ public class Movement : NetworkBehaviour {
             if (isServer)
             {
                 gameObject.transform.position = new Vector3(18f, 2f, 61f);
-                gameObject.tag = "RunnerTwo";
+                gameObject.tag = "Runner";
                 gameObject.name = "RunnerTwo";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
             }
             else
             {
                 gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
-                gameObject.tag = "RunnerOne";
+                gameObject.tag = "Runner";
                 gameObject.name = "RunnerOne";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
             }

@@ -171,14 +171,17 @@ public class CharacterSelect : NetworkBehaviour {
     {
         for (int i = 0; i < 4; i++)
         {
-            if (loadProperties == false && theLobbyManager.playerNumbers[i] == -1)
+            if (theLobbyManager != null)
             {
+                if (loadProperties == false && theLobbyManager.playerNumbers[i] == -1)
+                {
 
-                theLobbyManager.playerNumbers[i] = i;
-                //THis line is so important
-                gameobjectName = "Player" + i;
-                playerIndex = i;
-                loadProperties = true;
+                    theLobbyManager.playerNumbers[i] = i;
+                    //THis line is so important
+                    gameobjectName = "Player" + i;
+                    playerIndex = i;
+                    loadProperties = true;
+                }
             }
         }
         
