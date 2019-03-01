@@ -55,6 +55,8 @@ public class PlayerLogic : NetworkBehaviour {
 
     public PlayerObjectiveManager theObjManager; //why'd i bother encapsulating the code if it was gonna be made obsolete like this T_T
 
+    public RunnerParticleSystem theParticleSystem;
+
 	[HideInInspector]
 	private enum runnerStates
 	{
@@ -159,6 +161,7 @@ public class PlayerLogic : NetworkBehaviour {
             CmdSetCharacter();
             AbilityAnim = playerCanvas.GetComponent<Animator>();
             spriteAnim = playerCanvas.GetComponentInChildren<Animator>();
+            theParticleSystem.TeleportIn();
             initRM = true;
         }
 
@@ -267,10 +270,11 @@ public class PlayerLogic : NetworkBehaviour {
                 break;
         }
 
-		//som event comsole stuff
-		//print("player logic currstate " + currstate);
-		//if (currstate != 0)
-		//	currstate = 0;
+        //som event comsole stuff
+        //print("player logic currstate " + currstate);
+        //if (currstate != 0)
+        //	currstate = 0;
+
 	}
 
     //updating the key inputs
@@ -561,7 +565,7 @@ public class PlayerLogic : NetworkBehaviour {
         SoundManager.setPlaying(true, 1);
         SoundManager.setLoop(1, false);
 
-        Vector3 vel = gameObject.transform.forward * 20f;
+        Vector3 vel = gameObject.transform.forward * 40f;
         SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
 
         Vector3 pos = GetComponent<Transform>().position;
@@ -643,14 +647,13 @@ public class PlayerLogic : NetworkBehaviour {
         shockAttempts++;
         lightningSprite.SetActive(true);
 
-
         if (shockAttempts >= 3)
         {
             Teleport();
             Restore();
         }
-        else
-            UpdateHealthUI();
+        //else
+        //    UpdateHealthUI();
     }
 
     //restores the players stats if the traps affects are done,
@@ -736,6 +739,7 @@ public class PlayerLogic : NetworkBehaviour {
                     if (numTreasures > 0)
                     {
                         numTreasures--;
+                        SetNumTreasure(numTreasures);
                         scoreText.text = numTreasures.ToString();
                     }
                     Restore();
@@ -763,24 +767,12 @@ public class PlayerLogic : NetworkBehaviour {
         {
             //CmdScore();
             numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
+            SetNumTreasure(numTreasures);
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
             pickedUpObjectives.Add(other.GetComponent<Treasure>().GetTrapID());
 			currstate = (int)runnerStates.isObtainedObjective;
         }
-    }
-
-    [Command]
-    void CmdScore(int score)
-    {
-        RpcScore(score);
-
-    }
-
-    [ClientRpc]
-    void RpcScore(int score)
-    {
-        numTreasures += score;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -871,14 +863,36 @@ public class PlayerLogic : NetworkBehaviour {
     {
         spriteAnim.SetTrigger("Hit");
         theHealthUI[zapUI].SetActive(false);
-        zapUI++;
+        if (zapUI < 2)
+            zapUI++;
         theHealthUI[zapUI].SetActive(true);
     }
 
     void Teleport()
     {
         playerPosition = transform.position;
+        theParticleSystem.TeleportOut();
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
     }
-    
+
+    void SetNumTreasure(int num)
+    {
+        if (isServer)
+            RpcSetNumTreasure(num);
+        else
+            CmdSetNumTreasure(num);
+    }
+
+    [Command]
+    void CmdSetNumTreasure(int num)
+    {
+        RpcSetNumTreasure(num);
+    }
+
+    [ClientRpc]
+    void RpcSetNumTreasure(int num)
+    {
+        numTreasures = num;
+    }
+
 }

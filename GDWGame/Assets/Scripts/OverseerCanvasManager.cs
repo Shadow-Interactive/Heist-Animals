@@ -142,14 +142,14 @@ public class OverseerCanvasManager : NetworkBehaviour
     
     public void ChangeTrapLocation(int index, Vector3 position) //for when the objective is dropping
     {
-        codeVisuals[index].transform.position = new Vector3(position.x, 1.5f, position.z);
+        codeVisuals[index].transform.position = new Vector3(position.x, 2.5f, position.z);
     }
 
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
     {
         GameObject trapObj = GameObject.Instantiate(codePrefab);
         trapObj.transform.parent = trapCanvas.transform;
-        trapObj.transform.position = new Vector3(trapPos.x, 1.5f, trapPos.z);
+        trapObj.transform.position = new Vector3(trapPos.x, 2.5f, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)
@@ -171,7 +171,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     void AddImage(Transform boxPos, Vector3 boxRotation, RoomTraps theType)
     {
         imageTemp = GameObject.Instantiate(theImages[(int)theType]);
-        imageTemp.transform.position = new Vector3(boxPos.position.x, boxPos.position.y + 2f, boxPos.position.z);
+        imageTemp.transform.position = new Vector3(boxPos.position.x, boxPos.position.y + 5f, boxPos.position.z);
         imageTemp.transform.eulerAngles = new Vector3(boxRotation.x, boxRotation.y + 90, boxRotation.z);
         imageTemp.transform.parent = trapCanvas.transform;
         trapImages.Add(imageTemp);

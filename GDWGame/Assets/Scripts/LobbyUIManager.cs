@@ -6,16 +6,10 @@ using UnityEngine.UI;
 
 public class LobbyUIManager : NetworkBehaviour
 {
-    SyncListBool uiActive = new SyncListBool();
-    //bool[] uiActive = new bool[4];
-    SyncListInt teamSelected = new SyncListInt();
-    SyncListInt roleSelected = new SyncListInt();
-    SyncListInt characterSelected = new SyncListInt();
+    public SyncListBool uiActive = new SyncListBool();
     [SyncVar] public bool updateAllUI; //this is a flag
     [SyncVar] int numInLobby = 0;
-    //public int associatedPlayer= 0; //this updates the local ui of the active player!
-
-    public CharacterSelect[] thePlayers = new CharacterSelect[4];
+    
     public GameObject[] localUIs = new GameObject[4]; //this is a hacky solution
     public GameObject[] nonLocalUIs = new GameObject[4];
     public Texture[] characterTextures = new Texture[4];
@@ -26,100 +20,20 @@ public class LobbyUIManager : NetworkBehaviour
     public Text uiTest;
 
     //the text to appear on screen
-    string[] teamString = new string[3];
-    string[] roleString = new string[3];
-    string[] characterString = new string[4];
+    [HideInInspector] public string[] teamString = new string[3];
+    [HideInInspector] public string[] roleString = new string[3];
+    [HideInInspector] public string[] characterString = new string[4];
 
+    public CharacterSelect[] actualPlayers = new CharacterSelect[4];
+    public Vector3[] uiPositions = new Vector3[4];
+
+    public SyncListInt playerNumbers = new SyncListInt();
+    bool locatingPlayers = true;
 
     // Use this for initialization
     void Start()
     {
 
-    }
-
-    public void ActivateUI(int index)
-    {
-        uiActive[index] = true;
-        updateAllUI = true;
-
-        UpdateNonLocalUI(index);
-
-        if (isServer)
-        {
-            CmdLocalUI(index, true);
-        }
-        else
-            localUIs[index].SetActive(true);
-    }
-    
-    public void SetTeam(int index, int number)
-    {
-        if (isServer)
-            CmdSetTeam(index, number);
-        else
-             teamSelected[index] = number;
-
-        //how you're supposed to do it:
-        //if (isServer)
-        //{
-        //    RpcSetTeam(index, number);
-        //}
-        //else
-        //{
-        //    CmdSetTeam(index, number);
-        //}
-        
-    }
-
-    [Command]
-    void CmdSetTeam(int index, int number)
-    {
-        //teamSelected[index] = number;
-        RpcSetTeam(index, number);
-    }
-
-    [ClientRpc]
-    void RpcSetTeam(int index, int number)
-    {
-        teamSelected[index] = number;
-    }
-
-
-    public void SetRole(int index, int number)
-    {
-        if (isServer)
-            CmdSetRole(index, number);
-        else
-            roleSelected[index] = number;
-    }
-
-    [Command]
-    void CmdSetRole(int index, int number)
-    {
-        RpcSetRole(index, number);
-    }
-
-    [ClientRpc]
-    void RpcSetRole(int index, int number)
-    {
-        roleSelected[index] = number;
-    }
-
-    public void SetCharacter(int index, int number)
-    {
-        characterSelected[index] = number;
-    }
-
-    [Command]
-    void CmdLocalUI(int index, bool active)
-    {
-        RpcLocalUI(index, active);
-    }
-
-    [ClientRpc]
-    void RpcLocalUI(int index, bool active)
-    {
-        localUIs[index].SetActive(active);
     }
 
     [Command]
@@ -138,34 +52,34 @@ public class LobbyUIManager : NetworkBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            if (i == index) thePlayers[i].notLocalPlayer.SetActive(true);
+            if (i == index) actualPlayers[i].notLocalPlayer.SetActive(true);
         }
     }
 
     public int GetCharacter(int index)
     {
-        return (int)thePlayers[index].chosenCharacter;
+        return (int)actualPlayers[index].chosenCharacter;
     }
 
     public int GetRole(int index)
     {
-        return thePlayers[index].role;
+        return actualPlayers[index].role;
     }
 
     public int GetTeam(int index)
     {
-        return thePlayers[index].team;
+        return actualPlayers[index].team;
     }
 
     public bool OnFirstTeam(int index)
     {
-        if (thePlayers[index].team == 0) return true;
+        if (actualPlayers[index].team == 0) return true;
         return false;
     }
 
     public bool PlayerReady(int index)
     {
-        return thePlayers[index].ready;
+        return actualPlayers[index].ready;
     }
 
     public void LoadProperties()
@@ -174,15 +88,6 @@ public class LobbyUIManager : NetworkBehaviour
         uiActive.Add(false);
         uiActive.Add(false);
         uiActive.Add(false);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            thePlayers[i].index = i;
-            teamSelected.Add(-1);
-            roleSelected.Add(-1);
-            characterSelected.Add(0);
-            //uiActive[i] = false;
-        }
 
         teamString[0] = "N/A";
         teamString[1] = "Team 1";
@@ -196,23 +101,85 @@ public class LobbyUIManager : NetworkBehaviour
         characterString[1] = "Chicken";
         characterString[2] = "Cat";
         characterString[3] = "Diamond";
+
+        playerNumbers.Add(-1);
+        playerNumbers.Add(-1);
+        playerNumbers.Add(-1);
+        playerNumbers.Add(-1);
+
+    }
+
+    public void LocatingPlayers()
+    {
+        if (locatingPlayers)
+        {
+            if (GameObject.Find("Player0"))
+                actualPlayers[0] = GameObject.Find("Player0").GetComponent<CharacterSelect>();
+
+            if (GameObject.Find("Player1"))
+                actualPlayers[1] = GameObject.Find("Player1").GetComponent<CharacterSelect>();
+
+            if (GameObject.Find("Player2"))
+                actualPlayers[2] = GameObject.Find("Player2").GetComponent<CharacterSelect>();
+
+            if (GameObject.Find("Player3"))
+            {
+                actualPlayers[3] = GameObject.Find("Player3").GetComponent<CharacterSelect>();
+            }
+        }
     }
 
     public void UpdateUI()
     {
-        //  print(uiActive.Count);
-        if (updateAllUI && thePlayers[0] != null)
-        {
-            for (int i = 0; i < uiActive.Count; i++)
-            {
-                thePlayers[i].gameObject.SetActive(uiActive[i]);
-                thePlayers[i].SetLocalActive(uiActive[i]);
-                //thePlayers[i].SetBaseActive(!uiActive[i]);
+        if (playerNumbers[0] != -1)
+        LocatingPlayers();
+    }
 
-                thePlayers[i].UpdateUI(teamString[teamSelected[i]+1], roleString[roleSelected[i]+1], characterString[characterSelected[i]]);
-                thePlayers[i].ChangeImage(characterTextures[characterSelected[i]]);
-                //+1 because -1 is used for null
+    //you use this to go thru and see if a team has 2 players or not
+    public int AvailableTeam(int index, int desiredTeam)
+    {
+        int team0 = 0, team1 = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            if (actualPlayers[i] != null && i != index)
+            {
+                if (actualPlayers[i].team == 0) team0++;
+                else if (actualPlayers[i].team == 1) team1++;
             }
         }
+
+        if (desiredTeam == 0)
+        {
+            if (team0 < 2) return 0;
+            else return 1;
+        }
+        else
+        {
+            if (team1 < 2) return 1;
+            else return 0;
+        }
     }
+
+    //you use this to go thru and see if a team has 2 players or not
+    public int AvailableRole(int index, int team, int desiredRole)
+    {
+        //i know this is bad but pls forgive me
+        //im rushing just to get this done
+        for (int i = 0; i < 4; i++)
+        {
+            if (actualPlayers[i] != null && i != index && team != -1 && actualPlayers[i].team == team)
+            {
+                if(actualPlayers[i].role == desiredRole)
+                {
+                    if (desiredRole == 0)
+                        actualPlayers[i].SetRole(1);
+                    else
+                        actualPlayers[i].SetRole(0);
+                }
+            }
+        }
+
+        return desiredRole;
+    }
+
 }

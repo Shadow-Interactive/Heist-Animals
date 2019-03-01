@@ -36,9 +36,13 @@ public class GameManagerRough : NetworkBehaviour {
         {
             if (GameObject.FindGameObjectWithTag("RunnerOne"))
                 RunnerOne = GameObject.FindGameObjectWithTag("RunnerOne").GetComponent<PlayerLogic>();
+            else
+                print("is this why?");
 
             if (GameObject.FindGameObjectWithTag("RunnerTwo"))
                 RunnerTwo = GameObject.FindGameObjectWithTag("RunnerTwo").GetComponent<PlayerLogic>();
+            else
+                print("is this why?2");
 
             loadProperties = true;
 
@@ -77,9 +81,19 @@ public class GameManagerRough : NetworkBehaviour {
     {
         gameoverScreen.SetActive(true);
 
-        if (isServer)
-        {
-            if (RunnerOne != null)
+        if (GameObject.FindGameObjectWithTag("RunnerOne"))
+            RunnerOne = GameObject.FindGameObjectWithTag("RunnerOne").GetComponent<PlayerLogic>();
+        else
+            print("ffs");
+
+        if (GameObject.FindGameObjectWithTag("RunnerTwo"))
+            RunnerTwo = GameObject.FindGameObjectWithTag("RunnerTwo").GetComponent<PlayerLogic>();
+        else
+            print("ffs2");
+
+        //   if (isServer)
+        //{
+        if (RunnerOne != null)
             {
                 player1Score = RunnerOne.numTreasures;
             }
@@ -88,7 +102,7 @@ public class GameManagerRough : NetworkBehaviour {
             {
                 player2Score = RunnerTwo.numTreasures;
             }
-        }
+     //   }
 
         Score1.text = player1Score.ToString(NoDecimals);
         Score2.text = player2Score.ToString(NoDecimals);

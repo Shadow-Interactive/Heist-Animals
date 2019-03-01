@@ -225,7 +225,7 @@ public class Objective : NetworkBehaviour {
         if (associatedCodeObject2 != null)
         {
             associatedCodeObject2.SetActive(temp);
-            associatedCodeObject1.gameObject.SetActive(temp);
+            associatedCodeObject2.gameObject.SetActive(temp);
 
         }
 
@@ -245,7 +245,7 @@ public class Objective : NetworkBehaviour {
         if (associatedCodeObject2 != null)
         {
             associatedCodeObject2.SetActive(trapActive);
-            associatedCodeObject1.gameObject.SetActive(trapActive);
+            associatedCodeObject2.gameObject.SetActive(trapActive);
         }
         }
 

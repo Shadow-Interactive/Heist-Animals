@@ -186,6 +186,8 @@ public class Movement : NetworkBehaviour {
             GetComponent<Rigidbody>().velocity = moveInDirectionOfCam * speed * Time.deltaTime;
             theAnimator.SetBool("Hacking", false);
         }
+        else
+            GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
         //print(GetComponent<Rigidbody>().velocity);
 

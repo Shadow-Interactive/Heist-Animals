@@ -26,7 +26,7 @@ public class OverSeerControl : NetworkBehaviour {
     bool doNotMove;
 
     private const float CAM_Y_MIN = -80.0f;
-    private const float CAM_Y_MAX = 20.0f;
+    private const float CAM_Y_MAX = 5.0f;
     private const float CAM_X_MIN = -40.0f;
     private const float CAM_X_MAX = 40.0f;
 
@@ -88,7 +88,7 @@ public class OverSeerControl : NetworkBehaviour {
         radialCamSelect.SetActive(false);
         radialPress = false;
 
-        gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
+        //gameObject.transform.position = new Vector3(9.5f, -1.5f, 1.1f);
         //cam1.transform.position = new Vector3(-12.591f, 3.0f, -4.65f);
         //cam2.transform.position = new Vector3(-17.47f, 3.0f, 17.7f);
 
@@ -171,7 +171,7 @@ public class OverSeerControl : NetworkBehaviour {
             trapSelect = 13;
         }
 
-        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+        //theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
 
         if (OverID == 1)
             currentCamera = 9;
@@ -188,9 +188,16 @@ public class OverSeerControl : NetworkBehaviour {
     public void LoadProperties()
     {
         if (OverID == 1)
-            currentCamera = 5;
+        {
+            currentCamera = 9;
+            theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
+        }
         else if (OverID == 2)
-            currentCamera = 11;
+        {
+            currentCamera = 13;
+            theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
+        }
+
         gameObject.transform.position = new Vector3(46.94304f, 9.81f, -33.79776f);
 
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
@@ -199,13 +206,12 @@ public class OverSeerControl : NetworkBehaviour {
         theCanvasManager.LoadProperties(theRoomManager);
 
         initRM = true;
-        theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
 
 
 		//BECAUSE IT MIGHTVE BEEN MAKING MULTIPLE STUFF
 		//the dumbstuff
-		run1 = GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponent<PlayerLogic>();
-		run2 = GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponent<PlayerLogic>();
+		//run1 = GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponent<PlayerLogic>();
+		//run2 = GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponent<PlayerLogic>();
 
 
 		if (OverID == 1)
@@ -270,17 +276,17 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         //UNCOMMENT AFTER DONE TESTING OVERSEER
-        //GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+        //if (GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat) ;
 
         //if (OverID == 1)
         //{
         //    GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-        //    GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+        //    GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
         //}
         //else if (OverID == 2)
         //{
         //    GameObject.FindGameObjectsWithTag("RunnerOne")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-        //    GameObject.FindGameObjectsWithTag("RunnerOne")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+        //    GameObject.FindGameObjectsWithTag("RunnerTwo")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
         //}
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
