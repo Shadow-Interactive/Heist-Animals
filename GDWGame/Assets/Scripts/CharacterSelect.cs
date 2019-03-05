@@ -61,40 +61,40 @@ public class CharacterSelect : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if (inCharacterSelect)
-        {
-            if (theLobbyManager == null)
-            {
-                if (GameObject.Find("LobbyUIManager"))
-                theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
-            }
-            else
-            {
-                HowDoesThisWork();
-                chosenTeamText.text = theLobbyManager.teamString[team + 1];
-                chosenRoleText.text = theLobbyManager.roleString[role + 1];
-                chosenCharacterText.text = theLobbyManager.characterString[(int)chosenCharacter];
-            }
-
-            SettingPositions();
-
-            gameObject.name = gameobjectName;
-            notLocalPlayer.transform.position = uiPosition;
-            localPlayer.transform.position = uiPosition;
-
-        }
-       else
+       if (inCharacterSelect)
        {
-           inCharacterSelect = false;
-           notLocalPlayer.SetActive(false);
-           localPlayer.SetActive(false);
+           if (theLobbyManager == null)
+           {
+               if (GameObject.Find("LobbyUIManager"))
+               theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
+           }
+           else
+           {
+               HowDoesThisWork();
+               chosenTeamText.text = theLobbyManager.teamString[team + 1];
+               chosenRoleText.text = theLobbyManager.roleString[role + 1];
+               chosenCharacterText.text = theLobbyManager.characterString[(int)chosenCharacter];
+           }
+      
+           SettingPositions();
+      
+           gameObject.name = gameobjectName;
+           notLocalPlayer.transform.position = uiPosition;
+           localPlayer.transform.position = uiPosition;
+      
        }
+      else
+      {
+          inCharacterSelect = false;
+          notLocalPlayer.SetActive(false);
+          localPlayer.SetActive(false);
+      }
 
     }
 
     void SettingPositions()
     {
-        if (!setPositions)
+        if (!setPositions && hasAuthority)
         {
             if (isServer)
                 RpcSettingPositions();
@@ -112,6 +112,7 @@ public class CharacterSelect : NetworkBehaviour {
             RpcSettingPositions();
         else
             CmdSettingPositions();
+        //gameObject.SetActive(false);
     }
 
     [Command]
@@ -151,7 +152,7 @@ public class CharacterSelect : NetworkBehaviour {
 
     void HowDoesThisWork()
     {
-        if (!loadProperties)
+        if (!loadProperties && hasAuthority)
         {
             if (isServer)
                 RpcUpdateCharacter();

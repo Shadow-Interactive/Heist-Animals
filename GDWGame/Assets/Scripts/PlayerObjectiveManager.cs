@@ -153,7 +153,7 @@ void ResetMinigameNumbers()
                 else
                 {
                     print("killme <3 ");
-                    thePlayer.Reshuffle();
+                    thePlayer.PlayerReshuffle();
                     ClearAll();
                 }
             }
@@ -203,7 +203,7 @@ void ResetMinigameNumbers()
                 {
                     print("HAIRESHUFFLE");
                     
-                    thePlayer.Reshuffle();
+                    thePlayer.PlayerReshuffle();
                     ClearAll();
                 }
             }
@@ -251,7 +251,7 @@ void ResetMinigameNumbers()
 
             if (smoke && hackyTimer >= 7)
             {
-                thePlayer.Reshuffle();
+                thePlayer.PlayerReshuffle();
                 hackyTimer = 0;
             }
 

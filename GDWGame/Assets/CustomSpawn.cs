@@ -55,12 +55,12 @@ public class CustomSpawn : NetworkLobbyManager
         if (conn.connectionId == 0)
         {
             CharacterSelect player1 = GameObject.Find("Player0").GetComponent<CharacterSelect>();
-
+            
             int prefabChoice = player1.role;
             int teamChoice;
             if (player1.team == 0) teamChoice = 0;
             else teamChoice = 2;
-
+            
             int team = player1.team +1;
             
              ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice+teamChoice].position, Quaternion.identity);
@@ -80,12 +80,12 @@ public class CustomSpawn : NetworkLobbyManager
              
             player1.DisableCharacterSelect();
             player1.inCharacterSelect = false;
-
+            
             if (GameObject.Find("Player1"))
             {
                 GameObject.Find("Player1").GetComponent<CharacterSelect>().inCharacterSelect = false;
                 GameObject.Find("Player1").GetComponent<CharacterSelect>().DisableCharacterSelect();
-
+            
             }
             if (GameObject.Find("Player2"))
             {
@@ -97,7 +97,9 @@ public class CustomSpawn : NetworkLobbyManager
                 GameObject.Find("Player3").GetComponent<CharacterSelect>().inCharacterSelect = false;
                 GameObject.Find("Player3").GetComponent<CharacterSelect>().DisableCharacterSelect();
             }
-
+            
+           // ourPlayer = Instantiate(spawnPrefabs[1], startPositions[0].position, Quaternion.identity);
+           // ourPlayer.GetComponent<PlayerLogic>().runID = 0;
             return ourPlayer;
         }
         else if (conn.connectionId == 1)
@@ -129,13 +131,16 @@ public class CustomSpawn : NetworkLobbyManager
             player2.DisableCharacterSelect();
             player2.inCharacterSelect = false;
             
+            //ourPlayer = Instantiate(spawnPrefabs[1], startPositions[1].position, Quaternion.identity);
+            //ourPlayer.GetComponent<OverseerCanvasManager>().overseerID =0;
+            //ourPlayer.GetComponent<OverSeerControl>().OverID = 0;
             return ourPlayer;
 
         }
         else if (conn.connectionId == 2)
         {
             CharacterSelect player3 = GameObject.Find("Player2").GetComponent<CharacterSelect>();
-            
+
             int prefabChoice = player3.role;
             int teamChoice;
             if (player3.team == 0) teamChoice = 0;
@@ -157,17 +162,19 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player3.chosenCharacter);
             }
-
+           
             player3.DisableCharacterSelect();
             player3.inCharacterSelect = false;
-
+            
+         //   ourPlayer = Instantiate(spawnPrefabs[0], startPositions[2].position, Quaternion.identity);
+            ourPlayer.GetComponent<PlayerLogic>().runID = 2;
             return ourPlayer;
 
         }
         else if (conn.connectionId == 3)
         {
             CharacterSelect player4 = GameObject.Find("Player3").GetComponent<CharacterSelect>();
-            
+
             int prefabChoice = player4.role;
             int teamChoice;
             if (player4.team == 0) teamChoice = 0;
@@ -188,10 +195,13 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player4.chosenCharacter);
             }
-
+            
             player4.DisableCharacterSelect();
             player4.inCharacterSelect = false;
-
+            
+           //ourPlayer = Instantiate(spawnPrefabs[1], startPositions[3].position, Quaternion.identity);
+           //ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = 2;
+           //ourPlayer.GetComponent<OverSeerControl>().OverID = 2;
             return ourPlayer;
 
         }

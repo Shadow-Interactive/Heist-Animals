@@ -124,6 +124,7 @@ public class RoomManager : NetworkBehaviour
 
        if (pickedUpObjectives.Count > 0)
        {
+            
            ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count-1], dropPosition);
            pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
        }

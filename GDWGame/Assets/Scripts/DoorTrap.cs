@@ -18,9 +18,12 @@ public class DoorTrap : NetworkBehaviour
 	}
 
     public void SetActive(bool temp)
-    { 
-        CmdSetTrapActive(temp);
-        gameObject.SetActive(temp);
+    {
+        if (hasAuthority)
+        {
+            CmdSetTrapActive(temp);
+            gameObject.SetActive(temp);
+        }
     }
 
     [Command]

@@ -165,10 +165,14 @@ public class PlayerLogic : NetworkBehaviour {
             initRM = true;
         }
 
-       // PrintObjs();
+        // PrintObjs();
 
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
+
+        if (theRoomManager == null)
+            theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+
         KeyInputUpdate();
 
         ControllerInputUpdate();
@@ -459,6 +463,7 @@ public class PlayerLogic : NetworkBehaviour {
     //activates the shield
     public void Shield(bool active)
     {
+        if(hasAuthority)
         CmdActivateShield(active);
     }
 
@@ -817,20 +822,16 @@ public class PlayerLogic : NetworkBehaviour {
         thePlayerMovement.SetCursor(activation);
     }
 
-    public void Reshuffle()
+    public void PlayerReshuffle()
     {
         //what am i doingggggg its so late at nighttttttt ahhhh
         if (gameObject.name == runnerOneStr)
         {
-            R1currentObjective.Reshuffle(theRoomManager);
-          //  R1currentObjective.UpdateSprites(theRoomManager.theImages);
-            
+            R1currentObjective.Reshuffle(theRoomManager);         
         }
         if (gameObject.name == runnerTwoStr)
         {
             R2currentObjective.Reshuffle(theRoomManager);
-            //R2currentObjective.UpdateSprites(theRoomManager.theImages);
-
         }
         
     }
@@ -844,7 +845,7 @@ public class PlayerLogic : NetworkBehaviour {
             trapHealth = 3;
         }
 
-        Reshuffle();
+        PlayerReshuffle();
     }
 
     public bool AreBulletsAvailable()

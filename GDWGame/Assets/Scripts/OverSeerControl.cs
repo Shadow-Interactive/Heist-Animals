@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
@@ -171,7 +171,7 @@ public class OverSeerControl : NetworkBehaviour {
             trapSelect = 13;
         }
 
-        //theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
 
         if (OverID == 1)
             currentCamera = 9;
@@ -257,6 +257,10 @@ public class OverSeerControl : NetworkBehaviour {
             LoadProperties();
             
         }
+
+        if(theRoomManager==null)
+        theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+
 
         if (theRoomManager.updateUIPosition)
         {
@@ -751,10 +755,11 @@ public class OverSeerControl : NetworkBehaviour {
     [Command]
     public void CmdTrap(int index, bool temp)
     {
-        //camRoomName = ("Room" + trapSelect.ToString());
-        //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated = !GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().trapActivated;
-        theRoomManager.theObjectives[index].trapActive = temp;
-        //GameObject.FindGameObjectWithTag("C" + trapSelect.ToString()).GetComponent<RoomScript>().doorCooldown = true;
+        if (theRoomManager != null)
+        {
+            theRoomManager.theObjectives[index].trapActive = temp;
+            theRoomManager.theObjectives[index].Reshuffle(theRoomManager);
+        }
     }
 
     [Command]
@@ -762,8 +767,7 @@ public class OverSeerControl : NetworkBehaviour {
     {
         //weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         GameObject.Find(theName).GetComponent<Objective>().trapActive = !GameObject.Find(theName).GetComponent<Objective>().trapActive;
-        //currentObjective.trapActive = !currentObjective.trapActive;
-        //currentObjective.DeActivate();
+
     }
 
     [Command]

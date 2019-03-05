@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -45,14 +45,7 @@ public class Objective : NetworkBehaviour {
 
     private void Update()
     {
-      //if (Input.GetKeyDown("i"))
-      //{
-      //    RpcDecoupleTrap();
-      //}
-
         GameObjectVisibleNetwork();
-
-        //Debug.Log(trapActive);
     }
 
     public void SetUpTrap(TrapBase theType)
@@ -76,26 +69,7 @@ public class Objective : NetworkBehaviour {
 			}
         }
     }
-
-  // private void OnTriggerEnter(Collider other)
-  // {
-  //     if (other.CompareTag(objStr))
-  //     {
-  //         roomLocationTag = other.GetComponent<ObjectiveLocationTrigger>().locationTag;
-  //         print("on trigger enter + " + other.GetComponent<ObjectiveLocationTrigger>().locationTag);
-  //     }
-  // }
-  //
-  // private void OnTriggerStay(Collider other)
-  // {
-  //     if (other.CompareTag(objStr))
-  //     {
-  //         roomLocationTag = other.GetComponent<ObjectiveLocationTrigger>().locationTag;
-  //         print("on trigger stay + " + other.GetComponent<ObjectiveLocationTrigger>().locationTag);
-  //
-  //     }
-  // }
-
+    
     private void OnCollisionExit(Collision collision)
     {
         if (minigameActivated == true)
@@ -106,7 +80,6 @@ public class Objective : NetworkBehaviour {
     {
         theRoomManager.activateReshuffle = true;
         theRoomManager.reshuffleID = trapID;
-       // print("New trap is " + trapCode[0] + trapCode[1] + trapCode[2] + trapCode[3]);
     }
 
     public void ActualReshuffle()
@@ -126,13 +99,11 @@ public class Objective : NetworkBehaviour {
         {
             if (associatedCodeObject1 != null)
             {
-               // associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
                 associatedCodeObject1.SetSprite(i, theImages[trapCode[i]]);
             }
 
             if (associatedCodeObject2 != null)
             {
-                //associatedCodeObject1.GetComponentInParent<OverseerCanvasManager>().PrintCode(trapCode);
                 associatedCodeObject2.SetSprite(i, theImages[trapCode[i]]);
             }
         }
@@ -151,12 +122,10 @@ public class Objective : NetworkBehaviour {
         int i = 0;
         while(!roomFound && i < colliders.Length)
         {
-       
             //this has the potential to cause bugs later on down the line
             if (colliders[i].CompareTag(objStr))
             {
                 roomLocationTag = colliders[i].GetComponent<ObjectiveLocationTrigger>().locationTag;
-                //print("success!" + roomLocationTag);
                 roomFound = true;
             }
             i++;
@@ -174,7 +143,10 @@ public class Objective : NetworkBehaviour {
          if (activeOverseer.GetNumTrap() < 4)
          {
             //hacky fun
-            CmdSetTrapActive(true);
+            if (hasAuthority)
+            {
+                CmdSetTrapActive(true);
+            }
 
             if (runner1 != null) runner1.CmdActivateTrap(gameObject.name);
             if (runner2 != null) runner2.CmdActivateTrap(gameObject.name);
@@ -183,7 +155,7 @@ public class Objective : NetworkBehaviour {
 
             activeOverseer.CmdTrapSelect(trapNum);
             activeOverseer.ObjectiveActivate(ref currentObjectID, GetLocationID());
-            Reshuffle(theRoomManager);
+           // Reshuffle(theRoomManager);
         }
     }
 
@@ -197,6 +169,7 @@ public class Objective : NetworkBehaviour {
     [ClientRpc]
     public void RpcSetTrapActive(bool temp)
     {
+        print("and it gets to this part no problem");
         trapActive = temp;
     }
 

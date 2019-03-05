@@ -148,8 +148,9 @@ public class OverseerCanvasManager : NetworkBehaviour
     void AddTrap(Vector3 trapPos, SyncListInt theCode, int codeIndex, RoomManager theRoomManager )
     {
         GameObject trapObj = GameObject.Instantiate(codePrefab);
-        trapObj.transform.parent = trapCanvas.transform;
-        trapObj.transform.position = new Vector3(trapPos.x, 2.5f, trapPos.z);
+        //trapObj.transform.parent = trapCanvas.transform;
+        trapObj.transform.SetParent(trapCanvas.transform);
+        trapObj.transform.position = new Vector3(trapPos.x, 4, trapPos.z);
         trapObj.GetComponent<CodeVisual>().SetIndex(codeIndex);
 
         if (gameObject.name == strO1)
