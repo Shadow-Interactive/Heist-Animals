@@ -35,6 +35,7 @@ TagManager:
   - Wired
   - BulletPool
   - 1
+  - Runner
   layers:
   - Default
   - TransparentFX
