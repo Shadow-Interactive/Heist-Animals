@@ -25,7 +25,7 @@ public class Objective : NetworkBehaviour {
 
     //private/contained variables
     Vector3 objectivePosition;
-    string runnerStr = "RunnerOne", runner2Str = "RunnerTwo", objStr = "ObjectiveLocationTrigger";
+    string runnerStr = "Runner", runner2Str = "Runner", objStr = "ObjectiveLocationTrigger";
 
     [SyncVar] public int trapID = 0;
     public string roomLocationTag = "";
