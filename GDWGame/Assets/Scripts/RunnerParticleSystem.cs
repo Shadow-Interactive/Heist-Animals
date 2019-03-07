@@ -20,6 +20,7 @@ public class RunnerParticleSystem : NetworkBehaviour {
 
     public void TeleportOut()
     {
+        print("Base function");
         if (isServer)
             RpcTeleportOut();
         else
@@ -29,12 +30,14 @@ public class RunnerParticleSystem : NetworkBehaviour {
     [Command]
     void CmdTeleportOut()
     {
+        print("cmdfunction");
         RpcTeleportOut();
     }
 
     [ClientRpc]
     void RpcTeleportOut()
     {
+        print("rpcFunction");
         teleportOut.Play();
     }
 

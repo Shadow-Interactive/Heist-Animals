@@ -43,6 +43,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 
     public Canvas cursorCanvas;
     public int overseerID;
+    
 
     // Use this for initialization
     void Start () {
@@ -74,6 +75,14 @@ public class OverseerCanvasManager : NetworkBehaviour
 
 		//  currentRoom.text = gameObject.name;
 	}
+
+    public void ChangeBillboard(Camera newCamera)
+    {
+        for(int i = 0; i < codeVisuals.Count; i++)
+        {
+            codeVisuals[i].GetComponent<CameraBillboard>().theCamera = newCamera;
+        }
+    }
 
 	public void LoadProperties(RoomManager theRoomManager)
     {
@@ -222,6 +231,7 @@ public class OverseerCanvasManager : NetworkBehaviour
         currentRoom.text = theRoomTexts[currentCamera];
         SetPointPosition(currentCamera);
         cursorCanvas.worldCamera = theCamera;
+        ChangeBillboard(theCamera);
     }
 
     public void UpdateCanvasCamera(Camera newCamera)
@@ -301,5 +311,6 @@ public class OverseerCanvasManager : NetworkBehaviour
 	{
 		messageQ.Dequeue();
 	}
+
     
 }

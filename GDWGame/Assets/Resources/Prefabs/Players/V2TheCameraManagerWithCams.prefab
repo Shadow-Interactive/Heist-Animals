@@ -1303,6 +1303,7 @@ GameObject:
   - component: {fileID: 223222327735203534}
   - component: {fileID: 114800526572088804}
   - component: {fileID: 114313201506597346}
+  - component: {fileID: 114221724889328220}
   m_Layer: 0
   m_Name: DiageticCanvas
   m_TagString: Untagged
@@ -6920,6 +6921,18 @@ MonoBehaviour:
   m_Text: 'Cam
 
     14'
+--- !u!114 &114221724889328220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1562509293881600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fd9e04d074057a459a1dbd5779de26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  theCamera: {fileID: 0}
 --- !u!114 &114234129920061226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9251,6 +9264,7 @@ MonoBehaviour:
   T5: {fileID: 114677514782222524}
   cursorCanvas: {fileID: 223015488300106400}
   overseerID: 0
+  newBillboard: {fileID: 114221724889328220}
 --- !u!114 &114726984585044854
 MonoBehaviour:
   m_ObjectHideFlags: 1

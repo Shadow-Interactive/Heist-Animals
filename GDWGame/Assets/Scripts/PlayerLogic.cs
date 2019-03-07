@@ -27,6 +27,7 @@ public class PlayerLogic : NetworkBehaviour {
     //data that is obtained
     public Slider zapperSlider;
     public Slider smokeSlider;
+    public Slider shieldSlider;
     public Image zapperFill;
     public RawImage theShieldImg; //these 3 are for specific 
     public GameObject[] PlayerUI; //this is how we set which ui is active in the screen. important cuz itll include misc images. in an array for optimization sake
@@ -86,6 +87,7 @@ public class PlayerLogic : NetworkBehaviour {
 
     float playerHeightAmount = 1.5f, shockTimer = 0;
     bool zapperReload = false;
+    bool shieldReload = false;
     
     public Canvas playerCanvas;
 
@@ -185,7 +187,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (!canUseSmokeBomb)
             SmokeCooldown();
-
+        
         //for deactivating runner 1 traps :)
         switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
         {
@@ -294,7 +296,7 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 Shoot();
             }
-            else if (theCurrentAbility == CurrentAbility.shield)
+            else if (theCurrentAbility == CurrentAbility.shield && shieldReload == false)
             {
                 Shield(true);
                 theShieldImg.gameObject.SetActive(true);
@@ -386,6 +388,12 @@ public class PlayerLogic : NetworkBehaviour {
                     zapperFill.color = Color.red;
                 }
 
+                //if (shieldSlider.value <= 0)
+                //{
+                //    shieldReload = true;
+                //
+                //}
+
                 if (activeBulletNum < 0)
                 {
                     activeBulletNum = numBullets - 1;
@@ -416,6 +424,11 @@ public class PlayerLogic : NetworkBehaviour {
                 Shield(false);
 
             }
+
+           //if(XBoxInput.GetKeyHeld(0, (int)Buttons.RTrig))
+           //{
+           //
+           //}
 
             return true;
         }
@@ -517,6 +530,23 @@ public class PlayerLogic : NetworkBehaviour {
                 zapperSlider.value = zapperAmount;
                 zapperFill.color = Color.blue;
                 zapperReload = false;
+            }
+        }
+    }
+
+    //the shield, this is zapper copy paste
+    private void ShieldUpdate()
+    {
+        //copy paasteeeee
+        if (shieldReload == true)
+        {
+            shieldSlider.value += (3 * Time.deltaTime);
+
+            if (shieldSlider.value >= 2 /*&& AreBulletsAvailable()*/)
+            {
+                shieldSlider.value = 2;
+                //zapperFill.color = Color.blue;
+                shieldReload = false;
             }
         }
     }
@@ -788,9 +818,7 @@ public class PlayerLogic : NetworkBehaviour {
             if (gameObject.name == runnerOneStr)
             {
                 GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway = collision.gameObject.GetComponent<Objective>().trapNum;
-                R1currentObjective = collision.gameObject.GetComponent<Objective>();
-				
-
+                R1currentObjective = collision.gameObject.GetComponent<Objective>();			
             }
 
             if (gameObject.name == runnerTwoStr)
