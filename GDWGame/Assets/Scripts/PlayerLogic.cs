@@ -787,7 +787,7 @@ public class PlayerLogic : NetworkBehaviour {
         }
         else if (other.CompareTag(zapStr))
         {
-            if (other.GetComponent<ZapperScript>().zapperID != runID && theCurrentAbility != CurrentAbility.shield)
+            if (other.GetComponent<ZapperScript>().zapperID != runID /*&& theCurrentAbility != CurrentAbility.shield*/)
             {
                 other.gameObject.SetActive(false);
                 

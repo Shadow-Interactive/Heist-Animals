@@ -6,6 +6,7 @@ public class MenuCamUpdate : MonoBehaviour {
 
     //this class is used for the camera in LobbyScene
     public float rotateSpeed;
+    public AudioSource audio;
 
 	// Use this for initialization
 	void Start () {
@@ -17,5 +18,8 @@ public class MenuCamUpdate : MonoBehaviour {
 
         //just want it to rotate around y-axis
         gameObject.transform.Rotate(new Vector3(0, Time.deltaTime * rotateSpeed, 0), Space.World);
+
+        if (!audio.isPlaying)
+            audio.Play();
 	}
 }

@@ -102,8 +102,6 @@ public class Movement : NetworkBehaviour {
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
             }
         }
-        
-
                 theAnimator = GetComponent<Animator>();
         
     }

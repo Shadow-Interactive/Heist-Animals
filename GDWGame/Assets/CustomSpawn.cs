@@ -167,8 +167,8 @@ public class CustomSpawn : NetworkLobbyManager
             player3.DisableCharacterSelect();
             player3.inCharacterSelect = false;
             
-         //   ourPlayer = Instantiate(spawnPrefabs[0], startPositions[2].position, Quaternion.identity);
-            ourPlayer.GetComponent<PlayerLogic>().runID = 2;
+            //   ourPlayer = Instantiate(spawnPrefabs[0], startPositions[2].position, Quaternion.identity);
+            //ourPlayer.GetComponent<PlayerLogic>().runID = 2;
             return ourPlayer;
 
         }

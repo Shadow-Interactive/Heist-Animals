@@ -216,7 +216,7 @@ public class OverSeerControl : NetworkBehaviour {
             run2 = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
         } catch (System.IndexOutOfRangeException e)
         {
-            print("One of the runners doesn't exist (in OverseerControl)");
+            Debug.Log("One of the runners doesn't exist (in OverseerControl)" + e.Message);
         }
 
 		if (OverID == 1)
