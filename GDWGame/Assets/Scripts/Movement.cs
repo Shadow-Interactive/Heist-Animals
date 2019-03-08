@@ -50,44 +50,61 @@ public class Movement : NetworkBehaviour {
         //setup players for local and connected clients
         if (isLocalPlayer)
         {
-            if (isServer)
+            //    if (isServer)
+            //    {
+
+            //        gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
+            //        gameObject.tag = "Runner";
+            //        gameObject.name = "RunnerOne";
+            //        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
+
+            //    }
+            //    else
+            //    {
+
+            //        gameObject.transform.position = new Vector3(18f, 2f, 61f);
+            //        gameObject.tag = "Runner";
+            //        gameObject.name = "RunnerTwo";
+            //        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+
+            //    }
+            //}
+            //else
+            //{
+            //    if (isServer)
+            //    {
+            //        gameObject.transform.position = new Vector3(18f, 2f, 61f);
+            //        gameObject.tag = "Runner";
+            //        gameObject.name = "RunnerTwo";
+            //        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+            //    }
+            //    else
+            //    {
+            //        gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
+            //        gameObject.tag = "Runner";
+            //        gameObject.name = "RunnerOne";
+            //        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
+            //    }
+            //}
+
+            if (gameObject.GetComponent<PlayerLogic>().runID == 1)
             {
-               
                 gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
                 gameObject.tag = "Runner";
                 gameObject.name = "RunnerOne";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
-
             }
-            else
-            {
-                
-                gameObject.transform.position = new Vector3(18f, 2f, 61f);
-                gameObject.tag = "Runner";
-                gameObject.name = "RunnerTwo";
-                gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
-
-            }
-        }
-        else
-        {
-            if (isServer)
+            else if (gameObject.GetComponent<PlayerLogic>().runID == 2)
             {
                 gameObject.transform.position = new Vector3(18f, 2f, 61f);
                 gameObject.tag = "Runner";
                 gameObject.name = "RunnerTwo";
                 gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
             }
-            else
-            {
-                gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
-                gameObject.tag = "Runner";
-                gameObject.name = "RunnerOne";
-                gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
-            }
         }
+        
 
-        theAnimator = GetComponent<Animator>();
+                theAnimator = GetComponent<Animator>();
         
     }
     // Update is called once per frame

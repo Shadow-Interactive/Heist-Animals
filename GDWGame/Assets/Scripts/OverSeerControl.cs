@@ -208,11 +208,16 @@ public class OverSeerControl : NetworkBehaviour {
         initRM = true;
 
 
-		//BECAUSE IT MIGHTVE BEEN MAKING MULTIPLE STUFF
-		//the dumbstuff
-		//run1 = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
-		//run2 = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
-
+        //BECAUSE IT MIGHTVE BEEN MAKING MULTIPLE STUFF
+        //the dumbstuff
+        try
+        {
+            run1 = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+            run2 = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+        } catch (System.IndexOutOfRangeException e)
+        {
+            print("One of the runners doesn't exist (in OverseerControl)");
+        }
 
 		if (OverID == 1)
 		{
@@ -280,18 +285,28 @@ public class OverSeerControl : NetworkBehaviour {
         }
 
         ////UNCOMMENT AFTER DONE TESTING OVERSEER
-        //GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+        try
+        {
+            if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
+                GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
-        //if (OverID == 1)
-        //{
-        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-        //}
-        //else if (OverID == 2)
-        //{
-        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-        //}
+            if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
+            {
+                if (OverID == 1)
+                {
+                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                }
+                else if (OverID == 2)
+                {
+                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                }
+            }
+        } catch (System.IndexOutOfRangeException e)
+        {
+            print("One of the players does not exist (in OverseerControl): " + e.Message);
+        }
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
@@ -652,39 +667,45 @@ public class OverSeerControl : NetworkBehaviour {
 
         ////UNCOMMENT AFTER DONE TESTING OVERSEER
 
-        //if (run1 == null || run2 == null)
-        //{
-        //    theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
-        //    theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-        //    theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+        try
+        {
+            if (run1 == null || run2 == null)
+            {
+                theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
+                theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
+                theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
 
-        //}
-        //else
-        //{
-        //    //theCanvasManager.T4.text = "gets to this point";
-        //    //if (OverID == 1)
-        //    //{
-        //    //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-        //    //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
+            }
+            else
+            {
+                //theCanvasManager.T4.text = "gets to this point";
+                //if (OverID == 1)
+                //{
+                //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+                //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
 
-        //    //}
-        //    //else if (OverID == 2)
-        //    //{
-        //    //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-        //    //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
+                //}
+                //else if (OverID == 2)
+                //{
+                //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
+                //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
 
-        //    //}
+                //}
 
-        //    if (run1.currstate != 0 || run2.currstate != 0)
-        //    {
-        //        theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
-        //        print("it gets to this point FUUUCk");
-        //        print(run1.currstate.ToString());
-        //        theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
-        //        run1.currstate = 0;
-        //        run2.currstate = 0;
-        //    }
-        //}
+                if (run1.currstate != 0 || run2.currstate != 0)
+                {
+                    theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
+                    print("it gets to this point FUUUCk");
+                    print(run1.currstate.ToString());
+                    theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
+                    run1.currstate = 0;
+                    run2.currstate = 0;
+                }
+            }
+        } catch (System.IndexOutOfRangeException e)
+        {
+            print("The canvas manager is missing a player object (in OverseerControl) " + e.Message);
+        }
 
         theCanvasManager.consoleMessages();
 
