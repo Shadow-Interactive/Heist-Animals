@@ -35,7 +35,8 @@ public class CustomSpawn : NetworkLobbyManager
       //  theLobbyManager.ActivateUI(0);
 
     }
-
+    //the proper on
+    
     public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
     {
         RegisterStartPosition(Spawn);
@@ -206,18 +207,6 @@ public class CustomSpawn : NetworkLobbyManager
 
         }
         else return null;
-    }
-
-    public override void OnServerConnect(NetworkConnection player)
-    {
-        if (player.hostId == 0)
-        {
-            //old ver
-         //   theLobbyManager.ActivateUI(player.connectionId);
-        }
-
-        //gameObject.name = "wut";
-            
     }
 
     public void setRunnerRole()

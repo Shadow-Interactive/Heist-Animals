@@ -46,7 +46,11 @@ public class PlayerLogic : NetworkBehaviour {
     public List<GameObject> theHealthUI;
     int activeBulletNum = 14, numBullets = 15;
     bool canUseSmokeBomb = true; //what a name
+    bool canUseShield = true; 
     float smokeCooldownTime = 0.0f;
+    float shieldCooldownTime = 0.0f;
+    float shieldActiveTime = 0.0f;
+    bool shieldActive = false;
     List<int> pickedUpObjectives = new List<int>(); //the reason why im using ints instead of gameobjects is cuz
     //each objective has a tag associated with it, instead of potentially wasting memory by keeping a list of ints, i can save that memory by keeping track of the tags for the objective
 
@@ -187,7 +191,21 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (!canUseSmokeBomb)
             SmokeCooldown();
-        
+
+        if (!canUseShield)
+            ShieldCooldown();
+
+        if (shieldActive == true)
+        {
+            shieldActiveTime += Time.deltaTime;
+            if (shieldActiveTime >= 10)
+            {
+                shieldActive = false;
+                Shield(false);
+                shieldActiveTime = 0.0f;
+            }
+        }
+
         //for deactivating runner 1 traps :)
         switch (GameObject.Find(networkTrapStr).GetComponent<TrapForNetwork>().trapToGoAway)
         {
@@ -296,10 +314,15 @@ public class PlayerLogic : NetworkBehaviour {
             {
                 Shoot();
             }
-            else if (theCurrentAbility == CurrentAbility.shield && shieldReload == false)
+            else if (theCurrentAbility == CurrentAbility.shield)
             {
-                Shield(true);
-                theShieldImg.gameObject.SetActive(true);
+                if (canUseShield)
+                {
+                    Shield(true);
+                    canUseShield = false;
+                    //theShieldImg.gameObject.SetActive(true);
+                    shieldSlider.value = 0;
+                }
             }
             else if (theCurrentAbility == CurrentAbility.smokebomb)
             {
@@ -323,11 +346,11 @@ public class PlayerLogic : NetworkBehaviour {
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            Shield(false);
-            theShieldImg.gameObject.SetActive(false);
-        }
+       //if (Input.GetKeyUp(KeyCode.Space))
+       //{
+       //    Shield(false);
+       //    theShieldImg.gameObject.SetActive(false);
+       //}
 
         if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
@@ -338,7 +361,7 @@ public class PlayerLogic : NetworkBehaviour {
                 //print(theCurrentAbility);
                 ActivateSpecificUI((int)theCurrentAbility);
             }
-            Shield(false);
+            //Shield(false);
             //AbilityAnim.SetFloat("Speed Multiplier", -1.0f);
         }
 
@@ -351,7 +374,7 @@ public class PlayerLogic : NetworkBehaviour {
                 //    print(theCurrentAbility);
                 ActivateSpecificUI((int)theCurrentAbility);
             }
-            Shield(false);
+            //Shield(false);
             //AbilityAnim.SetFloat("Speed Multiplier", 1.0f);
 
         }
@@ -369,8 +392,13 @@ public class PlayerLogic : NetworkBehaviour {
                 }
                 else if (theCurrentAbility == CurrentAbility.shield)
                 {
-                    Shield(true);
-                    theShieldImg.gameObject.SetActive(true);
+                    if (canUseShield)
+                    {
+                        Shield(true);
+                        canUseShield = false;
+                      //  theShieldImg.gameObject.SetActive(true);
+                        shieldSlider.value = 0;
+                    }
                 }
                 else if (theCurrentAbility == CurrentAbility.smokebomb)
                 {
@@ -387,24 +415,18 @@ public class PlayerLogic : NetworkBehaviour {
                     zapperReload = true;
                     zapperFill.color = Color.red;
                 }
-
-                //if (shieldSlider.value <= 0)
-                //{
-                //    shieldReload = true;
-                //
-                //}
-
+                
                 if (activeBulletNum < 0)
                 {
                     activeBulletNum = numBullets - 1;
                 }
             }
 
-            if(XBoxInput.GetKeyReleased(0, (int)Buttons.RTrig))
-            {
-                Shield(false);
-                theShieldImg.gameObject.SetActive(false);
-            }
+          //if(XBoxInput.GetKeyReleased(0, (int)Buttons.RTrig))
+          //{
+          //    Shield(false);
+          //    theShieldImg.gameObject.SetActive(false);
+          //}
 
             if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
             {
@@ -412,7 +434,7 @@ public class PlayerLogic : NetworkBehaviour {
                     theCurrentAbility--;
                 //print(theCurrentAbility);
                 ActivateSpecificUI((int)theCurrentAbility);
-                Shield(false);
+                //Shield(false);
             }
 
             if (XBoxInput.GetKeyPressed(0, (int)Buttons.RB))
@@ -421,15 +443,9 @@ public class PlayerLogic : NetworkBehaviour {
                     theCurrentAbility++;
                 //    print(theCurrentAbility);
                 ActivateSpecificUI((int)theCurrentAbility);
-                Shield(false);
-
+               // Shield(false);
             }
-
-           //if(XBoxInput.GetKeyHeld(0, (int)Buttons.RTrig))
-           //{
-           //
-           //}
-
+            
             return true;
         }
         else
@@ -473,6 +489,21 @@ public class PlayerLogic : NetworkBehaviour {
         }
     }
 
+    //function to control the cooldown of the shield bomb
+    private void ShieldCooldown()
+    {
+        shieldCooldownTime += Time.deltaTime;
+        shieldSlider.value += Time.deltaTime;
+        
+        if (shieldCooldownTime >= 30)
+        {
+            canUseShield = true;
+            shieldCooldownTime = 0.0f;
+        }
+
+       
+    }
+
     //activates the shield
     public void Shield(bool active)
     {
@@ -485,6 +516,7 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcActivateShield(bool active)
     {
         theShield.SetActive(active);
+        shieldActive = true;
     }
 
     [Command]

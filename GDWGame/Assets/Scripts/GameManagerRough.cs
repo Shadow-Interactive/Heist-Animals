@@ -16,8 +16,8 @@ public class GameManagerRough : NetworkBehaviour {
     string NoDecimals = "F0", withZero = ":0", withoutZero = ":", Team1Wins = "Team 1 Wins!", Team2Wins = "Team 2 Wins!", Tie = "It's a tie!";
     PlayerLogic RunnerOne, RunnerTwo;
     public Text Score1, Score2, WinningText;
-    [SyncVar] int player1Score = 0;
-    [SyncVar] int player2Score = 0; //this specifically is to make it easier to test
+    int player1Score = 0;
+    int player2Score = 0; //this specifically is to make it easier to test
 
     bool loadProperties = false;
     int gameTimeLimit = -1;
@@ -36,13 +36,13 @@ public class GameManagerRough : NetworkBehaviour {
         {
             if (GameObject.FindGameObjectWithTag("RunnerOne"))
                 RunnerOne = GameObject.FindGameObjectWithTag("RunnerOne").GetComponent<PlayerLogic>();
-            else
-                print("is this why?");
+            //else
+            //    print("is this why?");
 
             if (GameObject.FindGameObjectWithTag("RunnerTwo"))
                 RunnerTwo = GameObject.FindGameObjectWithTag("RunnerTwo").GetComponent<PlayerLogic>();
-            else
-                print("is this why?2");
+        //    else
+            //    print("is this why?2");
 
             loadProperties = true;
 
@@ -81,13 +81,13 @@ public class GameManagerRough : NetworkBehaviour {
     {
         gameoverScreen.SetActive(true);
 
-        if (GameObject.FindGameObjectWithTag("RunnerOne"))
-            RunnerOne = GameObject.FindGameObjectWithTag("RunnerOne").GetComponent<PlayerLogic>();
+        if (GameObject.Find("RunnerOne"))
+            RunnerOne = GameObject.Find("RunnerOne").GetComponent<PlayerLogic>();
         else
             print("ffs");
 
-        if (GameObject.FindGameObjectWithTag("RunnerTwo"))
-            RunnerTwo = GameObject.FindGameObjectWithTag("RunnerTwo").GetComponent<PlayerLogic>();
+        if (GameObject.Find("RunnerTwo"))
+            RunnerTwo = GameObject.Find("RunnerTwo").GetComponent<PlayerLogic>();
         else
             print("ffs2");
 
