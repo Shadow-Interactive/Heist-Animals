@@ -29,6 +29,7 @@ public class PlayerLogic : NetworkBehaviour {
     public Slider smokeSlider;
     public Slider shieldSlider;
     public Image zapperFill;
+    public RawImage tutorial;
     public RawImage theShieldImg; //these 3 are for specific 
     public GameObject[] PlayerUI; //this is how we set which ui is active in the screen. important cuz itll include misc images. in an array for optimization sake
     public GameObject[] PlayerUIWrap;
@@ -50,6 +51,7 @@ public class PlayerLogic : NetworkBehaviour {
     float smokeCooldownTime = 0.0f;
     float shieldCooldownTime = 0.0f;
     float shieldActiveTime = 0.0f;
+    float tutorialCounter = 0.0f;
     bool shieldActive = false;
     List<int> pickedUpObjectives = new List<int>(); //the reason why im using ints instead of gameobjects is cuz
     //each objective has a tag associated with it, instead of potentially wasting memory by keeping a list of ints, i can save that memory by keeping track of the tags for the objective
@@ -176,6 +178,15 @@ public class PlayerLogic : NetworkBehaviour {
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
 
+       if (tutorialCounter < 4)
+        {
+            tutorialCounter += Time.deltaTime;
+            if (tutorialCounter >= 4)
+            {
+                tutorial.gameObject.SetActive(false);
+            }
+        }
+
         if (theRoomManager == null)
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
 
@@ -293,12 +304,6 @@ public class PlayerLogic : NetworkBehaviour {
                 //swing and a miss
                 break;
         }
-
-        //som event comsole stuff
-        //print("player logic currstate " + currstate);
-        //if (currstate != 0)
-        //	currstate = 0;
-
 	}
 
     //updating the key inputs
@@ -345,12 +350,10 @@ public class PlayerLogic : NetworkBehaviour {
                 activeBulletNum = numBullets - 1;
             }
         }
-
-       //if (Input.GetKeyUp(KeyCode.Space))
-       //{
-       //    Shield(false);
-       //    theShieldImg.gameObject.SetActive(false);
-       //}
+        if  (Input.GetKeyDown(KeyCode.Escape))
+        {
+            tutorial.gameObject.SetActive(!tutorial.gameObject.activeSelf);
+        }
 
         if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
@@ -421,12 +424,6 @@ public class PlayerLogic : NetworkBehaviour {
                     activeBulletNum = numBullets - 1;
                 }
             }
-
-          //if(XBoxInput.GetKeyReleased(0, (int)Buttons.RTrig))
-          //{
-          //    Shield(false);
-          //    theShieldImg.gameObject.SetActive(false);
-          //}
 
             if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
             {
