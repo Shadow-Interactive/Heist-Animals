@@ -52,7 +52,7 @@ public class PlayerLogic : NetworkBehaviour {
     float shieldCooldownTime = 0.0f;
     float shieldActiveTime = 0.0f;
     float tutorialCounter = 0.0f;
-    bool shieldActive = false;
+    [SyncVar] bool shieldActive = false;
     List<int> pickedUpObjectives = new List<int>(); //the reason why im using ints instead of gameobjects is cuz
     //each objective has a tag associated with it, instead of potentially wasting memory by keeping a list of ints, i can save that memory by keeping track of the tags for the objective
 
@@ -178,10 +178,10 @@ public class PlayerLogic : NetworkBehaviour {
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
 
-       if (tutorialCounter < 4)
+       if (tutorialCounter < 8)
         {
             tutorialCounter += Time.deltaTime;
-            if (tutorialCounter >= 4)
+            if (tutorialCounter >= 8)
             {
                 tutorial.gameObject.SetActive(false);
             }
@@ -309,10 +309,10 @@ public class PlayerLogic : NetworkBehaviour {
     //updating the key inputs
     private void KeyInputUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
-        }
+       //if (Input.GetKeyDown(KeyCode.Z))
+       //{
+       //    theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
+       //}
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
@@ -513,7 +513,7 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcActivateShield(bool active)
     {
         theShield.SetActive(active);
-        shieldActive = true;
+        shieldActive = active;
     }
 
     [Command]
@@ -790,10 +790,12 @@ public class PlayerLogic : NetworkBehaviour {
             if (other.GetComponent<ZapperScript>().zapperID != runID /*&& theCurrentAbility != CurrentAbility.shield*/)
             {
                 other.gameObject.SetActive(false);
-                
-                zapHealth--;
 
-                UpdateHealthUI();
+                if (shieldActive != true)
+                {
+                    zapHealth--;
+                    UpdateHealthUI();
+                }
                 
                 if (zapHealth <= 0)
                 {
@@ -802,9 +804,7 @@ public class PlayerLogic : NetworkBehaviour {
                     Teleport();
                     if (numTreasures > 0)
                     {
-                        numTreasures--;
-                        SetNumTreasure(numTreasures);
-                        scoreText.text = numTreasures.ToString();
+                        Drop();
                     }
                     Restore();
                 }
@@ -919,7 +919,7 @@ public class PlayerLogic : NetworkBehaviour {
 
     void UpdateHealthUI()
     {
-        spriteAnim.SetTrigger("Hit");
+       // spriteAnim.SetTrigger("Hit");
         theHealthUI[zapUI].SetActive(false);
         if (zapUI < 2)
             zapUI++;
@@ -927,6 +927,24 @@ public class PlayerLogic : NetworkBehaviour {
     }
 
     void Teleport()
+    {
+        playerPosition = transform.position;
+        theParticleSystem.TeleportOut();
+        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
+        // if (isServer)
+        //     RpcTeleport();
+        // else
+        //     CmdTeleport();
+    }
+
+    [Command]
+    void CmdTeleport()
+    {
+        RpcTeleport();
+    }
+
+    [ClientRpc]
+    void RpcTeleport()
     {
         playerPosition = transform.position;
         theParticleSystem.TeleportOut();
@@ -951,6 +969,28 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcSetNumTreasure(int num)
     {
         numTreasures = num;
+    }
+
+    void Drop()
+    {
+        if (isServer)
+            RpcDrop();
+        else
+            CmdDrop();
+    }
+
+    [Command]
+    void CmdDrop()
+    {
+        RpcDrop();
+    }
+
+    [ClientRpc]
+    void RpcDrop()
+    {
+        numTreasures--;
+        SetNumTreasure(numTreasures);
+        scoreText.text = numTreasures.ToString();
     }
 
 }
