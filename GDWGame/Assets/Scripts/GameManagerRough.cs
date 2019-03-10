@@ -34,15 +34,15 @@ public class GameManagerRough : NetworkBehaviour {
 
         if (!loadProperties)
         {
-            if (GameObject.FindGameObjectWithTag("RunnerOne"))
-                RunnerOne = GameObject.FindGameObjectWithTag("RunnerOne").GetComponent<PlayerLogic>();
-            //else
-            //    print("is this why?");
+            if (GameObject.FindGameObjectsWithTag("Runner")[0])
+                RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+            else
+                print("ffs");
 
-            if (GameObject.FindGameObjectWithTag("RunnerTwo"))
-                RunnerTwo = GameObject.FindGameObjectWithTag("RunnerTwo").GetComponent<PlayerLogic>();
-        //    else
-            //    print("is this why?2");
+            if (GameObject.FindGameObjectsWithTag("Runner")[1])
+                RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+            else
+                print("ffs2");
 
             loadProperties = true;
 
@@ -81,13 +81,13 @@ public class GameManagerRough : NetworkBehaviour {
     {
         gameoverScreen.SetActive(true);
 
-        if (GameObject.Find("RunnerOne"))
-            RunnerOne = GameObject.Find("RunnerOne").GetComponent<PlayerLogic>();
+        if (GameObject.FindGameObjectsWithTag("Runner")[0])
+            RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
         else
             print("ffs");
 
-        if (GameObject.Find("RunnerTwo"))
-            RunnerTwo = GameObject.Find("RunnerTwo").GetComponent<PlayerLogic>();
+        if (GameObject.FindGameObjectsWithTag("Runner")[1])
+            RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
         else
             print("ffs2");
 

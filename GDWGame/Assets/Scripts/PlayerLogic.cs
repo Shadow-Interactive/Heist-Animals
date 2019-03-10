@@ -928,13 +928,13 @@ public class PlayerLogic : NetworkBehaviour {
 
     void Teleport()
     {
-        playerPosition = transform.position;
-        theParticleSystem.TeleportOut();
-        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
-        // if (isServer)
-        //     RpcTeleport();
-        // else
-        //     CmdTeleport();
+        if (hasAuthority)
+        {
+            if (isServer)
+                RpcTeleport();
+            else
+                CmdTeleport();
+        }
     }
 
     [Command]
@@ -948,15 +948,48 @@ public class PlayerLogic : NetworkBehaviour {
     {
         playerPosition = transform.position;
         theParticleSystem.TeleportOut();
-        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
+        Vector3 theDropPos = new Vector3(transform.position.x, 1.5f, transform.position.z);
+        
+        TheDrop(theDropPos);
+
+        theRoomManager.Teleport(ref playerPosition, ref roomInt);
+
+        
+    }
+
+    public void TheDrop(Vector3 dropPosition)
+    {
+        if (hasAuthority)
+        {
+            if (isServer)
+                RpcTheDrop(dropPosition);
+            else
+                CmdTheDrop(dropPosition);
+        }
+    }
+
+    [Command]
+    void CmdTheDrop(Vector3 dropPosition)
+    {
+        RpcTheDrop(dropPosition);
+    }
+
+    [ClientRpc]
+    void RpcTheDrop(Vector3 dropPosition)
+    {
+        print("gets to the drop function call: " + dropPosition);
+        theRoomManager.theDrop(ref pickedUpObjectives, dropPosition);
     }
 
     void SetNumTreasure(int num)
     {
-        if (isServer)
-            RpcSetNumTreasure(num);
-        else
-            CmdSetNumTreasure(num);
+        if (hasAuthority)
+        {
+            if (isServer)
+                RpcSetNumTreasure(num);
+            else
+                CmdSetNumTreasure(num);
+        }
     }
 
     [Command]
@@ -969,6 +1002,7 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcSetNumTreasure(int num)
     {
         numTreasures = num;
+        print(numTreasures);
     }
 
     void Drop()

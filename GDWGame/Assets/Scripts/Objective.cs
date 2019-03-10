@@ -260,4 +260,15 @@ public class Objective : NetworkBehaviour {
         theTreasure.Activate();
         GameObjectVisible(false);
     }
+
+    public void Drop(Vector3 newPosition)
+    {
+        trapActive = false;
+
+        transform.parent.position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
+        theTreasure.Activate();
+        GameObjectVisible(false);
+
+        print("goes to this final obj part");
+    }
 }

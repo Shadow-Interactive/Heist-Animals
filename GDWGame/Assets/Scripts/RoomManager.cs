@@ -95,9 +95,6 @@ public class RoomManager : NetworkBehaviour
         theTraps[2].theMesh = theMeshes[2];
         theTraps[2].theMaterial = theMaterials[2];
 
-        //theObjectives = emptyObjectives.GetComponentsInChildren<Objective>();
-       // theRooms = emptyRooms.GetComponentsInChildren<RoomScript>();
-
         for (int i = 0; i < theRooms.Length; i++)
         {
             theRooms[i].roomTag = i;
@@ -114,22 +111,22 @@ public class RoomManager : NetworkBehaviour
         }
     }
 
-    public void Teleport(ref Vector3 position, ref int roomInt, ref List<int> pickedUpObjectives)
+    public void Teleport(ref Vector3 position, ref int roomInt)
     {
-        updateUIPosition = true;
-        Vector3 dropPosition = new Vector3(position.x, position.y + 1.5f, position.z); 
         int temp = Random.Range(0, teleportPositions.Length);
         position = teleportPositions[temp].transform.position;
         roomInt = temp;
+    }
 
-       if (pickedUpObjectives.Count > 0)
-       {
-            
-           ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count-1], dropPosition);
-           pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
-       }
-       
-        //print("Player teleported to room #" + roomInt);
+    public void theDrop(ref List<int> pickedUpObjectives, Vector3 dropPosition)
+    {
+        if (pickedUpObjectives.Count > 0)            
+        { 
+            updateUIPosition = true;
+            ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count - 1], dropPosition);
+            pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
+        }
+
     }
 
     public Objective Scramble(Objective currentObjective)
@@ -256,6 +253,8 @@ public class RoomManager : NetworkBehaviour
     public void ObjectiveDrop(int index, Vector3 position)
     {//makes treasure visible
         //changes position
-        theObjectives[index].CmdDrop(position);
+        //theObjectives[index].CmdDrop(position);
+        print(position);
+        theObjectives[index].Drop(position);
     }
 }
