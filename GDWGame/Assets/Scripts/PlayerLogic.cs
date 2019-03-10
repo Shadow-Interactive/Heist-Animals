@@ -948,7 +948,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         playerPosition = transform.position;
         theParticleSystem.TeleportOut();
-        Vector3 theDropPos = new Vector3(transform.position.x, 1.5f, transform.position.z);
+        Vector3 theDropPos = new Vector3(transform.position.x, 2.5f, transform.position.z);
         
         TheDrop(theDropPos);
 
