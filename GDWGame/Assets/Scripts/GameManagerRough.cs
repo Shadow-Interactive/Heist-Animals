@@ -19,7 +19,6 @@ public class GameManagerRough : NetworkBehaviour {
     int player1Score = 0;
     int player2Score = 0; //this specifically is to make it easier to test
 
-    bool loadProperties = false;
     int gameTimeLimit = -1;
     bool theGameOver = false;
 
@@ -31,22 +30,7 @@ public class GameManagerRough : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-
-        if (!loadProperties)
-        {
-            if (GameObject.FindGameObjectsWithTag("Runner")[0])
-                RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
-            else
-                print("ffs");
-
-            if (GameObject.FindGameObjectsWithTag("Runner")[1])
-                RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
-            else
-                print("ffs2");
-
-            loadProperties = true;
-
-        }
+        
 
         if (!theGameOver)
         { 

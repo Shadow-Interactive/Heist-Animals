@@ -61,7 +61,7 @@ public class RoomScript : NetworkBehaviour
     public bool uponEntering(ref int playerInt)
     {
         playerInt = roomTag;
-        print("Player entered room #" + roomTag);
+       // print("Player entered room #" + roomTag);
         //we can activate whatever traps or whatever else here
 
         return trapActivated;

@@ -178,6 +178,8 @@ public class PlayerLogic : NetworkBehaviour {
         //the updates that are running
         //I think I may switch some of these out for coroutines for the sake of performance later on
 
+        //print(transform.position + " " + playerPosition);
+
        if (tutorialCounter < 8)
         {
             tutorialCounter += Time.deltaTime;
@@ -928,35 +930,35 @@ public class PlayerLogic : NetworkBehaviour {
 
     void Teleport()
     {
+        //print("Before the function call +"+ transform.position);
+        //Vector3 dropPosition = new Vector3(transform.position.x, 2, transform.position.z);
         if (hasAuthority)
         {
             if (isServer)
-                RpcTeleport();
+                RpcTeleport(transform.position);
             else
-                CmdTeleport();
+                CmdTeleport(transform.position);
         }
     }
 
     [Command]
-    void CmdTeleport()
+    void CmdTeleport(Vector3 dropPosition)
     {
-        RpcTeleport();
+        RpcTeleport(dropPosition);
     }
 
     [ClientRpc]
-    void RpcTeleport()
+    void RpcTeleport(Vector3 dropPosition)
     {
         playerPosition = transform.position;
+       // print("then in the function call" + playerPosition);
         theParticleSystem.TeleportOut();
-        Vector3 theDropPos = new Vector3(transform.position.x, 2.5f, transform.position.z);
-        
-        TheDrop(theDropPos);
+        //Vector3 theDropPos = new Vector3(transform.position.x, 2.5f, transform.position.z);        
+        //TheDrop(theDropPos);
 
-        theRoomManager.Teleport(ref playerPosition, ref roomInt);
-
-        
+        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);        
     }
-
+    /*
     public void TheDrop(Vector3 dropPosition)
     {
         if (hasAuthority)
@@ -977,10 +979,9 @@ public class PlayerLogic : NetworkBehaviour {
     [ClientRpc]
     void RpcTheDrop(Vector3 dropPosition)
     {
-        print("gets to the drop function call: " + dropPosition);
         theRoomManager.theDrop(ref pickedUpObjectives, dropPosition);
     }
-
+    */
     void SetNumTreasure(int num)
     {
         if (hasAuthority)
@@ -1002,7 +1003,7 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcSetNumTreasure(int num)
     {
         numTreasures = num;
-        print(numTreasures);
+       // print(numTreasures);
     }
 
     void Drop()

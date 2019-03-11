@@ -111,11 +111,26 @@ public class RoomManager : NetworkBehaviour
         }
     }
 
-    public void Teleport(ref Vector3 position, ref int roomInt)
+    public void Teleport(ref Vector3 position, ref int roomInt, ref List<int> pickedUpObjectives, Vector3 dropPosition)
     {
         int temp = Random.Range(0, teleportPositions.Length);
+
+        //Vector3 dropPosition = new Vector3(position.x, 2.5f, position.z);
+        //Vector3 dropPosition = new Vector3(position.x,2,position.z);
+        //print("drop position at first" + dropPosition);
+
         position = teleportPositions[temp].transform.position;
         roomInt = temp;
+
+        if (pickedUpObjectives.Count > 0)
+        {
+            updateUIPosition = true;
+            ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count - 1], dropPosition);
+            pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
+        }
+
+        //print("drop position after" + dropPosition);
+
     }
 
     public void theDrop(ref List<int> pickedUpObjectives, Vector3 dropPosition)
@@ -124,6 +139,7 @@ public class RoomManager : NetworkBehaviour
         { 
             updateUIPosition = true;
             ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count - 1], dropPosition);
+            //print("and at the end..." + dropPosition);
             pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
         }
 

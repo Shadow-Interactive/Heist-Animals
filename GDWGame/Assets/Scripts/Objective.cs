@@ -265,10 +265,9 @@ public class Objective : NetworkBehaviour {
     {
         trapActive = false;
 
-        transform.parent.position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
+        transform.parent.position = new Vector3(newPosition.x, 2.3f, newPosition.z);
+        //transform.position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
         theTreasure.Activate();
         GameObjectVisible(false);
-
-        print("goes to this final obj part");
     }
 }
