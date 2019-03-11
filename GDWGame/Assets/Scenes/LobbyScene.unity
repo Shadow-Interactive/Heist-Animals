@@ -6373,6 +6373,16 @@ Prefab:
       propertyPath: characterSelect
       value: 
       objectReference: {fileID: 1794624240}
+    - target: {fileID: 114758906811748756, guid: 56b8d071d2f5fab40b9f5eede84cea56,
+        type: 2}
+      propertyPath: IPAddress
+      value: 
+      objectReference: {fileID: 2005746151}
+    - target: {fileID: 114305234094714504, guid: 56b8d071d2f5fab40b9f5eede84cea56,
+        type: 2}
+      propertyPath: showGUI
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56b8d071d2f5fab40b9f5eede84cea56, type: 2}
   m_IsPrefabAsset: 0
