@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d41d7b25bacd644a1c5a2e42522343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowLobbyGUI: 1
+  ShowLobbyGUI: 0
 --- !u!114 &114135686173666938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1508,6 +1508,7 @@ MonoBehaviour:
   chosenRoleText: {fileID: 114440120928354784}
   chosenCharacterText: {fileID: 114184082455098372}
   theLobbyManager: {fileID: 0}
+  connectionID: {fileID: 0}
 --- !u!114 &114429480041962724
 MonoBehaviour:
   m_ObjectHideFlags: 1
