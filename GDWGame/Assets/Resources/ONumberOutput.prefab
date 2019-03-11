@@ -104,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224877784492458600}
   - component: {fileID: 114292913620220120}
-  - component: {fileID: 114001361150848780}
+  - component: {fileID: 114802082267843394}
   m_Layer: 0
   m_Name: ONumberOutput
   m_TagString: Untagged
@@ -125,18 +125,6 @@ Transform:
   m_Father: {fileID: 224877784492458600}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114001361150848780
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1993105160925436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fd9e04d074057a459a1dbd5779de26f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  theCamera: {fileID: 0}
 --- !u!114 &114118884161255660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -257,6 +245,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &114802082267843394
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1993105160925436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb971a4900f2f4408e65125031e2cd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  theCamera: {fileID: 0}
 --- !u!212 &212542625822662824
 SpriteRenderer:
   m_ObjectHideFlags: 1
