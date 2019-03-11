@@ -715,6 +715,12 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (shockAttempts >= 3)
         {
+            if (numTreasures > 0)
+            {
+                numTreasures--;
+                SetNumTreasure(numTreasures);
+                scoreText.text = numTreasures.ToString();
+            }
             Teleport();
             Restore();
         }

@@ -17,7 +17,8 @@ public class CustomSpawn : NetworkLobbyManager
     //prefab int
     public int choice;
     public Material run2mat;
-    public GameObject charSelectPrefab; 
+    public GameObject charSelectPrefab;
+    public int id;
 
     public LobbyUIManager theLobbyManager;
 
@@ -36,9 +37,74 @@ public class CustomSpawn : NetworkLobbyManager
 
     }
     //the proper on
+
+    public void ButtonHost()
+    { 
+        base.StartHost();
+    }
+
+    public void ButtonJoin()
+    {
+        base.StartClient();
+    }
+
+    public override void OnLobbyServerConnect(NetworkConnection conn)
+    {
+        //theLobbyManager.LoadProperties();
+        base.OnLobbyServerConnect(conn);
+        base.OnServerAddPlayer(conn, 0); //shortPlayerID 0 means player 1 on a local device I believe? EDIT: after looking it up, playerControllerID enables you to have multiple players on a client, so we can leave it as 0
+        //so because we have no local multiplayer this works
+        Debug.Log(conn.connectionId);
+        id = conn.connectionId;
+    }
+
+    //might need OnLobbyClientConnect
     
+    //this one is for the host
+    public void ButtonDisconnect()
+    {
+        //stop host AND server
+        base.StopHost();
+        NetworkLobbyManager.singleton.StopServer();
+        //NetworkServer.DisconnectAll();
+
+        //NetworkServer.Ho
+    }
+
+    //this one is for the clients
+    public void ButtonDisconnectClient()
+    {
+        //stop client
+        base.StopClient();
+    }
+
+    //public override void OnLobbyStopHost()
+    //{
+    //    print("There is no longer a host");
+    //    base.OnLobbyStopHost();
+    //}
+
+    public override void OnLobbyClientDisconnect(NetworkConnection conn)
+    {
+        print("Goodbye: " + conn);
+        base.OnLobbyClientDisconnect(conn);
+    }
+    //public override void OnServerConnect(NetworkConnection conn)
+    //{
+    //    base.OnServerConnect(conn);
+    //    base.OnServerAddPlayer(conn, 0);
+    //}
+
+    //public override void OnClientConnect(NetworkConnection conn)
+    //{
+    //    base.OnClientConnect(conn);
+    //    base.OnServerAddPlayer(conn, 0);
+    //}
+
     public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
     {
+        Debug.Log("When does this get called");
+
         RegisterStartPosition(Spawn);
         RegisterStartPosition(Spawn);
         RegisterStartPosition(Spawn);
@@ -222,12 +288,18 @@ public class CustomSpawn : NetworkLobbyManager
         choice = 1;
     }
 
-    
+
 
     void Update()
     {
         if (theLobbyManager != null)
-        theLobbyManager.UpdateUI();
-        
+            theLobbyManager.UpdateUI();
+
+        if (GameObject.FindGameObjectWithTag("Runner") == null)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
     }
 }
