@@ -206,15 +206,23 @@ public class Movement : NetworkBehaviour {
 
         //print(GetComponent<Rigidbody>().velocity);
 
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             mouseLock = !mouseLock;
         }
 
         if (mouseLock)
-            Cursor.lockState = CursorLockMode.Locked;
-        else if (!mouseLock)
+        {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else if (!mouseLock)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
         //create a vector outwards from behind the camera
         Vector3 rayCastBehind = playerCam.transform.TransformDirection(Vector3.forward * -1);
         Vector3 rayCastRight = playerCam.transform.TransformDirection(Vector3.right);

@@ -254,7 +254,7 @@ public class Objective : NetworkBehaviour {
     {
         trapActive = false;
         CmdSetTrapActive(false);
-        transform.parent.position = new Vector3(newPosition.x,0.6f, newPosition.z);
+        transform.parent.position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
        // transform.position = new Vector3(newPosition.x, 0.6f, newPosition.z);
         //theTreasure.transform.position = new Vector3(newPosition.x, 0.6f, newPosition.z);
         theTreasure.Activate();

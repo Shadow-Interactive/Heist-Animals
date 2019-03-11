@@ -33,7 +33,31 @@ public class LobbyUIManager : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        //this info is in the start function too so that it reloads when someone disconnects then reconnects
+        //it's because the lobbymanager never unloads so the loadproperties function is only ever called once
 
+        uiActive.Add(true);
+        uiActive.Add(false);
+        uiActive.Add(false);
+        uiActive.Add(false);
+
+        teamString[0] = "N/A";
+        teamString[1] = "Team 1";
+        teamString[2] = "Team 2";
+
+        roleString[0] = "N/A";
+        roleString[1] = "Runner";
+        roleString[2] = "Overseer";
+
+        characterString[0] = "Monkey";
+        characterString[1] = "Chicken";
+        characterString[2] = "Cat";
+        characterString[3] = "Diamond";
+
+        playerNumbers.Add(-1);
+        playerNumbers.Add(-1);
+        playerNumbers.Add(-1);
+        playerNumbers.Add(-1);
     }
 
     [Command]
@@ -158,6 +182,8 @@ public class LobbyUIManager : NetworkBehaviour
             if (team1 < 2) return 1;
             else return 0;
         }
+
+        Debug.Log(team0);
     }
 
     //you use this to go thru and see if a team has 2 players or not

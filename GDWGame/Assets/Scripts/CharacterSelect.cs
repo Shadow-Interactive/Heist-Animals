@@ -47,6 +47,7 @@ public class CharacterSelect : NetworkBehaviour {
     public Text teamText, roleText, chosenTeamText, chosenRoleText, chosenCharacterText;
 
     public LobbyUIManager theLobbyManager; //im praying to god that this works
+    public CustomSpawn connectionID;
     [SyncVar] bool loadProperties = false;
     [SyncVar] bool setPositions = false;
     [SyncVar] Vector3 uiPosition = new Vector3(0,0,0);
@@ -55,18 +56,21 @@ public class CharacterSelect : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-         
+
     }
 
     // Update is called once per frame
     void Update () {
 
-       if (inCharacterSelect)
+        if (inCharacterSelect)
        {
            if (theLobbyManager == null)
            {
                if (GameObject.Find("LobbyUIManager"))
                theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
+
+                if (GameObject.Find("LobbyManager"))
+                    connectionID = GameObject.Find("LobbyManager").GetComponent<CustomSpawn>();
            }
            else
            {
@@ -74,7 +78,12 @@ public class CharacterSelect : NetworkBehaviour {
                chosenTeamText.text = theLobbyManager.teamString[team + 1];
                chosenRoleText.text = theLobbyManager.roleString[role + 1];
                chosenCharacterText.text = theLobbyManager.characterString[(int)chosenCharacter];
-           }
+
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+
+            }
       
            SettingPositions();
       
@@ -90,6 +99,7 @@ public class CharacterSelect : NetworkBehaviour {
           localPlayer.SetActive(false);
       }
 
+        print(chosenTeamText.text);
     }
 
     void SettingPositions()
@@ -170,17 +180,17 @@ public class CharacterSelect : NetworkBehaviour {
     [ClientRpc]
     void RpcUpdateCharacter()
     {
+        //print(theLobbyManager.playerNumbers.Count);
         for (int i = 0; i < 4; i++)
         {
             if (theLobbyManager != null)
             {
-                if (loadProperties == false && theLobbyManager.playerNumbers[i] == -1)
+                if (loadProperties == false && theLobbyManager.playerNumbers[connectionID.id] == -1)
                 {
-
                     theLobbyManager.playerNumbers[i] = i;
                     //THis line is so important
-                    gameobjectName = "Player" + i;
-                    playerIndex = i;
+                    gameobjectName = "Player" + connectionID.id;
+                    playerIndex = connectionID.id;
                     loadProperties = true;
                 }
             }
