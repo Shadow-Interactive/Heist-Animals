@@ -297,7 +297,7 @@ public class CustomSpawn : NetworkLobbyManager
     {
         if (theLobbyManager != null)
             theLobbyManager.UpdateUI();
-        else if (GameObject.FindGameObjectsWithTag("Runner") != null)
+        else if (GameObject.FindGameObjectsWithTag("Runner") == null )
             theLobbyManager = GameObject.Find("LobbyUIManager").GetComponent<LobbyUIManager>();
 
         if (GameObject.FindGameObjectWithTag("Runner") == null)

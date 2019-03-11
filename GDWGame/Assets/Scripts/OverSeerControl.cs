@@ -305,7 +305,8 @@ public class OverSeerControl : NetworkBehaviour {
             }
         } catch (System.IndexOutOfRangeException e)
         {
-            print("One of the players does not exist (in OverseerControl): " + e.Message);
+            //uncomment after
+            //print("One of the players does not exist (in OverseerControl): " + e.Message);
         }
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());

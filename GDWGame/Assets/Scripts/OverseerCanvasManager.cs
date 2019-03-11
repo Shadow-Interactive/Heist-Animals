@@ -108,26 +108,58 @@ public class OverseerCanvasManager : NetworkBehaviour
         {
             AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
         }
-        
 
-        pointPositions[0] = new Vector3(-7.9f, -5.4f, 0);
-        pointPositions[1] = new Vector3(13.9f, -5.4f, 0);
-        pointPositions[2] = new Vector3(32.5f, -5.5f, 0);
-        pointPositions[3] = new Vector3(31.2f, -30.4f, 0);
-        pointPositions[4] = new Vector3(13.4f, 4.9f, 0);
-        pointPositions[5] = new Vector3(-6, 20.9f, 0);
-        pointPositions[6] = new Vector3(32, 21.3f, 0);
-        pointPositions[7] = new Vector3(21.6f, 33.2f, 0);
-        pointPositions[8] = new Vector3(31.1f, 10.9f, 0);
-        pointPositions[9] = new Vector3(-25.7f, 0, 0);
-        pointPositions[10] = new Vector3(-40.6f, 25.9f, 0);
-        pointPositions[11] = new Vector3(-43.5f, -2.1f, 0);
-        pointPositions[12] = new Vector3(-10.6f, -15f, 0);
-        pointPositions[13] = new Vector3(-10.6f, -30.4f, 0);
-        pointPositions[14] = new Vector3(-39.6f, -30.4f, 0);
-        pointPositions[15] = new Vector3(-10.6f, -15f, 0);
-        pointPositions[16] = new Vector3(-10.6f, -30.4f, 0);
-        pointPositions[17] = new Vector3(-39.6f, -30.4f, 0);
+
+        //pointPositions[0] = new Vector3(-3.5f, -3.4f, 0);
+        //pointPositions[1] = new Vector3(-2.3f, -9.3f, 0);
+        //pointPositions[2] = new Vector3(11, -3.1f, 0);
+        //pointPositions[3] = new Vector3(-2.7f, 11.3f, 0);
+        //pointPositions[4] = new Vector3(-15.3f, 3.2f, 0);
+        //pointPositions[5] = new Vector3(-20.1f, -18.3f, 0);
+        //pointPositions[6] = new Vector3(-21.7f, -29.8f, 0);
+        //pointPositions[7] = new Vector3(-7.9f, -29.8f, 0);
+        //pointPositions[8] = new Vector3(2.6f, -24.2f, 0);
+        //pointPositions[9] = new Vector3(-13.5f, -24.2f, 0);
+        //pointPositions[10] = new Vector3(-23.8f, -24.2f, 0);
+        //pointPositions[11] = new Vector3(18.7f, -6.6f, 0);
+        //pointPositions[12] = new Vector3(15.8f, 21.3f, 0);
+        //pointPositions[13] = new Vector3(3.1f, 21.3f, 0);
+        //pointPositions[14] = new Vector3(-7.9f, 21.3f, 0);
+        //pointPositions[15] = new Vector3(-18, 31.2f, 0);
+        //pointPositions[16] = new Vector3(-27.1f, 16.9f, 0);//current
+        //pointPositions[17] = new Vector3(-27.1f, 2.9f, 0);
+
+        pointPositions[0] = new Vector3(-3.5f, -3.4f, 0); //c
+        pointPositions[1] = new Vector3(11.1f, -9.1f, 0); //c
+        pointPositions[2] = new Vector3(-3.1f, 11.2f, 0); //c
+        pointPositions[3] = new Vector3(-15, -12.2f, 0); //c
+        pointPositions[4] = new Vector3(-19.4f, -17.2f, 0); //c
+        pointPositions[5] = new Vector3(-22.9f, -29.6f, 0);//c
+        pointPositions[6] = new Vector3(-7.5f, -29.6f, 0); //c
+        pointPositions[7] = new Vector3(2.6f, -24.2f, 0); //c
+        pointPositions[8] = new Vector3(13.1f, -23.2f, 0); //c
+        pointPositions[9] = new Vector3(23.4f, -26.3f, 0); //c
+        pointPositions[10] = new Vector3(19, -7.1f, 0); //c
+        pointPositions[11] = new Vector3(14.7f, 26, 0);
+        pointPositions[12] = new Vector3(3.3f, 22.9f, 0); // c
+        pointPositions[13] = new Vector3(-7.9f, 21.3f, 0); //c
+        pointPositions[14] = new Vector3(-17.9f, 32.1f, 0); //c
+        pointPositions[15] = new Vector3(-26.5f, 17.9f, 0); //c
+        pointPositions[16] = new Vector3(-26.5f, 3.6f, 0);//c
+        pointPositions[17] = new Vector3(-25f, -7f, 0);  //c
+
+        //pointPositions[11] = new Vector3(23.4f, -23.6f, 0);//current
+        //pointPositions[10] = new Vector3(14, -23.6f, 0);
+        //12 and fifteen flipped
+        //7 and 8 flipperd
+        //14 and 13 flipped
+
+        //room 5 is 10
+        //room 6 is 11 (the current room 12)
+
+        //11 and 16?
+        //17 and 10?
+        //6 and 9?
 
         theRoomTexts[0] = "Foyer";
         theRoomTexts[1] = "Hallway 1";
@@ -147,6 +179,7 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[15] = "Room 11";
         theRoomTexts[16] = "Room 12";
         theRoomTexts[17] = "Room 13";
+
     }
     
     public void ChangeTrapLocation(int index, Vector3 position) //for when the objective is dropping
