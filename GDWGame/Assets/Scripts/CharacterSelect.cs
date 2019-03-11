@@ -99,7 +99,7 @@ public class CharacterSelect : NetworkBehaviour {
           localPlayer.SetActive(false);
       }
 
-        print(chosenTeamText.text);
+        //print(chosenTeamText.text);
     }
 
     void SettingPositions()

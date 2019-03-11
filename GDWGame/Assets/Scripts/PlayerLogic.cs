@@ -717,8 +717,9 @@ public class PlayerLogic : NetworkBehaviour {
         {
             if (numTreasures > 0)
             {
-                numTreasures--;
-                SetNumTreasure(numTreasures);
+                //numTreasures--;
+                int treasure = numTreasures - 1;
+                SetNumTreasure(treasure);
                 scoreText.text = numTreasures.ToString();
             }
             Teleport();
@@ -838,8 +839,8 @@ public class PlayerLogic : NetworkBehaviour {
         else if (other.CompareTag(treasureStr) && pickupAllowed)
         {
             //CmdScore();
-            numTreasures+= other.GetComponent<Treasure>().ScoreWorth;
-            SetNumTreasure(numTreasures);
+            int number = numTreasures + 1;
+            SetNumTreasure(number);
             scoreText.text = numTreasures.ToString();
             other.GetComponent<Treasure>().Deactivate();
             pickedUpObjectives.Add(other.GetComponent<Treasure>().GetTrapID());
@@ -962,6 +963,7 @@ public class PlayerLogic : NetworkBehaviour {
         //Vector3 theDropPos = new Vector3(transform.position.x, 2.5f, transform.position.z);        
         //TheDrop(theDropPos);
 
+        Drop();
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);        
     }
     /*
@@ -1008,8 +1010,10 @@ public class PlayerLogic : NetworkBehaviour {
     [ClientRpc]
     void RpcSetNumTreasure(int num)
     {
-        numTreasures = num;
-       // print(numTreasures);
+            numTreasures = num;
+            print("This gets called" + numTreasures);
+            scoreText.text = numTreasures.ToString();
+        
     }
 
     void Drop()
@@ -1029,9 +1033,13 @@ public class PlayerLogic : NetworkBehaviour {
     [ClientRpc]
     void RpcDrop()
     {
-        numTreasures--;
-        SetNumTreasure(numTreasures);
-        scoreText.text = numTreasures.ToString();
+
+//        if (numTreasures > 0)
+   //     {
+            int treasure = numTreasures - 1;
+            SetNumTreasure(treasure);
+            scoreText.text = numTreasures.ToString();
+     //   }
     }
 
 }
