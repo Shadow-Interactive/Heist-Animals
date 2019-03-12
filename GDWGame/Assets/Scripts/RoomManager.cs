@@ -106,7 +106,7 @@ public class RoomManager : NetworkBehaviour
             if (theObjectives[i].objTrapType != TrapTypes.NO_TRAP)
             {
                 theObjectives[i].trapID = i;
-                theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
+                //theObjectives[i].SetUpTrap(theTraps[(int)theObjectives[i].objTrapType]);
             }
         }
     }
