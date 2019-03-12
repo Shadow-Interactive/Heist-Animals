@@ -6096,7 +6096,7 @@ MonoBehaviour:
   m_OfflineScene: LobbyScene
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1665447700083700, guid: 2f5c459dbb4d612478a4d1d078f9fea9, type: 2}
+  - {fileID: 1023653868200874, guid: 2f5c459dbb4d612478a4d1d078f9fea9, type: 2}
   - {fileID: 1296392377317146, guid: 939c5960d6a4624449857eb4a7f39a41, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4

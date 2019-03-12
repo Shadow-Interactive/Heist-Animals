@@ -21,6 +21,8 @@ public class CameraClipping : MonoBehaviour {
     Vector3 noClipPositionLeft;
     Vector3 noClipPositionRight;
 
+    public GameObject reticle;
+
 	// Use this for initialization
 	void Awake () {
         camPos = transform.localPosition.normalized;
@@ -104,11 +106,13 @@ public class CameraClipping : MonoBehaviour {
         if (Input.GetMouseButton(1) || XBoxInput.GetLeftTrigger() >= 0.99f)
         {
             Aim = true;
+            reticle.SetActive(true);
             transform.localPosition = Vector3.Lerp(transform.localPosition, ADS, Time.deltaTime * 2.0f);
         }
         else
         {
             Aim = false;
+            reticle.SetActive(false);
         }
  
 
