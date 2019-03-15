@@ -7,7 +7,7 @@ public class JoinButton : MonoBehaviour {
 
     private Button joinButton;
     private GameObject theLobbyManager;
-    public GameObject clientDisconnect, HostButton, IPinput;
+    public GameObject clientDisconnect, HostButton, IPinput, title;
 
     // Use this for initialization
     void Start()
@@ -22,6 +22,7 @@ public class JoinButton : MonoBehaviour {
     void hostGame()
     {
         theLobbyManager.GetComponent<CustomSpawn>().ButtonJoin();
+        title.SetActive(false);
         gameObject.SetActive(false);
         HostButton.SetActive(false);
         IPinput.SetActive(false);

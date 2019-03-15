@@ -9,7 +9,7 @@ public class DisconnectButton : MonoBehaviour
 
     private Button disconnectButton;
     private GameObject theLobbyManager;
-    public GameObject JoinButton, HostButton, IPinput;
+    public GameObject JoinButton, HostButton, IPinput, title;
 
     // Use this for initialization
     void Start()
@@ -25,6 +25,7 @@ public class DisconnectButton : MonoBehaviour
     void hostGame()
     {
         theLobbyManager.GetComponent<CustomSpawn>().ButtonDisconnect();
+        title.SetActive(true);
         JoinButton.SetActive(true);
         HostButton.SetActive(true);
         IPinput.SetActive(true);
