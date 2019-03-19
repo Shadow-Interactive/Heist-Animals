@@ -25,6 +25,9 @@ public class DisconnectButton : MonoBehaviour
     void hostGame()
     {
         theLobbyManager.GetComponent<CustomSpawn>().ButtonDisconnect();
+
+        theLobbyManager.GetComponent<AudioSource>().Play(); //plays menuClick.wav on click
+
         JoinButton.SetActive(true);
         HostButton.SetActive(true);
         IPinput.SetActive(true);

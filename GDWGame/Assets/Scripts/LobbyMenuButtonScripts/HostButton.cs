@@ -22,6 +22,9 @@ public class HostButton : MonoBehaviour {
     void hostGame()
     {
         theLobbyManager.GetComponent<CustomSpawn>().ButtonHost();
+
+        theLobbyManager.GetComponent<AudioSource>().Play(); //plays menuClick.wav on click
+
         gameObject.SetActive(false);
         joinButton.SetActive(false);
         IPinput.SetActive(false);
