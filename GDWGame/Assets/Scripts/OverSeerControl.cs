@@ -78,6 +78,7 @@ public class OverSeerControl : NetworkBehaviour {
     [HideInInspector] public Objective R2currentObjective;
 
     public Material run2mat;
+    public GameObject overPostProcess;
 
     int UIUpdateCounter = 0; //this is really hacky im sorryyy im rushing T_T 
 
@@ -85,6 +86,14 @@ public class OverSeerControl : NetworkBehaviour {
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
 
+        overPostProcess = GameObject.Find("OverseerPostVolume");
+        if (isLocalPlayer)
+        {
+            overPostProcess.SetActive(true);
+            GameObject.Find("RunnerPostVolume").SetActive(false);
+        }
+
+        
         radialCamSelect.SetActive(false);
         radialPress = false;
 
@@ -571,7 +580,7 @@ public class OverSeerControl : NetworkBehaviour {
                     float temp = totalCamera[i].GetComponentInChildren<Camera>().fieldOfView;
 
                     if (temp >= 30 && temp <= 70)
-                        temp -= zAxis * zoomSpeed * Time.deltaTime;
+                        temp += zAxis * zoomSpeed * Time.deltaTime;
                     if (temp > 70)
                         temp = 70;
                     if (temp < 30)

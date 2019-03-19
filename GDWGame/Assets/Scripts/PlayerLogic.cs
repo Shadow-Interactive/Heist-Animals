@@ -112,6 +112,8 @@ public class PlayerLogic : NetworkBehaviour {
     //for the character select
     [SyncVar] int chosenCharacter;
 
+    public GameObject runPostProcess;
+
     // Use this for initialization
     void Start () {
         zapUI = 0;
@@ -171,6 +173,12 @@ public class PlayerLogic : NetworkBehaviour {
             spriteAnim = playerCanvas.GetComponentInChildren<Animator>();
             theParticleSystem.TeleportIn();
             initRM = true;
+            runPostProcess = GameObject.Find("RunnerPostVolume");
+            if (isLocalPlayer)
+            {
+                GameObject.Find("OverseerPostVolume").SetActive(false);
+                runPostProcess.SetActive(true);
+            }
         }
 
         // PrintObjs();

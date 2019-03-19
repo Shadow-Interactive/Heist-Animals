@@ -110,12 +110,12 @@ public class RoomScript : NetworkBehaviour
     [ClientRpc]
     void RpcChangeColor(int color)
     {
-        securityBox.GetComponent<Renderer>().material.color = theColors[color];
+        securityBox.GetComponent<Renderer>().material.SetColor("_Albedo", theColors[color]);
     }
 
     public void ChangeSecurityColor(int color)
     {
-        securityBox.GetComponent<Renderer>().material.color = theColors[color];
+        securityBox.GetComponent<Renderer>().material.SetColor("_Albedo", theColors[color]);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -139,7 +139,7 @@ public class RoomScript : NetworkBehaviour
 
     public void DoorTrapActive(bool temp)
     {
-        securityBox.GetComponent<Renderer>().material.color = theColors[Convert.ToInt32(temp)];
+        securityBox.GetComponent<Renderer>().material.SetColor("_Albedo", theColors[Convert.ToInt32(temp)]);
         for (int i = 0; i < theDoors.Length; i++)
         {
             theDoors[i].SetActive(temp);

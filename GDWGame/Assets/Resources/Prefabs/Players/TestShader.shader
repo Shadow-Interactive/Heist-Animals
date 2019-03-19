@@ -1,5 +1,6 @@
-﻿Shader "Example/Diffuse Texture" {
+﻿Shader "Toon/ToonShader" {
 	Properties{
+		_Albedo("Color", Color) = (0.0, 0.0, 0.0, 0.0)
 		_MainTex("Texture", 2D) = "white" {}
 		_Ramp("Ramp", 2D) = "white" {}
 		_NormalMap("Normal Map", 2D) = "bump" {}
@@ -10,7 +11,7 @@
 		Tags { "RenderType" = "Opaque" }
 		CGPROGRAM
 		
-		#pragma surface surf Ramp
+		#pragma surface surf Ramp addshadow fullforwardshadows
 
 		#pragma target 3.0
 
@@ -32,18 +33,19 @@
 			float3 viewDir;
 		};
 
+		float4 _Albedo;
 		sampler2D _MainTex;
 		sampler2D _NormalMap;
 		float4 _RimLight;
 		float _RimStrength;
 
 		void surf(Input IN, inout SurfaceOutput o) {
-			o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;
+			o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb * _Albedo;
 			o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap));
 			half rLight = 1.0 - saturate(dot(normalize(IN.viewDir), o.Normal));
 			o.Emission = _RimLight.rgb * pow(rLight, _RimStrength);
 		}
 		ENDCG
 	}
-	Fallback "Diffuse"
+	Fallback "Vertex Lit"
 }
