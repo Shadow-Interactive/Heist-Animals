@@ -323,7 +323,7 @@ public class PlayerLogic : NetworkBehaviour {
        //{
        //    theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
        //}
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
             if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
             {
