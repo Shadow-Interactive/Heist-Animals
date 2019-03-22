@@ -36,3 +36,5 @@ sysinfo.txt
 *.unitypackage
 
 GDWGame/Assets/plugins/XInput1_4 Wrapper\.dll\.meta
+
+GDWGame/\.vscode/settings\.json
