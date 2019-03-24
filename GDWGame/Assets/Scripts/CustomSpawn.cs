@@ -146,8 +146,10 @@ public class CustomSpawn : NetworkLobbyManager
              {
                  ourPlayer.GetComponent<PlayerLogic>().runID = team;
                  ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player1.chosenCharacter);
-             }
-             
+                ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
+
+            }
+
             player1.DisableCharacterSelect();
             player1.inCharacterSelect = false;
             
@@ -196,8 +198,10 @@ public class CustomSpawn : NetworkLobbyManager
             {
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player2.chosenCharacter);
+                ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
+
             }
-            
+
             player2.DisableCharacterSelect();
             player2.inCharacterSelect = false;
             
@@ -231,6 +235,7 @@ public class CustomSpawn : NetworkLobbyManager
             {
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player3.chosenCharacter);
+                ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
             }
            
             player3.DisableCharacterSelect();
@@ -264,6 +269,7 @@ public class CustomSpawn : NetworkLobbyManager
             {
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player4.chosenCharacter);
+                ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
             }
             
             player4.DisableCharacterSelect();
