@@ -111,8 +111,11 @@ public class PlayerLogic : NetworkBehaviour {
 
     //for the character select
     [SyncVar] int chosenCharacter;
+    [HideInInspector] [SyncVar] public int team = 0;
+
 
     public GameObject runPostProcess;
+
 
     // Use this for initialization
     void Start () {
@@ -130,6 +133,26 @@ public class PlayerLogic : NetworkBehaviour {
     public void SetChosenCharacter(int num)
     {
         chosenCharacter = num;
+    }
+
+    public void SetChosenTeam(int num)
+    {
+        team = num; //sets the team
+        CmdSetTeam(team);
+
+    }
+
+    [Command]
+    void CmdSetTeam(int num)
+    {
+        team = num;
+        RpcSetTeam(num);
+    }
+
+    [ClientRpc]
+    void RpcSetTeam(int num)
+    {
+        team = num;
     }
 
     public void SetRunnerTag(string theTag)

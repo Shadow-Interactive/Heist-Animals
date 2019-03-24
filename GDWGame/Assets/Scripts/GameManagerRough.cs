@@ -79,13 +79,19 @@ public class GameManagerRough : NetworkBehaviour {
         //{
         if (RunnerOne != null)
             {
+            if (RunnerOne.team == 0)
                 player1Score = RunnerOne.numTreasures;
+            else if (RunnerOne.team == 2)
+                player1Score = RunnerTwo.numTreasures;
             }
 
             if (RunnerTwo != null)
             {
+            if (RunnerTwo.team == 0)
                 player2Score = RunnerTwo.numTreasures;
-            }
+            else if (RunnerTwo.team == 2)
+                player2Score = RunnerTwo.numTreasures;
+        }
      //   }
 
         Score1.text = player1Score.ToString(NoDecimals);
