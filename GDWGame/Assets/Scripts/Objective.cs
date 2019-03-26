@@ -51,8 +51,8 @@ public class Objective : NetworkBehaviour {
     public void SetUpTrap(TrapBase theType)
     {
         theTrapType = theType;
-        GetComponent<MeshFilter>().sharedMesh = theType.theMesh;
-        gameObject.GetComponent<Renderer>().sharedMaterial = theType.theMaterial;
+        //GetComponent<MeshFilter>().sharedMesh = theType.theMesh;
+        //gameObject.GetComponent<Renderer>().sharedMaterial = theType.theMaterial;
     }
 
     private void OnCollisionEnter(Collision collision)

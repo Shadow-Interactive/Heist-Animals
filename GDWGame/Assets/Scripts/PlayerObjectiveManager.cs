@@ -83,12 +83,14 @@ public class PlayerObjectiveManager : NetworkBehaviour {
 
     public void DeactivateMinigame()
     {
+        //This deactivates the minigame and clears all the properties
         ClearAll();
         minigameCanvas.SetActive(false);
         ResetMinigameNumbers();
         thePlayer.setCursor(true);
         thePlayer.SetMovement(false);
         thePlayer.SetActivation(false);
+        thePlayer.inTrap = false;
         if (thePlayer.name == runner0ne)
             thePlayer.R1currentObjective.RpcDecoupleTrap();
         if (thePlayer.name == runnerTwo)
@@ -110,6 +112,7 @@ public class PlayerObjectiveManager : NetworkBehaviour {
    
 void ResetMinigameNumbers()
     {
+        //this resets the variables associated with the minigame
         attemptCounter = 0;
         attemptNum = normalAttempt;
         counterLimit = mNormalCount;

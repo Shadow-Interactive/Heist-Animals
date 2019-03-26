@@ -116,6 +116,7 @@ public class PlayerLogic : NetworkBehaviour {
 
     public GameObject runPostProcess;
 
+    [SyncVar] public bool inTrap = false; //this is bad. I couldnt find if we already defined this somewhere or not so TwT
 
     // Use this for initialization
     void Start () {
@@ -342,46 +343,9 @@ public class PlayerLogic : NetworkBehaviour {
     //updating the key inputs
     private void KeyInputUpdate()
     {
-       //if (Input.GetKeyDown(KeyCode.Z))
-       //{
-       //    theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives);
-       //}
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && inTrap == false)
         {
-            if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
-            {
-                Shoot();
-            }
-            else if (theCurrentAbility == CurrentAbility.shield)
-            {
-                if (canUseShield)
-                {
-                    Shield(true);
-                    canUseShield = false;
-                    //theShieldImg.gameObject.SetActive(true);
-                    shieldSlider.value = 0;
-                }
-            }
-            else if (theCurrentAbility == CurrentAbility.smokebomb)
-            {
-                if (canUseSmokeBomb)
-                {
-                    Smoke();
-                    canUseSmokeBomb = false;
-                    smokeSlider.value = 0;
-                }
-            }
-
-            if (zapperSlider.value <= 0)
-            {
-                zapperReload = true;
-                zapperFill.color = Color.red;
-            }
-
-            if (activeBulletNum < 0)
-            {
-                activeBulletNum = numBullets - 1;
-            }
+            RightClickEvents();
         }
         if  (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -420,42 +384,9 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if(XBoxInput.GetConnected())
         {
-            if(XBoxInput.GetKeyPressed(0, (int)Buttons.RTrig))
+            if(XBoxInput.GetKeyPressed(0, (int)Buttons.RTrig) && inTrap == false)
             {
-                if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
-                {
-                    Shoot();
-                }
-                else if (theCurrentAbility == CurrentAbility.shield)
-                {
-                    if (canUseShield)
-                    {
-                        Shield(true);
-                        canUseShield = false;
-                      //  theShieldImg.gameObject.SetActive(true);
-                        shieldSlider.value = 0;
-                    }
-                }
-                else if (theCurrentAbility == CurrentAbility.smokebomb)
-                {
-                    if (canUseSmokeBomb)
-                    {
-                        Smoke();
-                        canUseSmokeBomb = false;
-                        smokeSlider.value = 0;
-                    }
-                }
-
-                if (zapperSlider.value <= 0)
-                {
-                    zapperReload = true;
-                    zapperFill.color = Color.red;
-                }
-                
-                if (activeBulletNum < 0)
-                {
-                    activeBulletNum = numBullets - 1;
-                }
+                RightClickEvents();
             }
 
             if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
@@ -481,6 +412,44 @@ public class PlayerLogic : NetworkBehaviour {
         else
         {
             return false;
+        }
+    }
+
+    //These are all the possible events that can happen with the right mouse click
+    private void RightClickEvents()
+    {
+        if (theCurrentAbility == CurrentAbility.zapper && zapperReload == false && shockTrap == false)
+        {
+            Shoot(); //shoots the bullet
+        }
+        else if (theCurrentAbility == CurrentAbility.shield)
+        {
+            if (canUseShield) //activates shield if it's possible
+            {
+                Shield(true);
+                canUseShield = false;
+                shieldSlider.value = 0;
+            }
+        }
+        else if (theCurrentAbility == CurrentAbility.smokebomb) //uses the smokebomb if it's set to it
+        {
+            if (canUseSmokeBomb) //if the smokebomb is usable
+            {
+                Smoke();
+                canUseSmokeBomb = false;
+                smokeSlider.value = 0;
+            }
+        }
+
+        if (zapperSlider.value <= 0) //this reloads the zapper if it's below a certian point
+        {
+            zapperReload = true;
+            zapperFill.color = Color.red;
+        }
+
+        if (activeBulletNum < 0) 
+        {
+            activeBulletNum = numBullets - 1;
         }
     }
 
@@ -883,6 +852,9 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (collision.collider.CompareTag(trapStr))
         {
+            
+            inTrap = true;
+            print("Printing " + inTrap);
             theAnimator.SetBool("Hacking", true);
             if (gameObject.name == runnerOneStr)
             {
@@ -905,6 +877,9 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (collision.collider.CompareTag(trapStr))
         {
+            inTrap = false;
+            print("Printing " + inTrap);
+
             theAnimator.SetBool("Hacking", false);
         }
     }
