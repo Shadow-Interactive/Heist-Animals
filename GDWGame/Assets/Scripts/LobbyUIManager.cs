@@ -46,13 +46,13 @@ public class LobbyUIManager : NetworkBehaviour
         teamString[2] = "Team 2";
 
         roleString[0] = "N/A";
-        roleString[1] = "Runner";
-        roleString[2] = "Overseer";
+        roleString[2] = "Runner";
+        roleString[1] = "Overseer";
 
-        characterString[0] = "Monkey";
-        characterString[1] = "Chicken";
-        characterString[2] = "Cat";
-        characterString[3] = "Diamond";
+        characterString[0] = "Tiger";
+        characterString[3] = "Tuesday";
+        characterString[1] = "Shadow";
+        characterString[2] = "Doug";
 
         playerNumbers.Add(-1);
         playerNumbers.Add(-1);

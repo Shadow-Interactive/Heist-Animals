@@ -125,8 +125,18 @@ public class CustomSpawn : NetworkLobbyManager
         if (conn.connectionId == 0)
         {
             CharacterSelect player1 = GameObject.Find("Player0").GetComponent<CharacterSelect>();
-            
-            int prefabChoice = player1.role;
+
+            int prefabChoice;
+
+            if (player1.role == 0)
+            {
+                prefabChoice = player1.role;
+            }
+            else
+            {
+                prefabChoice = (int)player1.chosenCharacter + 1;
+            }
+
             int teamChoice;
             if (player1.team == 0) teamChoice = 0;
             else teamChoice = 2;
@@ -135,7 +145,7 @@ public class CustomSpawn : NetworkLobbyManager
             
              ourPlayer = Instantiate(spawnPrefabs[prefabChoice], startPositions[prefabChoice+teamChoice].position, Quaternion.identity);
             
-             if (prefabChoice == 1) //1 for overseer
+             if (prefabChoice == 0) //1 for overseer
              {
                  ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                  ourPlayer.GetComponent<OverSeerControl>().OverID = team;
@@ -145,8 +155,8 @@ public class CustomSpawn : NetworkLobbyManager
              else
              {
                  ourPlayer.GetComponent<PlayerLogic>().runID = team;
-                 ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player1.chosenCharacter);
-                ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
+                 //ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player1.chosenCharacter);
+                 ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
 
             }
 

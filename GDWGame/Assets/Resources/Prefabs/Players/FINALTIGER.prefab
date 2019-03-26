@@ -917,7 +917,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1389630465739998
 GameObject:
   m_ObjectHideFlags: 1
@@ -2623,13 +2623,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1988658348127732}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.16133682, y: 0, z: 0, w: 0.98689944}
+  m_LocalPosition: {x: -66.12511, y: 0.07199955, z: -49.41857}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 4809021720749540}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -18.569, y: 0, z: 0}
 --- !u!4 &4491022939034864
 Transform:
   m_ObjectHideFlags: 1
@@ -2990,7 +2990,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1779606154133522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -685.2506, y: 298.95703, z: -434.93808}
+  m_LocalPosition: {x: 0.26612937, y: 1.23915, z: -16.314768}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4729930993321054}
@@ -3265,7 +3265,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1449252692522316}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!95 &95002336060488352
 Animator:
   serializedVersion: 3
@@ -4155,7 +4155,9 @@ MonoBehaviour:
   theObjManager: {fileID: 114112812199016862}
   theParticleSystem: {fileID: 114867253148580892}
   playerCanvas: {fileID: 223626966698578572}
+  team: 0
   runPostProcess: {fileID: 0}
+  inTrap: 0
 --- !u!114 &114245422729500282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4430,7 +4432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.09722233, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -44913,7 +44915,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.16465335, y: 0.73700005}
   m_AnchorMax: {x: 0.24289778, y: 0.8441353}
-  m_AnchoredPosition: {x: 4.5000153, y: 1.5}
+  m_AnchoredPosition: {x: 4.5, y: 1.5}
   m_SizeDelta: {x: 17, y: 13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224406931030522924

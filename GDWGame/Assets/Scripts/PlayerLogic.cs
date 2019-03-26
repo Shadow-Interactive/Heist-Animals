@@ -165,14 +165,14 @@ public class PlayerLogic : NetworkBehaviour {
     [Command]
     void CmdSetCharacter()
     {
-        GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = theRoomManager.characterMeshes[chosenCharacter];
+        //GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = theRoomManager.characterMeshes[chosenCharacter];
         RpcSetCharacter();
     }
 
     [ClientRpc]
     void RpcSetCharacter()
     {
-        GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = theRoomManager.characterMeshes[chosenCharacter];
+        //GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = theRoomManager.characterMeshes[chosenCharacter];
     }
 
 

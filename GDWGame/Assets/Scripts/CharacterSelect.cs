@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public enum Characters
 {
     nocharacter = -1,
-    character1 = 0,
-    character2 = 1,
-    character3 = 2, 
-    character4 = 3
+    character1 = 1,
+    character2 = 2,
+    character3 = 3, 
+    character4 = 4
 }
 
 public class CharacterSelect : NetworkBehaviour {
@@ -26,7 +26,7 @@ public class CharacterSelect : NetworkBehaviour {
 
 
     //for the specific buttons //the other two options are just buttons
-    int characterCounter = 0; //this is to switch between the possible characters
+    int characterCounter = 1; //this is to switch between the possible characters
 
     //UI variables (this would probably just be used to set colours and stuff?
 
@@ -322,7 +322,7 @@ public class CharacterSelect : NetworkBehaviour {
 
         if (characterCounter >= 4)
         {
-            characterCounter = 0;
+            characterCounter = 1;
         }
 
         UpdateCharacter();
@@ -352,9 +352,9 @@ public class CharacterSelect : NetworkBehaviour {
     {
         characterCounter--;
 
-        if (characterCounter < 0)
+        if (characterCounter < 1)
         {
-            characterCounter = 3;
+            characterCounter = 4;
         }
 
         UpdateCharacter();
