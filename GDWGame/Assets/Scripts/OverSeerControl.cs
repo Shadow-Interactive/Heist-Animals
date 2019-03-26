@@ -83,7 +83,8 @@ public class OverSeerControl : NetworkBehaviour {
     int UIUpdateCounter = 0; //this is really hacky im sorryyy im rushing T_T 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
 
         overPostProcess = GameObject.Find("OverseerPostVolume");
@@ -186,6 +187,9 @@ public class OverSeerControl : NetworkBehaviour {
             currentCamera = 9;
         else if (OverID == 2)
             currentCamera = 13;
+
+        totalCamera[currentCamera].GetComponentInChildren<AudioListener>().enabled = true;
+
     }
 
     void findFOV(int x)
@@ -820,7 +824,10 @@ public class OverSeerControl : NetworkBehaviour {
     {
         print(currentCamera);
         totalCamera[currentCamera].GetComponentInChildren<Camera>().enabled = false;
+        totalCamera[currentCamera].GetComponentInChildren<AudioListener>().enabled = false;
         totalCamera[theValue].GetComponentInChildren<Camera>().enabled = true;
+        totalCamera[theValue].GetComponentInChildren<AudioListener>().enabled = true;
+        
         currentCamera = theValue;
         trapSelect = theValue;
         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
