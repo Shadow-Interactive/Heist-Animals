@@ -994,7 +994,7 @@ public class PlayerLogic : NetworkBehaviour {
         //Vector3 theDropPos = new Vector3(transform.position.x, 2.5f, transform.position.z);        
         //TheDrop(theDropPos);
 
-        Drop();
+        //Drop();
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);        
     }
     /*
@@ -1042,7 +1042,6 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcSetNumTreasure(int num)
     {
             numTreasures = num;
-            print("This gets called" + numTreasures);
             scoreText.text = numTreasures.ToString();
         
     }
