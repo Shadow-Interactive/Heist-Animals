@@ -90,14 +90,14 @@ public class Movement : NetworkBehaviour {
             if (gameObject.GetComponent<PlayerLogic>().runID == 1)
             {
                 gameObject.transform.position = new Vector3(-65.84f, 2f, -66f);
-                gameObject.tag = "Runner" + gameObject.GetComponent<PlayerLogic>().runID;
+                gameObject.tag = "Runner";
                 gameObject.name = "RunnerOne";
                 //gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run1mat;
             }
             else if (gameObject.GetComponent<PlayerLogic>().runID == 2)
             {
                 gameObject.transform.position = new Vector3(18f, 2f, 61f);
-                gameObject.tag = "Runner" + gameObject.GetComponent<PlayerLogic>().runID;
+                gameObject.tag = "Runner"; 
                 gameObject.name = "RunnerTwo";
                 //gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
             }
@@ -118,8 +118,8 @@ public class Movement : NetworkBehaviour {
             return;
         }
 
-        if (gameObject.name == "RunnerTwo")
-            gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+        //if (gameObject.name == "RunnerTwo")
+            //gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
 
         if(XBoxInput.GetConnected())
