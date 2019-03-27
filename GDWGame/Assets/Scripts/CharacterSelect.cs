@@ -363,6 +363,8 @@ public class CharacterSelect : NetworkBehaviour {
     void UpdateCharacter()
     {
         chosenCharacter = (Characters)characterCounter;
+        if (theLobbyManager != null)
+            theCharacter.texture = theLobbyManager.characterTextures[(int)chosenCharacter];
     }
 
     public void SetLocalActive(bool active)

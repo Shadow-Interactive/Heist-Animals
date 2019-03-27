@@ -6717,10 +6717,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   characterTextures:
-  - {fileID: 2800000, guid: 1849c553bd58fc04eba081f1e173eed2, type: 3}
+  - {fileID: 2800000, guid: da4b49f22a8d9f042aa97907545bd327, type: 3}
+  - {fileID: 2800000, guid: 77c3e157db1d0134c99710fa50905670, type: 3}
+  - {fileID: 2800000, guid: 22a7dd39a1973674b884e2499c52eb46, type: 3}
   - {fileID: 2800000, guid: 3cb26b5efe288374b9d9990f80d9379c, type: 3}
-  - {fileID: 2800000, guid: e2c85ed10893e7b47a051570461a7132, type: 3}
-  - {fileID: 2800000, guid: 876468cfa64d30345957893404fbb631, type: 3}
   playerCanvas: {fileID: 1794624240}
   uiTest: {fileID: 1510491286}
   teamString:
