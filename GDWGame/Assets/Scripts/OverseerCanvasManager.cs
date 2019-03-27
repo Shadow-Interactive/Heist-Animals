@@ -129,24 +129,43 @@ public class OverseerCanvasManager : NetworkBehaviour
         //pointPositions[16] = new Vector3(-27.1f, 16.9f, 0);//current
         //pointPositions[17] = new Vector3(-27.1f, 2.9f, 0);
 
-        pointPositions[0] = new Vector3(-3.5f, -3.4f, 0); //c
-        pointPositions[1] = new Vector3(11.1f, -9.1f, 0); //c
-        pointPositions[2] = new Vector3(-3.1f, 11.2f, 0); //c
-        pointPositions[3] = new Vector3(-15, -12.2f, 0); //c
-        pointPositions[4] = new Vector3(-19.4f, -17.2f, 0); //c
-        pointPositions[5] = new Vector3(-22.9f, -29.6f, 0);//c
-        pointPositions[6] = new Vector3(-7.5f, -29.6f, 0); //c
-        pointPositions[7] = new Vector3(2.6f, -24.2f, 0); //c
-        pointPositions[8] = new Vector3(13.1f, -23.2f, 0); //c
-        pointPositions[9] = new Vector3(23.4f, -26.3f, 0); //c
-        pointPositions[10] = new Vector3(19, -7.1f, 0); //c
-        pointPositions[11] = new Vector3(14.7f, 26, 0);
-        pointPositions[12] = new Vector3(3.3f, 22.9f, 0); // c
-        pointPositions[13] = new Vector3(-7.9f, 21.3f, 0); //c
-        pointPositions[14] = new Vector3(-17.9f, 32.1f, 0); //c
-        pointPositions[15] = new Vector3(-26.5f, 17.9f, 0); //c
-        pointPositions[16] = new Vector3(-26.5f, 3.6f, 0);//c
-        pointPositions[17] = new Vector3(-25f, -7f, 0);  //c
+        //pointPositions[0] = new Vector3(-3.5f, -3.4f, 0); //c
+        //pointPositions[1] = new Vector3(11.1f, -9.1f, 0); //c
+        //pointPositions[2] = new Vector3(-3.1f, 11.2f, 0); //c
+        //pointPositions[3] = new Vector3(-15, -12.2f, 0); //c
+        //pointPositions[4] = new Vector3(-19.4f, -17.2f, 0); //c
+        //pointPositions[5] = new Vector3(-22.9f, -29.6f, 0);//c
+        //pointPositions[6] = new Vector3(-7.5f, -29.6f, 0); //c
+        //pointPositions[7] = new Vector3(2.6f, -24.2f, 0); //c
+        //pointPositions[8] = new Vector3(13.1f, -23.2f, 0); //c
+        //pointPositions[9] = new Vector3(23.4f, -26.3f, 0); //c
+        //pointPositions[10] = new Vector3(19, -7.1f, 0); //c
+        //pointPositions[11] = new Vector3(14.7f, 26, 0);
+        //pointPositions[12] = new Vector3(3.3f, 22.9f, 0); // c
+        //pointPositions[13] = new Vector3(-7.9f, 21.3f, 0); //c
+        //pointPositions[14] = new Vector3(-17.9f, 32.1f, 0); //c
+        //pointPositions[15] = new Vector3(-26.5f, 17.9f, 0); //c
+        //pointPositions[16] = new Vector3(-26.5f, 3.6f, 0);//c
+        //pointPositions[17] = new Vector3(-25f, -7f, 0);  //c
+
+        pointPositions[0] = new Vector3(3.03f, 3.76f, 0); //c
+        pointPositions[1] = new Vector3(12.3f, 1.79f, 0); //c
+        pointPositions[2] = new Vector3(-3.1f, -14.98f, 0); //c
+        pointPositions[3] = new Vector3(-19.5f, -17.6f, 0); //c
+        pointPositions[4] = new Vector3(-31.3f, 10.3f, 0); //c
+        pointPositions[5] = new Vector3(-22.9f, 32f, 0);//c
+        pointPositions[6] = new Vector3(-8.7f, -27.6f, 0); //c
+        pointPositions[7] = new Vector3(2.6f, 17.6f, 0); //c
+        pointPositions[8] = new Vector3(13.1f, 20.5f, 0); //c
+        pointPositions[9] = new Vector3(32.9f, 17.5f, 0); //c
+        pointPositions[10] = new Vector3(19, 0.76f, 0); //c
+        pointPositions[11] = new Vector3(14.7f, -27.2f, 0);
+        pointPositions[12] = new Vector3(1.6f, -38.03f, 0); // c
+        pointPositions[13] = new Vector3(-7.9f, -29.6f, 0); //c
+        pointPositions[14] = new Vector3(-23.4f, -42.8f, 0); //c
+        pointPositions[15] = new Vector3(-35.9f, -22.9f, 0); //c
+        pointPositions[16] = new Vector3(-40.3f, -10.7f, 0);//c
+        pointPositions[17] = new Vector3(-29.55f, 3.6f, 0);  //c
 
         //pointPositions[11] = new Vector3(23.4f, -23.6f, 0);//current
         //pointPositions[10] = new Vector3(14, -23.6f, 0);
@@ -161,24 +180,43 @@ public class OverseerCanvasManager : NetworkBehaviour
         //17 and 10?
         //6 and 9?
 
-        theRoomTexts[0] = "Foyer";
-        theRoomTexts[1] = "Hallway 1";
-        theRoomTexts[2] = "Hallway 2";
-        theRoomTexts[3] = "Hallway 3";
-        theRoomTexts[4] = "Hallway 4";
-        theRoomTexts[5] = "Room 1";
-        theRoomTexts[6] = "Room 2";
-        theRoomTexts[7] = "Room 3";
-        theRoomTexts[8] = "Room 4";
-        theRoomTexts[9] = "Room 5";
-        theRoomTexts[10] = "Room 6";
-        theRoomTexts[11] = "Room 7";
-        theRoomTexts[12] = "Room 8";
-        theRoomTexts[13] = "Room 9";
-        theRoomTexts[14] = "Room 10";
-        theRoomTexts[15] = "Room 11";
-        theRoomTexts[16] = "Room 12";
-        theRoomTexts[17] = "Room 13";
+        //theRoomTexts[0] = "Foyer";
+        //theRoomTexts[1] = "Hallway 1";
+        //theRoomTexts[2] = "Hallway 2";
+        //theRoomTexts[3] = "Hallway 3";
+        //theRoomTexts[4] = "Hallway 4";
+        //theRoomTexts[5] = "Room 1";
+        //theRoomTexts[6] = "Room 2";
+        //theRoomTexts[7] = "Room 3";
+        //theRoomTexts[8] = "Room 4";
+        //theRoomTexts[9] = "Room 5";
+        //theRoomTexts[10] = "Room 6";
+        //theRoomTexts[11] = "Room 7";
+        //theRoomTexts[12] = "Room 8";
+        //theRoomTexts[13] = "Room 9";
+        //theRoomTexts[14] = "Room 10";
+        //theRoomTexts[15] = "Room 11";
+        //theRoomTexts[16] = "Room 12";
+        //theRoomTexts[17] = "Room 13";
+
+        theRoomTexts[0] = "Current Camera: 1";
+        theRoomTexts[1] = "Current Camera: 2";
+        theRoomTexts[2] = "Current Camera: 3";
+        theRoomTexts[3] = "Current Camera: 4";
+        theRoomTexts[4] = "Current Camera: 5";
+        theRoomTexts[5] = "Current Camera: 6";
+        theRoomTexts[6] = "Current Camera: 7";
+        theRoomTexts[7] = "Current Camera: 8";
+        theRoomTexts[8] = "Current Camera: 9";
+        theRoomTexts[9] = "Current Camera: 10";
+        theRoomTexts[10] ="Current Camera: 11";
+        theRoomTexts[11] ="Current Camera: 12";
+        theRoomTexts[12] ="Current Camera: 13";
+        theRoomTexts[13] ="Current Camera: 14";
+        theRoomTexts[14] ="Current Camera: 15";
+        theRoomTexts[15] ="Current Camera: 16";
+        theRoomTexts[16] ="Current Camera: 17";
+        theRoomTexts[17] = "Current Camera: 18";
 
     }
     

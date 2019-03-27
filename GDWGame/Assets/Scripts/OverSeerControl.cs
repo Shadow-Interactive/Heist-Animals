@@ -72,7 +72,9 @@ public class OverSeerControl : NetworkBehaviour {
 	ObserverPattern.EventConsole eventConsole;
 
 	public OverseerCanvasManager theCanvasManager;
-    public GameObject radialCamSelect;
+    public GameObject radialCamSelect, radialHintUI;
+    bool radialNeverTriggered = true;
+    float radialHintTime = 0;
 
     [HideInInspector] public Objective R1currentObjective;
     [HideInInspector] public Objective R2currentObjective;
@@ -644,13 +646,25 @@ public class OverSeerControl : NetworkBehaviour {
             }
         }
 
+        if (radialNeverTriggered)
+        {
+            radialHintTime += Time.deltaTime;
+
+            if (radialHintTime >= 15)
+                radialHintUI.SetActive(true);
+        }
+
         if (Input.GetKey(KeyCode.P) || radialPress)
         {
             doNotMove = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             radialCamSelect.SetActive(true);
+            radialNeverTriggered = false;
             radialPress = false;
+
+            if (radialHintUI.activeInHierarchy)
+                radialHintUI.SetActive(false);
             
         }
         else if (XBoxInput.GetKeyReleased(0, (int)Buttons.RB) || Input.GetKeyUp(KeyCode.P))
