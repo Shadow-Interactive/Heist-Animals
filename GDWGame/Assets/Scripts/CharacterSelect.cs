@@ -26,7 +26,7 @@ public class CharacterSelect : NetworkBehaviour {
 
 
     //for the specific buttons //the other two options are just buttons
-    int characterCounter = 1; //this is to switch between the possible characters
+    int characterCounter = 0; //this is to switch between the possible characters
 
     //UI variables (this would probably just be used to set colours and stuff?
 
@@ -320,9 +320,9 @@ public class CharacterSelect : NetworkBehaviour {
     {
         characterCounter++;
 
-        if (characterCounter >= 4)
+        if (characterCounter >= 2)
         {
-            characterCounter = 1;
+            characterCounter = 0;
         }
 
         UpdateCharacter();
@@ -352,9 +352,9 @@ public class CharacterSelect : NetworkBehaviour {
     {
         characterCounter--;
 
-        if (characterCounter < 1)
+        if (characterCounter < 0)
         {
-            characterCounter = 4;
+            characterCounter = 1;
         }
 
         UpdateCharacter();

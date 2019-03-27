@@ -21,7 +21,7 @@ public class ZapperScript : NetworkBehaviour {
     void Update () {
         if (active)
         {
-            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 40f;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 80f;
         }
     }
 

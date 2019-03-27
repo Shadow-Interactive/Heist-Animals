@@ -65,13 +65,13 @@ public class GameManagerRough : NetworkBehaviour {
     {
         gameoverScreen.SetActive(true);
 
-        if (GameObject.FindGameObjectsWithTag("Runner")[0])
-            RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+        if (GameObject.FindGameObjectWithTag("Runner1"))
+            RunnerOne = GameObject.FindGameObjectWithTag("Runner1").GetComponent<PlayerLogic>();
         else
             print("ffs");
 
-        if (GameObject.FindGameObjectsWithTag("Runner")[1])
-            RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+        if (GameObject.FindGameObjectWithTag("Runner2"))
+            RunnerTwo = GameObject.FindGameObjectWithTag("Runner2").GetComponent<PlayerLogic>();
         else
             print("ffs2");
 

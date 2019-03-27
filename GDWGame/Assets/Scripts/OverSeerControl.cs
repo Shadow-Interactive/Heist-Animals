@@ -296,20 +296,24 @@ public class OverSeerControl : NetworkBehaviour {
         ////UNCOMMENT AFTER DONE TESTING OVERSEER
         try
         {
-            if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
-                GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
+            if (GameObject.FindGameObjectWithTag("Runner1") != null && GameObject.FindGameObjectWithTag("Runner2") != null)
+                //GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
-            if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
+            if (GameObject.FindGameObjectWithTag("Runner1") != null && GameObject.FindGameObjectWithTag("Runner2") != null)
             {
                 if (OverID == 1)
                 {
-                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                    GameObject.FindGameObjectWithTag("Runner1").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                    GameObject.FindGameObjectWithTag("Runner1").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
+                    GameObject.FindGameObjectWithTag("Runner2").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                    GameObject.FindGameObjectWithTag("Runner2").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
                 }
                 else if (OverID == 2)
                 {
-                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                    GameObject.FindGameObjectWithTag("Runner1").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                    GameObject.FindGameObjectWithTag("Runner1").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
+                    GameObject.FindGameObjectWithTag("Runner2").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                    GameObject.FindGameObjectWithTag("Runner2").GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
                 }
             }
         } catch (System.IndexOutOfRangeException e)
@@ -682,8 +686,8 @@ public class OverSeerControl : NetworkBehaviour {
             if (run1 == null || run2 == null)
             {
                 theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
-                theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-                theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
+                theCanvasManager.T4.text = "r1=" + GameObject.FindGameObjectsWithTag("Runner1").Length.ToString();
+                theCanvasManager.T5.text = "r2=" + GameObject.FindGameObjectsWithTag("Runner2").Length.ToString();
 
             }
             else
