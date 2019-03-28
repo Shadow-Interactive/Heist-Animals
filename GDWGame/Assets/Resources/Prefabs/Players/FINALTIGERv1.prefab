@@ -4577,6 +4577,7 @@ MonoBehaviour:
   shieldSlider: {fileID: 114588598249060590}
   zapperFill: {fileID: 114346281818406852}
   tutorial: {fileID: 114021983451376838}
+  timerImage: {fileID: 114994701563025604}
   theShieldImg: {fileID: 114139041347182454}
   PlayerUI:
   - {fileID: 1281441191843496}
@@ -4603,6 +4604,8 @@ MonoBehaviour:
   team: 0
   runPostProcess: {fileID: 0}
   inTrap: 0
+  tutorialOff: {fileID: 0}
+  tutorialOn: {fileID: 0}
 --- !u!114 &114424352968081884
 MonoBehaviour:
   m_ObjectHideFlags: 1

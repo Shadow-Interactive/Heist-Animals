@@ -15,6 +15,22 @@ public enum CurrentAbility
 }
 
 public class PlayerLogic : NetworkBehaviour {
+    //enum data
+    [HideInInspector]
+    private enum runnerStates
+    {
+        neutral = 0, isTrapped = 1, isZapped = 2, isTeleported = 3, isObtainedObjective = 4, isDisarmedTrap = 5
+    }
+
+    [SyncVar] CurrentAbility theCurrentAbility = CurrentAbility.zapper;
+
+    //private variables
+    //strings
+    string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
+    string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap",
+        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7", O8 = "Objective8", O9 = "Objective9",
+        strBulletPool = "BulletPool", strMouseScrollWheel = "Mouse ScrollWheel";
+
 
     //data that is shared
     [HideInInspector] public int roomInt;
@@ -30,6 +46,7 @@ public class PlayerLogic : NetworkBehaviour {
     public Slider shieldSlider;
     public Image zapperFill;
     public RawImage tutorial;
+    public RawImage timerImage;
     public RawImage theShieldImg; //these 3 are for specific 
     public GameObject[] PlayerUI; //this is how we set which ui is active in the screen. important cuz itll include misc images. in an array for optimization sake
     public GameObject[] PlayerUIWrap;
@@ -64,25 +81,11 @@ public class PlayerLogic : NetworkBehaviour {
 
     public RunnerParticleSystem theParticleSystem;
 
-	[HideInInspector]
-	private enum runnerStates
-	{
-		neutral = 0, isTrapped = 1, isZapped = 2, isTeleported = 3, isObtainedObjective = 4, isDisarmedTrap = 5
-	}
-
-    [SyncVar] CurrentAbility theCurrentAbility = CurrentAbility.zapper;
-
-    //private variables
-    //strings
-    string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
-    string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap",
-        O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7", O8 = "Objective8", O9 = "Objective9",
-        strBulletPool = "BulletPool", strMouseScrollWheel = "Mouse ScrollWheel";
-
+	
     //ints, floats and bools used in logic
-    int zapperAmount = 3,  shockAttempts = 0;
+    int zapperAmount = 3,  damageAttempts = 0; //first for reload, secong for shock/zaps
     [SyncVar]
-    int zapHealth = 3;
+ //   int zapHealth = 3;
     int zapUI = 0;
     //[SyncVar] dont think I would need this...?
     int trapHealth = 3;
@@ -117,6 +120,7 @@ public class PlayerLogic : NetworkBehaviour {
     public GameObject runPostProcess;
 
     [SyncVar] public bool inTrap = false; //this is bad. I couldnt find if we already defined this somewhere or not so TwT
+    public Texture tutorialOff, tutorialOn;
 
     // Use this for initialization
     void Start () {
@@ -217,6 +221,7 @@ public class PlayerLogic : NetworkBehaviour {
             tutorialCounter += Time.deltaTime;
             if (tutorialCounter >= 8)
             {
+                timerImage.texture = tutorialOff;
                 tutorial.gameObject.SetActive(false);
             }
         }
@@ -350,6 +355,15 @@ public class PlayerLogic : NetworkBehaviour {
         if  (Input.GetKeyDown(KeyCode.Escape))
         {
             tutorial.gameObject.SetActive(!tutorial.gameObject.activeSelf);
+            switch(tutorial.gameObject.activeSelf)
+            {
+                case true:
+                    timerImage.texture = tutorialOn;
+                    break;
+                case false:
+                    timerImage.texture = tutorialOff;
+                    break;
+            }
         }
 
         if (Input.GetAxis(strMouseScrollWheel) > 0)
@@ -530,22 +544,24 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (theAbility == 0)
         {
-            AbilityAnim.SetBool("SelZapper", true);
-            AbilityAnim.SetBool("SelShield", false);
-            AbilityAnim.SetBool("SelSmoke", false);
+            SetUIAnimation(false, true, false);
         }
         else if (theAbility == 1)
         {
-            AbilityAnim.SetBool("SelShield", true);
-            AbilityAnim.SetBool("SelZapper", false);
-            AbilityAnim.SetBool("SelSmoke", false);
+            SetUIAnimation(false, false, true);
         }
         else if (theAbility == 2)
         {
-            AbilityAnim.SetBool("SelSmoke", true);
-            AbilityAnim.SetBool("SelZapper", false);
-            AbilityAnim.SetBool("SelShield", false);
+            SetUIAnimation(true, false, false);
+
         }
+    }
+
+    void SetUIAnimation(bool smoke, bool zapper, bool shield)
+    {
+        AbilityAnim.SetBool("SelZapper", zapper);
+        AbilityAnim.SetBool("SelShield", shield);
+        AbilityAnim.SetBool("SelSmoke", smoke);
     }
 
     //updating anything involving the zapper
@@ -710,10 +726,11 @@ public class PlayerLogic : NetworkBehaviour {
     {
         shockTrap = true;
         thePlayerMovement.disableMovement = shockTrap;
-        shockAttempts++;
+        damageAttempts++;
+        UpdateHealthUI();
         lightningSprite.SetActive(true);
 
-        if (shockAttempts >= 3)
+        if (damageAttempts >= 3)
         {
             if (numTreasures > 0)
             {
@@ -735,10 +752,10 @@ public class PlayerLogic : NetworkBehaviour {
     {
         transform.position = new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z);
         
-        if (zapHealth <= 0)
-            zapHealth = 3;
-        if (shockAttempts >= 3)
-            shockAttempts = 0;
+     //   if (zapHealth <= 0)
+     //       zapHealth = 3;
+        if (damageAttempts >= 3)
+            damageAttempts = 0;
 
         theHealthUI[zapUI].SetActive(false);
         zapUI = 0;
@@ -802,12 +819,12 @@ public class PlayerLogic : NetworkBehaviour {
 
                 if (shieldActive != true)
                 {
-                    zapHealth--;
+                    damageAttempts++;
                     UpdateHealthUI();
                 }
                 
-                if (zapHealth <= 0)
-                {
+                if (damageAttempts >= 3)
+                    {
                     pickupAllowed = false;
                     theObjManager.onZapOrQuit();
                     Teleport();
@@ -972,30 +989,6 @@ public class PlayerLogic : NetworkBehaviour {
         //Drop();
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);        
     }
-    /*
-    public void TheDrop(Vector3 dropPosition)
-    {
-        if (hasAuthority)
-        {
-            if (isServer)
-                RpcTheDrop(dropPosition);
-            else
-                CmdTheDrop(dropPosition);
-        }
-    }
-
-    [Command]
-    void CmdTheDrop(Vector3 dropPosition)
-    {
-        RpcTheDrop(dropPosition);
-    }
-
-    [ClientRpc]
-    void RpcTheDrop(Vector3 dropPosition)
-    {
-        theRoomManager.theDrop(ref pickedUpObjectives, dropPosition);
-    }
-    */
     void SetNumTreasure(int num)
     {
         if (hasAuthority)
