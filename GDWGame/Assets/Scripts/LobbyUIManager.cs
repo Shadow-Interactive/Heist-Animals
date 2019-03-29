@@ -14,6 +14,8 @@ public class LobbyUIManager : NetworkBehaviour
     public GameObject[] nonLocalUIs = new GameObject[4];
     public Texture[] characterTextures = new Texture[4];
 
+    public Texture team1Texture, team2Texture;
+
     //this is to fix syncing?
     public Canvas playerCanvas;
     //to bugtest

@@ -222,9 +222,9 @@ RectTransform:
   m_Father: {fileID: 1144612503}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 282, y: -225}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -111, y: 41}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &75416452
@@ -436,9 +436,9 @@ RectTransform:
   m_Father: {fileID: 1144612503}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 282, y: -225}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -111, y: 41}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &256498806
@@ -6721,6 +6721,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 77c3e157db1d0134c99710fa50905670, type: 3}
   - {fileID: 2800000, guid: 22a7dd39a1973674b884e2499c52eb46, type: 3}
   - {fileID: 2800000, guid: 3cb26b5efe288374b9d9990f80d9379c, type: 3}
+  team1Texture: {fileID: 2800000, guid: aacbd8e1cd70d0b4d8bd9d3363b388cb, type: 3}
+  team2Texture: {fileID: 2800000, guid: 52e9438cf9ce4c64fa09e9d2114e264d, type: 3}
   playerCanvas: {fileID: 1794624240}
   uiTest: {fileID: 1510491286}
   teamString:

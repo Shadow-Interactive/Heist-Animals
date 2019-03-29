@@ -24,7 +24,6 @@ public class CharacterSelect : NetworkBehaviour {
     [HideInInspector] [SyncVar] public int index = 0;
     [HideInInspector] [SyncVar] public bool inCharacterSelect = true;
 
-
     //for the specific buttons //the other two options are just buttons
     int characterCounter = 0; //this is to switch between the possible characters
 
@@ -38,13 +37,14 @@ public class CharacterSelect : NetworkBehaviour {
     bool updateUI = false;
 
     //other ui stuff
-    public RawImage theCharacter;
+    public RawImage theCharacter, background;
     public GameObject notLocalPlayer, localPlayer;
     public RawImage[] tutorials = new RawImage[2];
     //Color[] theCharacterColors = new Color[4];
 
-    public GameObject teamChosen, roleChosen, roleObject, characterObject;
-    public Text teamText, roleText, chosenTeamText, chosenRoleText, chosenCharacterText;
+    public GameObject teamChosen, roleChosen, roleObject, characterObject, teamObject, buttonObjects, charLocal;
+    public Text teamText, roleText, chosenTeamText, chosenRoleText, chosenCharacterText, overseerText;
+    
 
     public LobbyUIManager theLobbyManager; //im praying to god that this works
     public CustomSpawn connectionID;
@@ -56,7 +56,14 @@ public class CharacterSelect : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+        if (!isLocalPlayer)
+        {
+            //will clean this up later
+            roleObject.gameObject.SetActive(false);
+            charLocal.gameObject.SetActive(false);
+            teamObject.gameObject.SetActive(false);
+            buttonObjects.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -259,6 +266,18 @@ public class CharacterSelect : NetworkBehaviour {
     void RpcTeam(int num)
     {
         team = num;
+        if (theLobbyManager != null)
+        {
+            if (team == 0)
+            {
+                background.texture = theLobbyManager.team1Texture;
+            }
+            else if (team == 1)
+            {
+                background.texture = theLobbyManager.team2Texture;
+
+            }
+        }
     }
 
     public void ChooseRole() //in the button you'd set the variable to 0 or 1 to indicate the role it is
@@ -288,8 +307,8 @@ public class CharacterSelect : NetworkBehaviour {
         if (desiredRole == nullNumber) desiredRole = 0;
         else desiredRole = desiredRole == 0 ? 1 : 0;
         newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
-        SetRole(newRole);
 
+        SetRole(newRole);
        // if (role == nullNumber) role = 0;
        // else role = role == 0 ? 1 : 0;
         
@@ -469,5 +488,21 @@ public class CharacterSelect : NetworkBehaviour {
     public void RpcSetRole(int newRole)
     {
         role = newRole;
+        if (role == 1) //runner
+        {
+            SetRoleUI(true);
+        }
+        else if (role == 0)//overseer
+        {
+            SetRoleUI(false);
+        }
+    }
+
+    public void SetRoleUI(bool active)
+    {
+        characterObject.SetActive(active);
+        theCharacter.gameObject.SetActive(active);
+        chosenCharacterText.gameObject.SetActive(active);
+        overseerText.gameObject.SetActive(!active);
     }
 }
