@@ -643,20 +643,7 @@ public class PlayerLogic : NetworkBehaviour {
         bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 2f, bullet.transform.position.z) + transform.forward * 0.2f;
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperID = IDforBullet;
-
-        SoundManager.setPlaying(true, 1);
-        SoundManager.setLoop(1, false);
-
-        Vector3 vel = gameObject.transform.forward * 40f;
-        SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
-
-        Vector3 pos = GetComponent<Transform>().position;
-        SoundManager.setPosition(pos.x, pos.y, pos.z, 1);
-
-        SoundManager.setVolume(20.0f, 1);
-
-        SoundManager.playSound(1, Time.deltaTime);
-
+        
         StartCoroutine(DeactivateBullet(bullet, 3));
     }
 
@@ -835,18 +822,8 @@ public class PlayerLogic : NetworkBehaviour {
                     Restore();
                 }
 
-                SoundManager.setPlaying(true, 2);
-                SoundManager.setLoop(2, false);
+
                 
-                SoundManager.setVelocity(0f, 0f, 0f, 2);
-
-                Vector3 pos = GetComponent<Transform>().position;
-                SoundManager.setPosition(pos.x, pos.y, pos.z, 2);
-
-                SoundManager.setVolume(20.0f, 2);
-
-                SoundManager.playSound(2, Time.deltaTime);
-
 				currstate = (int)runnerStates.isZapped;
 
 				//Debug.Log(zapHealth);

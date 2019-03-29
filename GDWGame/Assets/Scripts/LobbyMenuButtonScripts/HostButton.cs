@@ -22,6 +22,9 @@ public class HostButton : MonoBehaviour {
     void hostGame()
     {
         theLobbyManager.GetComponent<CustomSpawn>().ButtonHost();
+
+        theLobbyManager.GetComponent<AudioSource>().Play();
+
         title.SetActive(false);
         gameObject.SetActive(false);
         joinButton.SetActive(false);

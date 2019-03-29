@@ -73,8 +73,8 @@ namespace SoundEngine
             soundPath = Application.dataPath + "/Audio/";
             initFMOD();
             setListenerUp(0f, 1f, 0f);
-            createSound(soundPath + "Background.mp3", 0);
-            createSound(soundPath + "ZapperFire.mp3", 1);
+            //createSound(soundPath + "Background.mp3", 0);
+            //createSound(soundPath + "ZapperFire.mp3", 1);
             createSound(soundPath + "ZapperHit.mp3", 2);
 
 
