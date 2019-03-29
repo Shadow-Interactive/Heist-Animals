@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class TrapDoor : NetworkBehaviour {
-    ParticleSystem theEm;
+    //ParticleSystem theEm;
+    public ParticleSystem offLightning;
+    public ParticleSystem offSparks; //the lighning and sparks for particles;
 
     private void Start()
     {
-        theEm = GetComponent<ParticleSystem>();
+       // theEm = GetComponent<ParticleSystem>();
     }
 
     public void OnSecurityClick(GameObject activeOverseer)
@@ -20,7 +22,9 @@ public class TrapDoor : NetworkBehaviour {
             //gameObject.GetComponentInParent<RoomScript>().CmdTrapActivation();
             //activeOverseer.GetComponent<OverSeerControl>().CmdTrapActivate(activeOverseer.GetComponent<OverSeerControl>().camRoomName, gameObject.GetComponentInParent<RoomScript>().trapActivated);
             //gameObject.GetComponentInParent<RoomScript>().TrapActivation();
-            theEm.Play();
+            // theEm.Play();
+            offLightning.Play(); //this plays the spark effects for the security boxes
+            offSparks.Play();
 
         }
     }
