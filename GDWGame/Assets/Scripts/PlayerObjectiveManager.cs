@@ -141,17 +141,17 @@ void ResetMinigameNumbers()
                     //thePlayer.currentObjective.DeActivate();
                     //thePlayer.R1currentObjective.GameObjectVisible(thePlayer.R1currentObjective.trapActive);
 
-                    SoundManager.setPlaying(true, 14);
-                    SoundManager.setLoop(14, false);
+                    //SoundManager.setPlaying(true, 14);
+                    //SoundManager.setLoop(14, false);
 
-                    SoundManager.setVelocity(0f, 0f, 0f, 14);
+                    //SoundManager.setVelocity(0f, 0f, 0f, 14);
 
-                    Vector3 pos = thePlayer.GetComponent<Transform>().position;
-                    SoundManager.setPosition(pos.x, pos.y, pos.z, 14);
+                    //Vector3 pos = thePlayer.GetComponent<Transform>().position;
+                    //SoundManager.setPosition(pos.x, pos.y, pos.z, 14);
 
-                    SoundManager.setVolume(20f, 14);
+                    //SoundManager.setVolume(20f, 14);
 
-                    SoundManager.playSound(14, Time.deltaTime);
+                    //SoundManager.playSound(14, Time.deltaTime);
                 }
                 else
                 {
@@ -163,17 +163,17 @@ void ResetMinigameNumbers()
             //code entry was unsuccessful
             else
             {
-                SoundManager.setPlaying(true, 15);
-                SoundManager.setLoop(15, false);
+                //SoundManager.setPlaying(true, 15);
+                //SoundManager.setLoop(15, false);
 
-                SoundManager.setVelocity(0f, 0f, 0f, 15);
+                //SoundManager.setVelocity(0f, 0f, 0f, 15);
 
-                Vector3 pos = thePlayer.GetComponent<Transform>().position;
-                SoundManager.setPosition(pos.x, pos.y, pos.z, 15);
+                //Vector3 pos = thePlayer.GetComponent<Transform>().position;
+                //SoundManager.setPosition(pos.x, pos.y, pos.z, 15);
 
-                SoundManager.setVolume(17f, 15);
+                //SoundManager.setVolume(17f, 15);
 
-                SoundManager.playSound(15, Time.deltaTime);
+                //SoundManager.playSound(15, Time.deltaTime);
             }
         }
         else if (thePlayer.name == runnerTwo)
@@ -190,17 +190,17 @@ void ResetMinigameNumbers()
                     DeactivateMinigame();
                     thePlayer.CmdDeactivateTrap(thePlayer.R2currentObjective.name);
 
-                    SoundManager.setPlaying(true, 14);
-                    SoundManager.setLoop(14, false);
+                    //SoundManager.setPlaying(true, 14);
+                    //SoundManager.setLoop(14, false);
 
-                    SoundManager.setVelocity(0f, 0f, 0f, 14);
+                    //SoundManager.setVelocity(0f, 0f, 0f, 14);
 
-                    Vector3 pos = thePlayer.GetComponent<Transform>().position;
-                    SoundManager.setPosition(pos.x, pos.y, pos.z, 14);
+                    //Vector3 pos = thePlayer.GetComponent<Transform>().position;
+                    //SoundManager.setPosition(pos.x, pos.y, pos.z, 14);
 
-                    SoundManager.setVolume(20f, 14);
+                    //SoundManager.setVolume(20f, 14);
 
-                    SoundManager.playSound(14, Time.deltaTime);
+                    //SoundManager.playSound(14, Time.deltaTime);
                 }
                 else
                 {
@@ -212,17 +212,17 @@ void ResetMinigameNumbers()
             }
             else
             {
-                SoundManager.setPlaying(true, 15);
-                SoundManager.setLoop(15, false);
+                //SoundManager.setPlaying(true, 15);
+                //SoundManager.setLoop(15, false);
 
-                SoundManager.setVelocity(0f, 0f, 0f, 15);
+                //SoundManager.setVelocity(0f, 0f, 0f, 15);
 
-                Vector3 pos = thePlayer.GetComponent<Transform>().position;
-                SoundManager.setPosition(pos.x, pos.y, pos.z, 15);
+                //Vector3 pos = thePlayer.GetComponent<Transform>().position;
+                //SoundManager.setPosition(pos.x, pos.y, pos.z, 15);
 
-                SoundManager.setVolume(17f, 15);
+                //SoundManager.setVolume(17f, 15);
 
-                SoundManager.playSound(15, Time.deltaTime);
+                //SoundManager.playSound(15, Time.deltaTime);
             }
         }
     }

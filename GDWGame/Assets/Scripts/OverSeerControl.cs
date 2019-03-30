@@ -638,11 +638,11 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(-cameraLook.y, ogRotation[i].y + cameraLook.x, 0);
                 }
 
-                Vector3 psoition = totalCamera[i].transform.position;
-                SoundManager.setListenerPos(psoition.x, psoition.y, psoition.z);
-                SoundManager.setListenerVel(0f, 0f, 0f);
-                Vector3 cast = totalCamera[i].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter).direction;
-                SoundManager.setListenerForward(cast.x, cast.y, cast.z);
+                //Vector3 psoition = totalCamera[i].transform.position;
+                //SoundManager.setListenerPos(psoition.x, psoition.y, psoition.z);
+                //SoundManager.setListenerVel(0f, 0f, 0f);
+                //Vector3 cast = totalCamera[i].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter).direction;
+                //SoundManager.setListenerForward(cast.x, cast.y, cast.z);
             }
         }
 
