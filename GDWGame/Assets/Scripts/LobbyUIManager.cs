@@ -184,8 +184,6 @@ public class LobbyUIManager : NetworkBehaviour
             if (team1 < 2) return 1;
             else return 0;
         }
-
-        Debug.Log(team0);
     }
 
     //you use this to go thru and see if a team has 2 players or not

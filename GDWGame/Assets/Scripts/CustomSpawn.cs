@@ -149,13 +149,12 @@ public class CustomSpawn : NetworkLobbyManager
              {
                  ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                  ourPlayer.GetComponent<OverSeerControl>().OverID = team;
-                 //print(_temp.GetComponent<OverSeerControl>().OverID);
-                 print("does get here");
+                ourPlayer.GetComponent<OverSeerControl>().SetChosenTeam(teamChoice);
+                print("does get here");
              }
              else
              {
                  ourPlayer.GetComponent<PlayerLogic>().runID = team;
-                 //ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player1.chosenCharacter);
                  ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
 
             }
@@ -180,8 +179,7 @@ public class CustomSpawn : NetworkLobbyManager
                 GameObject.Find("Player3").GetComponent<CharacterSelect>().DisableCharacterSelect();
             }
             
-           // ourPlayer = Instantiate(spawnPrefabs[1], startPositions[0].position, Quaternion.identity);
-           // ourPlayer.GetComponent<PlayerLogic>().runID = 0;
+           // returns player
             return ourPlayer;
         }
         else if (conn.connectionId == 1)
@@ -210,7 +208,7 @@ public class CustomSpawn : NetworkLobbyManager
             {
                 ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                 ourPlayer.GetComponent<OverSeerControl>().OverID = team;
-                //print(_temp.GetComponent<OverSeerControl>().OverID);
+                ourPlayer.GetComponent<OverSeerControl>().SetChosenTeam(teamChoice);
                 print("does get here");
             }
             else
@@ -224,9 +222,7 @@ public class CustomSpawn : NetworkLobbyManager
             player2.DisableCharacterSelect();
             player2.inCharacterSelect = false;
             
-            //ourPlayer = Instantiate(spawnPrefabs[1], startPositions[1].position, Quaternion.identity);
-            //ourPlayer.GetComponent<OverseerCanvasManager>().overseerID =0;
-            //ourPlayer.GetComponent<OverSeerControl>().OverID = 0;
+            //returns player
             return ourPlayer;
 
         }
@@ -256,7 +252,7 @@ public class CustomSpawn : NetworkLobbyManager
             {
                 ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                 ourPlayer.GetComponent<OverSeerControl>().OverID = team;
-                //print(_temp.GetComponent<OverSeerControl>().OverID);
+                ourPlayer.GetComponent<OverSeerControl>().SetChosenTeam(teamChoice);
                 print("does get here");
             }
             else
@@ -300,6 +296,7 @@ public class CustomSpawn : NetworkLobbyManager
             {
                 ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                 ourPlayer.GetComponent<OverSeerControl>().OverID = team;
+                ourPlayer.GetComponent<OverSeerControl>().SetChosenTeam(teamChoice);
                 print("does get here");
             }
             else
@@ -312,9 +309,7 @@ public class CustomSpawn : NetworkLobbyManager
             player4.DisableCharacterSelect();
             player4.inCharacterSelect = false;
             
-           //ourPlayer = Instantiate(spawnPrefabs[1], startPositions[3].position, Quaternion.identity);
-           //ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = 2;
-           //ourPlayer.GetComponent<OverSeerControl>().OverID = 2;
+           //returns player
             return ourPlayer;
 
         }

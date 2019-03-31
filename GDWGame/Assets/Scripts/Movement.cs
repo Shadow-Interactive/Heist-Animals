@@ -242,11 +242,11 @@ public class Movement : NetworkBehaviour {
 
         }
 
-        Vector3 pos = GetComponent<Transform>().position;
-        Vector3 vel = GetComponent<Rigidbody>().velocity;
-        SoundManager.setListenerPos(pos.x, pos.y, pos.z);
-        SoundManager.setListenerForward(moveInDirectionOfCam.x, moveInDirectionOfCam.y, moveInDirectionOfCam.z);
-        SoundManager.setListenerVel(vel.x, vel.y, vel.z);
+        //Vector3 pos = GetComponent<Transform>().position;
+        //Vector3 vel = GetComponent<Rigidbody>().velocity;
+        //SoundManager.setListenerPos(pos.x, pos.y, pos.z);
+        //SoundManager.setListenerForward(moveInDirectionOfCam.x, moveInDirectionOfCam.y, moveInDirectionOfCam.z);
+        //SoundManager.setListenerVel(vel.x, vel.y, vel.z);
 
     }
     public void roleChose (Movement script)

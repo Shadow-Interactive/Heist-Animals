@@ -122,10 +122,15 @@ public class PlayerLogic : NetworkBehaviour {
     [SyncVar] public bool inTrap = false; //this is bad. I couldnt find if we already defined this somewhere or not so TwT
     public Texture tutorialOff, tutorialOn;
 
+    //this is for the overseer ui stuff
+    [HideInInspector] public RunnerLocUI runnerLocationUI;
+    [HideInInspector] public GameObject pDUI, eDUI; //to update the two ui positions.... odear
+
     // Use this for initialization
     void Start () {
         zapUI = 0;
         roomInt = 8;
+        
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
         playerTag = gameObject.tag;
 
@@ -207,15 +212,20 @@ public class PlayerLogic : NetworkBehaviour {
                 GameObject.Find("OverseerPostVolume").SetActive(false);
                 runPostProcess.SetActive(true);
             }
+
+            playerPosition = theRoomManager.teleportPositions[roomInt].transform.position;
+
+            //this is to fix the one issue with the health not being right
+            if (damageAttempts >= 3)
+                damageAttempts = 0;
+
+            theHealthUI[zapUI].SetActive(false);
+            zapUI = 0;
+            theHealthUI[zapUI].SetActive(true);
+
         }
 
-        // PrintObjs();
-
-        //the updates that are running
-        //I think I may switch some of these out for coroutines for the sake of performance later on
-
-        //print(transform.position + " " + playerPosition);
-
+        //tutorial thing
        if (tutorialCounter < 8)
         {
             tutorialCounter += Time.deltaTime;
@@ -225,9 +235,12 @@ public class PlayerLogic : NetworkBehaviour {
                 tutorial.gameObject.SetActive(false);
             }
         }
+       
+        UpdateOverseerUI();
 
         if (theRoomManager == null)
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
+
 
         KeyInputUpdate();
 
@@ -344,6 +357,39 @@ public class PlayerLogic : NetworkBehaviour {
                 break;
         }
 	}
+
+    void UpdateOverseerUI()
+    {
+        if (hasAuthority)
+        {
+            if (isServer)
+                RpcUpdateOverseerUI();
+            else
+                CmdUpdateOverseerUI();
+        }
+       
+    }
+
+    [Command]
+    void CmdUpdateOverseerUI()
+    {
+        RpcUpdateOverseerUI();
+    }
+
+    [ClientRpc]
+    void RpcUpdateOverseerUI()
+    {
+        //to update overseer uis
+        if (pDUI != null)
+        {
+            pDUI.transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+        }
+        if (eDUI != null)
+        {
+            eDUI.transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+        }
+
+    }
 
     //updating the key inputs
     private void KeyInputUpdate()
@@ -643,20 +689,7 @@ public class PlayerLogic : NetworkBehaviour {
         bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y + 2f, bullet.transform.position.z) + transform.forward * 0.2f;
         bullet.transform.rotation = rotation;
         bullet.GetComponent<ZapperScript>().zapperID = IDforBullet;
-
-        SoundManager.setPlaying(true, 1);
-        SoundManager.setLoop(1, false);
-
-        Vector3 vel = gameObject.transform.forward * 40f;
-        SoundManager.setVelocity(vel.x, vel.y, vel.y, 1);
-
-        Vector3 pos = GetComponent<Transform>().position;
-        SoundManager.setPosition(pos.x, pos.y, pos.z, 1);
-
-        SoundManager.setVolume(20.0f, 1);
-
-        SoundManager.playSound(1, Time.deltaTime);
-
+        
         StartCoroutine(DeactivateBullet(bullet, 3));
     }
 
@@ -664,8 +697,6 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcUseSmokeBomb(Vector3 position, Quaternion rotation)
     {
         var smokebomb = GameObject.Find(strBulletPool).GetComponent<TheBulletPool>().availableSmokeBomb(position);
-        //smokebomb.transform.position = new Vector3(smokebomb.transform.position.x, smokebomb.transform.position.y + 0.3f, smokebomb.transform.position.z) + transform.forward * 0.2f;
-        //smokebomb.transform.rotation = rotation;
 
         //sounds will go here
     }
@@ -674,9 +705,7 @@ public class PlayerLogic : NetworkBehaviour {
     [Command]
     void CmdSpawnBullet(Vector3 position, Quaternion rotation, int IDforBullet)
     {
-        //GameObject Bullet = Instantiate(Zapper, transform.position + transform.forward * 0.25f, rotation);
         RpcShootBullet(position, rotation, IDforBullet);
-        //NetworkServer.Spawn(bullet);
  
     }
 
@@ -684,9 +713,7 @@ public class PlayerLogic : NetworkBehaviour {
     [Command]
     void CmdSpawnSmoke(Vector3 position, Quaternion rotation)
     {
-        //GameObject Bullet = Instantiate(Zapper, transform.position + transform.forward * 0.25f, rotation);
         RpcUseSmokeBomb(position, rotation);
-        //NetworkServer.Spawn(bullet);
 
     }
 
@@ -742,8 +769,6 @@ public class PlayerLogic : NetworkBehaviour {
             Teleport();
             Restore();
         }
-        //else
-        //    UpdateHealthUI();
     }
 
     //restores the players stats if the traps affects are done,
@@ -752,8 +777,7 @@ public class PlayerLogic : NetworkBehaviour {
     {
         transform.position = new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z);
         
-     //   if (zapHealth <= 0)
-     //       zapHealth = 3;
+        //updating the damage attempts
         if (damageAttempts >= 3)
             damageAttempts = 0;
 
@@ -762,6 +786,7 @@ public class PlayerLogic : NetworkBehaviour {
         theHealthUI[zapUI].SetActive(true);
     }
 
+    //activaetes shock if that's what the room trap is
     void SetTrap(RoomTraps theTrapTypes)
     {
         switch (theTrapTypes)
@@ -769,15 +794,11 @@ public class PlayerLogic : NetworkBehaviour {
             case RoomTraps.SHOCK:
                 ActivateShock();
                 break;
-            case RoomTraps.EMP:
-                //theOverSeer.setEMP(true);
-                //print(theOverSeer.getEMP());
-
-                break;
         }
     }
     
-
+    
+    //sees if the minigame is activated
     public bool GetActivation()
     {
         if (gameObject.name ==runnerOneStr)
@@ -809,7 +830,7 @@ public class PlayerLogic : NetworkBehaviour {
                     SetTrap(other.GetComponentInParent<RoomScript>().trapType);
                 }
 				currstate = (int)runnerStates.isTrapped;
-			}
+            }
         }
         else if (other.CompareTag(zapStr))
         {
@@ -833,21 +854,11 @@ public class PlayerLogic : NetworkBehaviour {
                         Drop();
                     }
                     Restore();
+
                 }
 
-                SoundManager.setPlaying(true, 2);
-                SoundManager.setLoop(2, false);
-                
-                SoundManager.setVelocity(0f, 0f, 0f, 2);
 
-                Vector3 pos = GetComponent<Transform>().position;
-                SoundManager.setPosition(pos.x, pos.y, pos.z, 2);
-
-                SoundManager.setVolume(20.0f, 2);
-
-                SoundManager.playSound(2, Time.deltaTime);
-
-				currstate = (int)runnerStates.isZapped;
+                currstate = (int)runnerStates.isZapped;
 
 				//Debug.Log(zapHealth);
 			}
@@ -869,7 +880,6 @@ public class PlayerLogic : NetworkBehaviour {
     {
         if (collision.collider.CompareTag(trapStr))
         {
-            
             inTrap = true;
             print("Printing " + inTrap);
             theAnimator.SetBool("Hacking", true);
@@ -927,6 +937,7 @@ public class PlayerLogic : NetworkBehaviour {
 
     public void TrapFailure()
     {
+        //if you fail to do the trap
         trapHealth--;
         if (trapHealth <= 0)
         {
@@ -935,6 +946,7 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
         PlayerReshuffle();
+
     }
 
     public bool AreBulletsAvailable()
@@ -981,13 +993,13 @@ public class PlayerLogic : NetworkBehaviour {
     void RpcTeleport(Vector3 dropPosition)
     {
         playerPosition = transform.position;
-       // print("then in the function call" + playerPosition);
         theParticleSystem.TeleportOut();
-        //Vector3 theDropPos = new Vector3(transform.position.x, 2.5f, transform.position.z);        
-        //TheDrop(theDropPos);
+        //calls the teleport function
+        SetRoomInt(roomInt);
+        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);
+        SetRoomInt(roomInt);
 
-        //Drop();
-        theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);        
+        //updates minimap ui
     }
     void SetNumTreasure(int num)
     {
@@ -1009,9 +1021,8 @@ public class PlayerLogic : NetworkBehaviour {
     [ClientRpc]
     void RpcSetNumTreasure(int num)
     {
-            numTreasures = num;
-            scoreText.text = numTreasures.ToString();
-        
+        numTreasures = num;
+        scoreText.text = numTreasures.ToString();
     }
 
     void Drop()
@@ -1031,13 +1042,55 @@ public class PlayerLogic : NetworkBehaviour {
     [ClientRpc]
     void RpcDrop()
     {
+        //sets the treasure stuff
+        int treasure = numTreasures - 1;
+        SetNumTreasure(treasure);
+        scoreText.text = numTreasures.ToString();
+    }
 
-//        if (numTreasures > 0)
-   //     {
-            int treasure = numTreasures - 1;
-            SetNumTreasure(treasure);
-            scoreText.text = numTreasures.ToString();
-     //   }
+    void SetRoomInt(int index)
+    {
+        if (isServer)
+            RpcSetRoomInt(index);
+        else
+            CmdSetRoomInt(index);
+    }
+
+    [Command]
+    void CmdSetRoomInt(int index)
+    {
+        RpcSetRoomInt(index);
+    }
+
+    [ClientRpc]
+    void RpcSetRoomInt(int index)
+    {
+        //sets the treasure stuff
+        if (runnerLocationUI != null) runnerLocationUI.SetPosition(roomInt);
+        roomInt = index;
+        if (runnerLocationUI != null) runnerLocationUI.SetPosition(roomInt);
+
+    }
+
+    //setting the room pos
+    void SetRoomUI(int index)
+    {
+        if (isServer)
+            RpcSetRoomUI(index);
+        else
+            CmdSetRoomUI(index);
+    }
+
+    [Command]
+    void CmdSetRoomUI(int index)
+    {
+        RpcSetRoomInt(index);
+    }
+
+    [ClientRpc]
+    void RpcSetRoomUI(int index)
+    {
+        //sets the new room pos
     }
 
 }

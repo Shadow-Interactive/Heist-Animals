@@ -66,7 +66,7 @@ public class OverSeerControl : NetworkBehaviour {
 
     int currentCamera = 0;
 
-	[SyncVar] public int OverID;
+	[SyncVar] public int OverID, team;
 	PlayerLogic run1; //friendly
 	PlayerLogic run2; //enemy
 	ObserverPattern.EventConsole eventConsole;
@@ -83,6 +83,9 @@ public class OverSeerControl : NetworkBehaviour {
     public GameObject overPostProcess;
 
     int UIUpdateCounter = 0; //this is really hacky im sorryyy im rushing T_T 
+    
+    //for more tutorialization stuff
+    bool foundPlayer = false, foundEnemy = false;
 
     // Use this for initialization
     void Start () {
@@ -638,11 +641,11 @@ public class OverSeerControl : NetworkBehaviour {
                         totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(-cameraLook.y, ogRotation[i].y + cameraLook.x, 0);
                 }
 
-                Vector3 psoition = totalCamera[i].transform.position;
-                SoundManager.setListenerPos(psoition.x, psoition.y, psoition.z);
-                SoundManager.setListenerVel(0f, 0f, 0f);
-                Vector3 cast = totalCamera[i].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter).direction;
-                SoundManager.setListenerForward(cast.x, cast.y, cast.z);
+                //Vector3 psoition = totalCamera[i].transform.position;
+                //SoundManager.setListenerPos(psoition.x, psoition.y, psoition.z);
+                //SoundManager.setListenerVel(0f, 0f, 0f);
+                //Vector3 cast = totalCamera[i].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter).direction;
+                //SoundManager.setListenerForward(cast.x, cast.y, cast.z);
             }
         }
 
@@ -676,24 +679,7 @@ public class OverSeerControl : NetworkBehaviour {
             doNotMove = false;
         }
 
-        //else
-        //{
-        //    //Cursor.lockState = CursorLockMode.Locked;
-        //    Cursor.visible = false;
-        //    radialCamSelect.SetActive(false);
-        //}
 
-        //EVENT CONSOLE BULLSHIT
-        //	to send stuff on the canvas queue
-
-        //theCanvasManager.T1.text ="r1="+GameObject.FindGameObjectsWithTag("RunnerOne").Length.ToString();
-        //theCanvasManager.T2.text ="r2=" + GameObject.FindGameObjectsWithTag("RunnerTwo").Length.ToString();
-
-        //print(eventConsole.repetitiveshit());
-
-        //theCanvasManager.T3.text = eventConsole.repetitiveshit();
-
-        ////UNCOMMENT AFTER DONE TESTING OVERSEER
 
         try
         {
@@ -706,20 +692,6 @@ public class OverSeerControl : NetworkBehaviour {
             }
             else
             {
-                //theCanvasManager.T4.text = "gets to this point";
-                //if (OverID == 1)
-                //{
-                //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-                //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
-
-                //}
-                //else if (OverID == 2)
-                //{
-                //	theCanvasManager.T4.text = "run2 cur " + run2.currstate.ToString();
-                //	theCanvasManager.T5.text = "run1 cur " + run1.currstate.ToString();
-
-                //}
-
                 if (run1.currstate != 0 || run2.currstate != 0)
                 {
                     theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
@@ -741,6 +713,14 @@ public class OverSeerControl : NetworkBehaviour {
         //Debug.Log(OverID);
 
         camRoomName = roomStr + trapSelect.ToString();
+
+        if (!foundPlayer || !foundEnemy)
+        { 
+            //to find the players
+            theCanvasManager.FindPlayer(team, 0, ref foundPlayer, ref foundEnemy);
+            theCanvasManager.FindPlayer(team, 1, ref foundPlayer, ref foundEnemy);
+
+        }
     }
 
     void doTimer()
@@ -864,6 +844,25 @@ public class OverSeerControl : NetworkBehaviour {
             theRoomManager.theObjectives[trapID].trapActive = temp;
          }
        
+    }
 
+    public void SetChosenTeam(int num)
+    {
+        team = num; //sets the team
+        CmdSetTeam(team);
+
+    }
+
+    [Command]
+    void CmdSetTeam(int num)
+    {
+        team = num;
+        RpcSetTeam(num);
+    }
+
+    [ClientRpc]
+    void RpcSetTeam(int num)
+    {
+        team = num;
     }
 }

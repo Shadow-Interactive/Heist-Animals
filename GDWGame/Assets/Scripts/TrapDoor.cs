@@ -25,6 +25,7 @@ public class TrapDoor : NetworkBehaviour {
             // theEm.Play();
             offLightning.Play(); //this plays the spark effects for the security boxes
             offSparks.Play();
+            GetComponent<AudioSource>().Play(); //sound effects!!!
 
         }
     }
