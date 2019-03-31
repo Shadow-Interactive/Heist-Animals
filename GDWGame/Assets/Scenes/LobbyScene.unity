@@ -6171,6 +6171,10 @@ Prefab:
       propertyPath: m_PreserveUVs
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1132948132657788, guid: f75eed65c8576fb41bda58f6cf62649e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75eed65c8576fb41bda58f6cf62649e, type: 2}
   m_IsPrefabAsset: 0
@@ -6840,9 +6844,9 @@ MonoBehaviour:
   - {fileID: 0}
   uiPositions:
   - {x: 50, y: 100, z: 0}
-  - {x: 300, y: 100, z: 0}
-  - {x: 550, y: 100, z: 0}
-  - {x: 800, y: 100, z: 0}
+  - {x: 375, y: 100, z: 0}
+  - {x: 700, y: 100, z: 0}
+  - {x: 1025, y: 100, z: 0}
 --- !u!4 &1484617109
 Transform:
   m_ObjectHideFlags: 0
