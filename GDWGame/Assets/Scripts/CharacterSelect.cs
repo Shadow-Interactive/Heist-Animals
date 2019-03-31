@@ -96,9 +96,13 @@ public class CharacterSelect : NetworkBehaviour {
                 Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
 
+                SetRoleUI();
+                SetTeamUI();
+
             }
 
             SettingPositions();
+
 
             gameObject.name = gameobjectName;
             notLocalPlayer.transform.position = uiPosition;
@@ -252,6 +256,7 @@ public class CharacterSelect : NetworkBehaviour {
             //if they picked the role first and then the team
             //then it sees what role is available and switches them to it
             int newRole = theLobbyManager.AvailableRole(playerIndex, team, role);
+            print("current rle: " + role + " wanted role " + newRole);
             SetRole(newRole);
         }
     }
@@ -416,16 +421,6 @@ public class CharacterSelect : NetworkBehaviour {
     public void SetBaseActive(bool active)
     {
         notLocalPlayer.SetActive(active);
-    }
-
-    public void UpdateUI(string chosenTeam, string chosenRole, string chosenCharacter)
-    {
-        chosenTeamText.text = chosenTeam;
-        chosenRoleText.text = chosenRole;
-        chosenCharacterText.text = chosenCharacter;
-
-        SetRoleUI();
-        SetTeamUI();
     }
 
     public void ChangeImage(Texture newImage)

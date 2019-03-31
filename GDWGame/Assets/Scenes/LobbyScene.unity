@@ -6843,10 +6843,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   uiPositions:
-  - {x: 50, y: 100, z: 0}
-  - {x: 375, y: 100, z: 0}
-  - {x: 700, y: 100, z: 0}
-  - {x: 1025, y: 100, z: 0}
+  - {x: 50, y: 150, z: 0}
+  - {x: 375, y: 150, z: 0}
+  - {x: 700, y: 150, z: 0}
+  - {x: 1025, y: 150, z: 0}
 --- !u!4 &1484617109
 Transform:
   m_ObjectHideFlags: 0
