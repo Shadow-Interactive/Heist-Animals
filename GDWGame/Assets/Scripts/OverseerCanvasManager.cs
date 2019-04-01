@@ -84,6 +84,10 @@ public class OverseerCanvasManager : NetworkBehaviour
                     RunnerLocUI theRunnerUI = GetComponentInChildren<RunnerLocUI>();
                     runner1.runnerLocationUI = theRunnerUI;
 
+                    //for the rim lighting
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
+
                     //establish that we've found the player
                     foundPlayer = true;
                 }
@@ -94,6 +98,10 @@ public class OverseerCanvasManager : NetworkBehaviour
                     eDUI.transform.SetParent(trapCanvas.transform);
                     eDUI.transform.position = new Vector3(position.x, 3, position.z);
                     runner1.eDUI = eDUI; //to update the enemy pos in diagetic canvas
+
+                    //for the rim lighting
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
 
                     //signify that we found the enemy
                     foundEnemy = true;

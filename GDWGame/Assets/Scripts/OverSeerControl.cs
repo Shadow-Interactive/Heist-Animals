@@ -69,10 +69,12 @@ public class OverSeerControl : NetworkBehaviour {
 	[SyncVar] public int OverID, team;
 	PlayerLogic run1; //friendly
 	PlayerLogic run2; //enemy
+    GameObject ally, enemy;
 	ObserverPattern.EventConsole eventConsole;
 
+    //UI related variables, including UI hints
 	public OverseerCanvasManager theCanvasManager;
-    public GameObject radialCamSelect, radialHintUI;
+    public GameObject radialCamSelect, radialHintUI, AbuttonHintUI;
     bool radialNeverTriggered = true;
     float radialHintTime = 0;
 
@@ -233,7 +235,23 @@ public class OverSeerControl : NetworkBehaviour {
             Debug.Log("One of the runners doesn't exist (in OverseerControl)" + e.Message);
         }
 
-		if (OverID == 1)
+        if (GameObject.FindGameObjectsWithTag("Runner")[0] && GameObject.FindGameObjectsWithTag("Runner")[1])
+        {
+            if (isLocalPlayer)
+            {
+                if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == team)
+                    ally = GameObject.FindGameObjectsWithTag("Runner")[0];
+                else
+                    enemy = GameObject.FindGameObjectsWithTag("Runner")[0];
+
+                if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == team)
+                    ally = GameObject.FindGameObjectsWithTag("Runner")[1];
+                else
+                    enemy = GameObject.FindGameObjectsWithTag("Runner")[1];
+            }
+        }
+
+        if (OverID == 1)
 		{
 			eventConsole = new ObserverPattern.EventConsole(run1, run2);
 			//Debug.Log("event console 1 assigned");
@@ -301,26 +319,35 @@ public class OverSeerControl : NetworkBehaviour {
         ////UNCOMMENT AFTER DONE TESTING OVERSEER
         try
         {
-            if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
+            //if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
                 //GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
 
-            if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
-            {
-                if (OverID == 1)
-                {
-                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-                }
-                else if (OverID == 2)
-                {
-                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-                    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-                    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-                }
-            }
+            //if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
+            //    {
+            //        //if (OverID == 1)
+            //        //{
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
+            //        //}
+            //        //else if (OverID == 2)
+            //        //{
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
+            //        //}
+
+            //        //if (isLocalPlayer)
+            //        //{
+            //            //ally.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+            //            //ally.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
+
+            //            //enemy.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+            //            //enemy.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
+            //        //}
+            //    }
         } catch (System.IndexOutOfRangeException e)
         {
             //uncomment after
@@ -486,29 +513,34 @@ public class OverSeerControl : NetworkBehaviour {
         //to activate trap
         if (!Input.GetKey(KeyCode.P))
         {
-            if (Input.GetMouseButtonDown(0) || (trapPress && !trapButton.Value))
+            trapPress = false;
+            clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
+            //print(clickRay + " other ver " + totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter));
+
+            if (Physics.Raycast(clickRay, out clickHit))
             {
-                trapPress = false;
-                clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
-                //print(clickRay + " other ver " + totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter));
-
-                if (Physics.Raycast(clickRay, out clickHit))
+                if (clickHit.transform.CompareTag(treasureStr))
                 {
-                    if (clickHit.transform.CompareTag(treasureStr))
-                    {
-                        //atm, the overseer can only have 5 active traps at a time
-                        //CmdObjectiveTrap(clickHit.collider.gameObject.name);
-                        clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages, gameObject.GetComponent<OverSeerControl>(), theRoomManager);//, this.gameObject.GetComponent<OverSeerControl>());
-                    }
-                    else if (clickHit.transform.CompareTag(securityStr))
-                    {
-                        //Debug.Log(camRoomName);
-                        //Debug.Log(trapSelect);
-                        clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick(gameObject);
-                    }
-                }
+                    //atm, the overseer can only have 5 active traps at a time
+                    //CmdObjectiveTrap(clickHit.collider.gameObject.name);
 
+                    AbuttonHintUI.SetActive(true);
+                    if (Input.GetMouseButtonDown(0) || (trapPress && !trapButton.Value))
+                        clickHit.collider.gameObject.GetComponent<Treasure>().TreasureOnClick(theRoomManager.theImages, gameObject.GetComponent<OverSeerControl>(), theRoomManager);//, this.gameObject.GetComponent<OverSeerControl>());
+                }
+                else if (clickHit.transform.CompareTag(securityStr))
+                {
+                    //Debug.Log(camRoomName);
+                    //Debug.Log(trapSelect);
+                    AbuttonHintUI.SetActive(true);
+                    if (Input.GetMouseButtonDown(0) || (trapPress && !trapButton.Value))
+                        clickHit.collider.gameObject.GetComponent<TrapDoor>().OnSecurityClick(gameObject);
+                }
+                else
+                    AbuttonHintUI.SetActive(false);
             }
+
+            
         }
 
         for (int i = 0; i < totalCamera.Count; i++)

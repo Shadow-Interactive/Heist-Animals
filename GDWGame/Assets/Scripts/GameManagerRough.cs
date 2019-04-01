@@ -13,8 +13,9 @@ public class GameManagerRough : NetworkBehaviour {
     bool gameOver = false;
     public GameObject gameoverScreen;
     public Text timerText;
-    string NoDecimals = "F0", withZero = ":0", withoutZero = ":", Team1Wins = "Team 1 Wins!", Team2Wins = "Team 2 Wins!", Tie = "It's a tie!";
+    string NoDecimals = "F0", withZero = ":0", withoutZero = ":", UserTeamWins = "Your team won!", EnemyTeamWins = "Enemy team won...", Tie = "It's a tie!";
     PlayerLogic RunnerOne, RunnerTwo;
+    OverSeerControl OverseerOne, OverseerTwo;
     public Text Score1, Score2, WinningText;
     int player1Score = 0;
     int player2Score = 0; //this specifically is to make it easier to test
@@ -65,15 +66,28 @@ public class GameManagerRough : NetworkBehaviour {
     {
         gameoverScreen.SetActive(true);
 
-        if (GameObject.FindGameObjectsWithTag("Runner")[0])
+        if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == 0)
             RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
-        else
-            print("ffs");
+        else if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == 0)
+            RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+        //print("ffs");
 
-        if (GameObject.FindGameObjectsWithTag("Runner")[1])
+        if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == 2)
             RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
-        else
-            print("ffs2");
+        else if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == 2)
+            RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+        //print("ffs2");
+
+        if (GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>().team == 0)
+            OverseerOne = GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>();
+        else if (GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>().team == 0)
+            OverseerOne = GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>();
+
+        if (GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>().team == 2)
+            OverseerTwo = GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>();
+        else if (GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>().team == 2)
+            OverseerTwo = GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>();
+        //print("ffs");
 
         //   if (isServer)
         //{
@@ -82,7 +96,7 @@ public class GameManagerRough : NetworkBehaviour {
             if (RunnerOne.team == 0)
                 player1Score = RunnerOne.numTreasures;
             else if (RunnerOne.team == 2)
-                player1Score = RunnerTwo.numTreasures;
+                player1Score = RunnerOne.numTreasures;
             }
 
             if (RunnerTwo != null)
@@ -98,9 +112,19 @@ public class GameManagerRough : NetworkBehaviour {
         Score2.text = player2Score.ToString(NoDecimals);
 
         if (player1Score > player2Score)
-            WinningText.text = Team1Wins;
+        {
+            if (RunnerOne.isLocalPlayer || OverseerOne.isLocalPlayer)
+                WinningText.text = UserTeamWins;
+            else if (RunnerTwo.isLocalPlayer || OverseerTwo.isLocalPlayer)
+                WinningText.text = EnemyTeamWins;
+        }
         else if (player1Score < player2Score)
-            WinningText.text = Team2Wins;
+        {
+            if (RunnerTwo.isLocalPlayer || OverseerTwo.isLocalPlayer)
+                WinningText.text = UserTeamWins;
+            else if (RunnerOne.isLocalPlayer || OverseerOne.isLocalPlayer)
+                WinningText.text = EnemyTeamWins;
+        }
         else
             WinningText.text = Tie;
     }

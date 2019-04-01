@@ -40,7 +40,7 @@ public class CameraClipping : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 
         //destination our camera raycast will go
         //camPos = transform.localPosition.normalized;

@@ -4211,6 +4211,9 @@ MonoBehaviour:
   inTrap: 0
   tutorialOff: {fileID: 2800000, guid: a0c2c9d3dc349904791a1e6b8b5487cc, type: 3}
   tutorialOn: {fileID: 2800000, guid: bdd1a14f47e2cb2419d80644e96cff33, type: 3}
+  runnerLocationUI: {fileID: 0}
+  pDUI: {fileID: 0}
+  eDUI: {fileID: 0}
 --- !u!114 &114245422729500282
 MonoBehaviour:
   m_ObjectHideFlags: 1
