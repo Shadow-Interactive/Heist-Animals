@@ -121,8 +121,6 @@ public class RoomScript : NetworkBehaviour
         if (other.CompareTag(strZapper))
         {
             other.GetComponent<ZapperScript>().SetActive(false);
-
-            other.GetComponentInChildren<AudioSource>().Play();
         }
     }
 

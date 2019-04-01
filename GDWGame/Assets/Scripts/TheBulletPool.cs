@@ -44,7 +44,6 @@ public class TheBulletPool : NetworkBehaviour {
             {
                 bullet.GetComponent<ZapperScript>().SetPosition(position, Quaternion.identity);
                 bullet.GetComponent<ZapperScript>().SetActive(true);
-                bullet.GetComponent<AudioSource>().Play();
                 return bullet;
             }
         }
