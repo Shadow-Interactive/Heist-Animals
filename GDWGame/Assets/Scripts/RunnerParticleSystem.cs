@@ -7,6 +7,7 @@ public class RunnerParticleSystem : NetworkBehaviour {
 
     public ParticleSystem teleportIn;
     public ParticleSystem teleportOut;
+    public ParticleSystem shot;
 
 	// Use this for initialization
 	void Start () {
@@ -61,5 +62,27 @@ public class RunnerParticleSystem : NetworkBehaviour {
         teleportIn.Play();
     }
 
+    public void IsShot() //for whenthe player gets shot
+    {
+        if (hasAuthority)
+        {
+            if (isServer)
+                RpcIsShot();
+            else
+                CmdIsShot();
+        }
+    }
 
+    [Command]
+    void CmdIsShot()
+    {
+        RpcIsShot();
+    }
+
+    [ClientRpc]
+    void RpcIsShot()
+    {
+        print("the shot");
+        shot.Play();
+    }
 }

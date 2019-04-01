@@ -18,7 +18,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     private List<GameObject> trapImages = new List<GameObject>();
 
     GameObject[] theImages = new GameObject[4];
-    GameObject codePrefab;
+    GameObject codePrefab, playerDUI, enemyDUI, pDUI, eDUI;
     GameObject shockImage, empImage;
     GameObject imageTemp;
 
@@ -29,6 +29,7 @@ public class OverseerCanvasManager : NetworkBehaviour
     public RawImage[] trapIcons = new RawImage[4];
 
     Vector3[] pointPositions = new Vector3[18];
+   
     public Text currentRoom;
 
 	public Text T1;
@@ -39,11 +40,10 @@ public class OverseerCanvasManager : NetworkBehaviour
 	Queue<string> messageQ = new Queue<string>();
 
 	string[] theRoomTexts = new string[18];
-    string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2";
+    string roomStr = "Room: ", defaultText = "NA", strO1 = "Overseer1", strO2 = "Overseer2", strRunner = "Runner";
 
     public Canvas cursorCanvas;
     public int overseerID;
-    
 
     // Use this for initialization
     void Start () {
@@ -53,42 +53,87 @@ public class OverseerCanvasManager : NetworkBehaviour
         else if (overseerID == 1)
             gameObject.name = strO2;
         else
-            gameObject.name = "killmebish" + overseerID;
+            gameObject.name = "killmebish" + overseerID; //ohno
     }
 	
 	// Update is called once per frame
 	void Update () {
        
-        if (EMP)
-        {
-            empTimer += Time.deltaTime;
+	}
 
-            if (empTimer > 10)
+    //for ui icons to show up
+    public void FindPlayer(int currentTeam, int runnerIndex, ref bool foundPlayer, ref bool foundEnemy)
+    {
+        try
+        {
+            if (GameObject.FindGameObjectsWithTag(strRunner)[runnerIndex] != null)
             {
-                empTimer = 0;
-                EMP = false;
-                screenBlocker.SetActive(EMP);
+                //makes code a little cleaner
+                PlayerLogic runner1 = GameObject.FindGameObjectsWithTag(strRunner)[runnerIndex].GetComponent<PlayerLogic>();
+                Vector3 position = runner1.gameObject.transform.position;
+
+                if (runner1.team == currentTeam && foundPlayer == false)
+                {
+                    //this is for the diagetic ui
+                    pDUI = GameObject.Instantiate(playerDUI);
+                    pDUI.transform.SetParent(trapCanvas.transform);
+                    pDUI.transform.position = new Vector3(position.x, 3, position.z);
+                    runner1.pDUI = pDUI;
+
+                    //for the map ui
+                    RunnerLocUI theRunnerUI = GetComponentInChildren<RunnerLocUI>();
+                    runner1.runnerLocationUI = theRunnerUI;
+
+                    //for the rim lighting
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
+
+                    //establish that we've found the player
+                    foundPlayer = true;
+                }
+                else if (runner1.team != currentTeam && foundEnemy == false)
+                {
+                    //looks for enemy
+                    eDUI = GameObject.Instantiate(enemyDUI);
+                    eDUI.transform.SetParent(trapCanvas.transform);
+                    eDUI.transform.position = new Vector3(position.x, 3, position.z);
+                    runner1.eDUI = eDUI; //to update the enemy pos in diagetic canvas
+
+                    //for the rim lighting
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
+                    runner1.gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
+
+                    //signify that we found the enemy
+                    foundEnemy = true;
+                }
             }
         }
-		//consoleMessages();
-		//Debug.Log(messageQ.Count);
+        catch
+        {
+            //catch statement goes here
+        }
 
-		//  currentRoom.text = gameObject.name;
-	}
+    }
 
     public void ChangeBillboard(Camera newCamera)
     {
+        //setting new cam positions, this is for the billboard
         for(int i = 0; i < codeVisuals.Count; i++)
         {
             codeVisuals[i].GetComponent<CameraBillboard>().theCamera = newCamera;
         }
+        if (pDUI != null) pDUI.GetComponent<DUIScript>().theCamera = newCamera;
+        if (eDUI != null) eDUI.GetComponent<DUIScript>().theCamera = newCamera;
+
     }
 
-	public void LoadProperties(RoomManager theRoomManager)
+    public void LoadProperties(RoomManager theRoomManager)
     {
 
         //print(overseerID + " the id");
         codePrefab = Resources.Load("ONumberOutput") as GameObject;
+        playerDUI = Resources.Load("playerDUI") as GameObject;
+        enemyDUI = Resources.Load("enemyDUI") as GameObject;
         shockImage = Resources.Load("ShockUI") as GameObject;
         empImage = Resources.Load("EMPUI") as GameObject;
 
@@ -98,10 +143,10 @@ public class OverseerCanvasManager : NetworkBehaviour
         theImages[2] = empImage;
         theImages[3] = empImage;
 
+        //adds the traps and associated images
         for (int i = 0; i < theRoomManager.ObjectiveLength(); i++)
         {
             AddTrap(theRoomManager.GetObjPos(i), theRoomManager.GetObjCode(i), i, theRoomManager);
-
         }
 
         for (int i = 0; i < theRoomManager.SecurityLength(); i++)
@@ -109,45 +154,7 @@ public class OverseerCanvasManager : NetworkBehaviour
             AddImage(theRoomManager.GetSecurityPos(i), theRoomManager.GetSecurityRotation(i), theRoomManager.getRoomTrap(i));
         }
 
-
-        //pointPositions[0] = new Vector3(-3.5f, -3.4f, 0);
-        //pointPositions[1] = new Vector3(-2.3f, -9.3f, 0);
-        //pointPositions[2] = new Vector3(11, -3.1f, 0);
-        //pointPositions[3] = new Vector3(-2.7f, 11.3f, 0);
-        //pointPositions[4] = new Vector3(-15.3f, 3.2f, 0);
-        //pointPositions[5] = new Vector3(-20.1f, -18.3f, 0);
-        //pointPositions[6] = new Vector3(-21.7f, -29.8f, 0);
-        //pointPositions[7] = new Vector3(-7.9f, -29.8f, 0);
-        //pointPositions[8] = new Vector3(2.6f, -24.2f, 0);
-        //pointPositions[9] = new Vector3(-13.5f, -24.2f, 0);
-        //pointPositions[10] = new Vector3(-23.8f, -24.2f, 0);
-        //pointPositions[11] = new Vector3(18.7f, -6.6f, 0);
-        //pointPositions[12] = new Vector3(15.8f, 21.3f, 0);
-        //pointPositions[13] = new Vector3(3.1f, 21.3f, 0);
-        //pointPositions[14] = new Vector3(-7.9f, 21.3f, 0);
-        //pointPositions[15] = new Vector3(-18, 31.2f, 0);
-        //pointPositions[16] = new Vector3(-27.1f, 16.9f, 0);//current
-        //pointPositions[17] = new Vector3(-27.1f, 2.9f, 0);
-
-        //pointPositions[0] = new Vector3(-3.5f, -3.4f, 0); //c
-        //pointPositions[1] = new Vector3(11.1f, -9.1f, 0); //c
-        //pointPositions[2] = new Vector3(-3.1f, 11.2f, 0); //c
-        //pointPositions[3] = new Vector3(-15, -12.2f, 0); //c
-        //pointPositions[4] = new Vector3(-19.4f, -17.2f, 0); //c
-        //pointPositions[5] = new Vector3(-22.9f, -29.6f, 0);//c
-        //pointPositions[6] = new Vector3(-7.5f, -29.6f, 0); //c
-        //pointPositions[7] = new Vector3(2.6f, -24.2f, 0); //c
-        //pointPositions[8] = new Vector3(13.1f, -23.2f, 0); //c
-        //pointPositions[9] = new Vector3(23.4f, -26.3f, 0); //c
-        //pointPositions[10] = new Vector3(19, -7.1f, 0); //c
-        //pointPositions[11] = new Vector3(14.7f, 26, 0);
-        //pointPositions[12] = new Vector3(3.3f, 22.9f, 0); // c
-        //pointPositions[13] = new Vector3(-7.9f, 21.3f, 0); //c
-        //pointPositions[14] = new Vector3(-17.9f, 32.1f, 0); //c
-        //pointPositions[15] = new Vector3(-26.5f, 17.9f, 0); //c
-        //pointPositions[16] = new Vector3(-26.5f, 3.6f, 0);//c
-        //pointPositions[17] = new Vector3(-25f, -7f, 0);  //c
-
+        //setting the red dot positions
         pointPositions[0] = new Vector3(3.03f, 3.76f, 0); //c
         pointPositions[1] = new Vector3(12.3f, 1.79f, 0); //c
         pointPositions[2] = new Vector3(-3.1f, -14.98f, 0); //c
@@ -166,39 +173,8 @@ public class OverseerCanvasManager : NetworkBehaviour
         pointPositions[15] = new Vector3(-35.9f, -22.9f, 0); //c
         pointPositions[16] = new Vector3(-40.3f, -10.7f, 0);//c
         pointPositions[17] = new Vector3(-29.55f, 3.6f, 0);  //c
-
-        //pointPositions[11] = new Vector3(23.4f, -23.6f, 0);//current
-        //pointPositions[10] = new Vector3(14, -23.6f, 0);
-        //12 and fifteen flipped
-        //7 and 8 flipperd
-        //14 and 13 flipped
-
-        //room 5 is 10
-        //room 6 is 11 (the current room 12)
-
-        //11 and 16?
-        //17 and 10?
-        //6 and 9?
-
-        //theRoomTexts[0] = "Foyer";
-        //theRoomTexts[1] = "Hallway 1";
-        //theRoomTexts[2] = "Hallway 2";
-        //theRoomTexts[3] = "Hallway 3";
-        //theRoomTexts[4] = "Hallway 4";
-        //theRoomTexts[5] = "Room 1";
-        //theRoomTexts[6] = "Room 2";
-        //theRoomTexts[7] = "Room 3";
-        //theRoomTexts[8] = "Room 4";
-        //theRoomTexts[9] = "Room 5";
-        //theRoomTexts[10] = "Room 6";
-        //theRoomTexts[11] = "Room 7";
-        //theRoomTexts[12] = "Room 8";
-        //theRoomTexts[13] = "Room 9";
-        //theRoomTexts[14] = "Room 10";
-        //theRoomTexts[15] = "Room 11";
-        //theRoomTexts[16] = "Room 12";
-        //theRoomTexts[17] = "Room 13";
-
+        
+        //the text for all the rooms
         theRoomTexts[0] = "Current Camera: 1";
         theRoomTexts[1] = "Current Camera: 2";
         theRoomTexts[2] = "Current Camera: 3";
@@ -217,7 +193,6 @@ public class OverseerCanvasManager : NetworkBehaviour
         theRoomTexts[15] ="Current Camera: 16";
         theRoomTexts[16] ="Current Camera: 17";
         theRoomTexts[17] = "Current Camera: 18";
-
     }
     
     public void ChangeTrapLocation(int index, Vector3 position) //for when the objective is dropping
@@ -238,14 +213,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 
         else if (gameObject.name == strO2)
             theRoomManager.theObjectives[codeIndex].associatedCodeObject2 = trapObj.GetComponent<CodeVisual>();
-
-        //i dont think we need this here, it was giving me errors
-      //for (int i = 0; i < 4; i++)
-      //{
-      //    print(theRoomManager.theImages[theCode[i]]);
-      //    trapObj.GetComponent<CodeVisual>().SetSprite(i, theRoomManager.theImages[theCode[0]]);// theRoomManager.theImages[theCode[i]]);
-      //}
-
+        
         codeVisuals.Add(trapObj);
     }
 
@@ -355,10 +323,6 @@ public class OverseerCanvasManager : NetworkBehaviour
 		{
 			//clean this shit up
 			removeOldConsoleMessage();
-			//T1.text = messageQ.ElementAt(0);
-			//T2.text = messageQ.ElementAt(1);
-			//T3.text = messageQ.ElementAt(2);
-			//T4.text = messageQ.ElementAt(3);
 		}
 
 		//top to bottom t4 the newes

@@ -129,7 +129,7 @@ public class RoomManager : NetworkBehaviour
             ObjectiveDrop(pickedUpObjectives[pickedUpObjectives.Count - 1], dropPosition);
             pickedUpObjectives.RemoveAt(pickedUpObjectives.Count - 1);
         }
-
+        print(roomInt);
         //print("drop position after" + dropPosition);
 
     }

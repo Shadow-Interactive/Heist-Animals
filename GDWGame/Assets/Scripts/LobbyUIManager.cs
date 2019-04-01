@@ -193,12 +193,13 @@ public class LobbyUIManager : NetworkBehaviour
         //im rushing just to get this done
         for (int i = 0; i < 4; i++)
         {
-            if (actualPlayers[i] != null && i != index && team != -1 && actualPlayers[i].team == team)
+            //checks the player, and if it's not the index
+            if (actualPlayers[i] != null && i != index && team != -1 && actualPlayers[i].team == team) //if its not null, not the player calling the function, and the same team
             {
-                if(actualPlayers[i].role == desiredRole)
+                if(actualPlayers[i].role == desiredRole) //if that player already has that role
                 {
                     if (desiredRole == 0)
-                        actualPlayers[i].SetRole(1);
+                        actualPlayers[i].SetRole(1);  
                     else
                         actualPlayers[i].SetRole(0);
                 }
