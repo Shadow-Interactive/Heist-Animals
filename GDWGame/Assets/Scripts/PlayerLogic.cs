@@ -29,7 +29,7 @@ public class PlayerLogic : NetworkBehaviour {
     string doorStr = "Door", zapStr = "Zap", treasureStr = "Treasure", trapStr = "Trap";
     string runnerOneStr = "RunnerOne", runnerTwoStr = "RunnerTwo", networkTrapStr = "TheNetworkTrap",
         O1 = "Objective", O2 = "Objective2", O3 = "Objective3", O4 = "Objective4", O5 = "Objective5", O6 = "Objective5", O7 = "Objective7", O8 = "Objective8", O9 = "Objective9",
-        strBulletPool = "BulletPool", strMouseScrollWheel = "Mouse ScrollWheel";
+        strBulletPool = "BulletPool", strMouseScrollWheel = "Mouse ScrollWheel", strObjectiveLoc = "ObjectiveLocationTrigger";
 
 
     //data that is shared
@@ -125,6 +125,8 @@ public class PlayerLogic : NetworkBehaviour {
     //this is for the overseer ui stuff
     [HideInInspector] public RunnerLocUI runnerLocationUI;
     [HideInInspector] public GameObject pDUI, eDUI; //to update the two ui positions.... odear
+
+    public Collider[] colliders;
 
     // Use this for initialization
     void Start () {
@@ -398,7 +400,11 @@ public class PlayerLogic : NetworkBehaviour {
         {
             RightClickEvents();
         }
-        if  (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            theParticleSystem.IsShot();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             tutorial.gameObject.SetActive(!tutorial.gameObject.activeSelf);
             switch(tutorial.gameObject.activeSelf)
@@ -818,8 +824,14 @@ public class PlayerLogic : NetworkBehaviour {
             R2currentObjective.minigameActivated = temp;
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag(strObjectiveLoc))
+        {
+            roomInt = other.GetComponentInParent<ObjectiveLocationTrigger>().locationInt;
+            SetRoomInt(roomInt);
+        }
         if (other.CompareTag(doorStr))
         {
             if (other.GetComponentInParent<RoomScript>().uponEntering(ref roomInt))
@@ -837,6 +849,7 @@ public class PlayerLogic : NetworkBehaviour {
             if (other.GetComponent<ZapperScript>().zapperID != runID /*&& theCurrentAbility != CurrentAbility.shield*/)
             {
                 other.gameObject.SetActive(false);
+                theParticleSystem.IsShot();
 
                 if (shieldActive != true)
                 {
@@ -852,6 +865,7 @@ public class PlayerLogic : NetworkBehaviour {
                     if (numTreasures > 0)
                     {
                         Drop();
+                        print("it gets to the drop function?");
                     }
                     Restore();
 
@@ -997,7 +1011,6 @@ public class PlayerLogic : NetworkBehaviour {
         //calls the teleport function
         SetRoomInt(roomInt);
         theRoomManager.Teleport(ref playerPosition, ref roomInt, ref pickedUpObjectives, dropPosition);
-        SetRoomInt(roomInt);
 
         //updates minimap ui
     }
