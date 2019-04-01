@@ -29,6 +29,14 @@ public class ZapperScript : NetworkBehaviour {
     {
         active = temp;
         gameObject.SetActive(temp);
+
+        if (temp)
+            GetComponent<AudioSource>().Play();
+        else
+        {
+            Debug.Log("Bullet Deactivated and returned to the pool");
+            GetComponentInChildren<AudioSource>().Play();
+        }
     }
 
     public void SetPosition(Vector3 position, Quaternion rotation)
