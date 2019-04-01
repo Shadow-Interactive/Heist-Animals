@@ -311,10 +311,10 @@ public class OverseerCanvasManager : NetworkBehaviour
 	{
 		if (messageQ.Count == 0)
 		{
-			messageQ.Enqueue("1");
-			messageQ.Enqueue("2");
-			messageQ.Enqueue("3");
-			messageQ.Enqueue("4");
+			messageQ.Enqueue(" ");
+			messageQ.Enqueue(" ");
+			messageQ.Enqueue(" ");
+			messageQ.Enqueue(" ");
 			//	messageQ.Enqueue("");
 
 			//Debug.Log("it gets to this point");
