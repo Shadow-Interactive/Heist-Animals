@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RunnerLocUI : MonoBehaviour {
 
     //variables
-    Vector3[] runnerLocPositions = new Vector3[13];
+    Vector3[] runnerLocPositions = new Vector3[14];
     public RawImage uiElement;
 
     // Use this for initialization
@@ -26,10 +26,12 @@ public class RunnerLocUI : MonoBehaviour {
         runnerLocPositions[10] = new Vector3(-31.4f, -24.3f, 0); //c
         runnerLocPositions[11] = new Vector3(-31.4f, -9.1f, 0);
         runnerLocPositions[12] = new Vector3(-27.1f, 1.1f, 0); // c
+        runnerLocPositions[13] = new Vector3(-3.1f, -5.3f, 0); // c
+
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
