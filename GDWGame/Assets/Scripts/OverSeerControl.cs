@@ -88,7 +88,6 @@ public class OverSeerControl : NetworkBehaviour {
     
     //for more tutorialization stuff
     bool foundPlayer = false, foundEnemy = false;
-
     // Use this for initialization
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -100,7 +99,7 @@ public class OverSeerControl : NetworkBehaviour {
             GameObject.Find("RunnerPostVolume").SetActive(false);
         }
 
-        
+
         radialCamSelect.SetActive(false);
         radialPress = false;
 
@@ -294,8 +293,9 @@ public class OverSeerControl : NetworkBehaviour {
             LoadProperties();
             
         }
+        
 
-        if(theRoomManager==null)
+        if (theRoomManager==null)
         theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
 
 
@@ -897,4 +897,5 @@ public class OverSeerControl : NetworkBehaviour {
     {
         team = num;
     }
+
 }
