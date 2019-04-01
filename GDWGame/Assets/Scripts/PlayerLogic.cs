@@ -831,6 +831,7 @@ public class PlayerLogic : NetworkBehaviour {
         if (other.CompareTag(strObjectiveLoc))
         {
             roomInt = other.GetComponentInParent<ObjectiveLocationTrigger>().locationInt;
+            print(roomInt);
             SetRoomInt(roomInt);
         }
         if (other.CompareTag(doorStr))
