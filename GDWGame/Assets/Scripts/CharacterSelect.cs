@@ -250,15 +250,7 @@ public class CharacterSelect : NetworkBehaviour {
         newteam = theLobbyManager.AvailableTeam(playerIndex, desiredTeam);
         ThisIsADisasterTeam(newteam);
         SetTeamUI();
-
-        if (role != nullNumber)
-        {
-            //if they picked the role first and then the team
-            //then it sees what role is available and switches them to it
-            int newRole = theLobbyManager.AvailableRole(playerIndex, team, role);
-            print("current rle: " + role + " wanted role " + newRole);
-            SetRole(newRole);
-        }
+        
     }
 
     void ThisIsADisasterTeam(int num)
@@ -331,14 +323,17 @@ public class CharacterSelect : NetworkBehaviour {
 
     void ChooseRoleLogic()
     {
-        imgNullRole.gameObject.SetActive(false); //shows the role stuff
-        int desiredRole = role;
-        int newRole = 0;
-        if (desiredRole == nullNumber) desiredRole = 0;
-        else desiredRole = desiredRole == 0 ? 1 : 0;
+        if (team != nullNumber)
+        {
+            imgNullRole.gameObject.SetActive(false); //shows the role stuff
+            int desiredRole = role;
+            int newRole = 0;
+            if (desiredRole == nullNumber) desiredRole = 0;
+            else desiredRole = desiredRole == 0 ? 1 : 0;
 
-        newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
-        SetRole(newRole);
+            newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
+            SetRole(newRole);
+        }
         
     }
 
@@ -441,7 +436,9 @@ public class CharacterSelect : NetworkBehaviour {
     public void ClearTeam()
     {
         if (isServer) RpcClearTeam();  
-        else CmdClearTeam();       
+        else CmdClearTeam();
+
+        ClearRole();
     }
 
     [Command]

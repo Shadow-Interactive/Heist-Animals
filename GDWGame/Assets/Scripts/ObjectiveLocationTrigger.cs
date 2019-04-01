@@ -6,4 +6,5 @@ public class ObjectiveLocationTrigger : MonoBehaviour {
 
     //used purely for the objectives to track locations
     public string locationTag;
+    public int locationInt;
 }
