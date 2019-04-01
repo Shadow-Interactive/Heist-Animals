@@ -24,6 +24,7 @@ public class OverSeerControl : NetworkBehaviour {
 
     bool ohmygoodness;
     bool doNotMove;
+    bool switchCameras = false;
 
     private const float CAM_Y_MIN = -80.0f;
     private const float CAM_Y_MAX = 5.0f;
@@ -235,22 +236,6 @@ public class OverSeerControl : NetworkBehaviour {
             Debug.Log("One of the runners doesn't exist (in OverseerControl)" + e.Message);
         }
 
-        if (GameObject.FindGameObjectsWithTag("Runner")[0] && GameObject.FindGameObjectsWithTag("Runner")[1])
-        {
-            if (isLocalPlayer)
-            {
-                if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == team)
-                    ally = GameObject.FindGameObjectsWithTag("Runner")[0];
-                else
-                    enemy = GameObject.FindGameObjectsWithTag("Runner")[0];
-
-                if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == team)
-                    ally = GameObject.FindGameObjectsWithTag("Runner")[1];
-                else
-                    enemy = GameObject.FindGameObjectsWithTag("Runner")[1];
-            }
-        }
-
         if (OverID == 1)
 		{
 			eventConsole = new ObserverPattern.EventConsole(run1, run2);
@@ -314,44 +299,6 @@ public class OverSeerControl : NetworkBehaviour {
                 UIUpdateCounter++;
             }
             
-        }
-
-        ////UNCOMMENT AFTER DONE TESTING OVERSEER
-        try
-        {
-            //if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
-                //GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().material = run2mat;
-
-            //if (GameObject.FindGameObjectsWithTag("Runner")[0] != null && GameObject.FindGameObjectsWithTag("Runner")[1] != null)
-            //    {
-            //        //if (OverID == 1)
-            //        //{
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-            //        //}
-            //        //else if (OverID == 2)
-            //        //{
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[0].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-            //        //    GameObject.FindGameObjectsWithTag("Runner")[1].GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 3.0f);
-            //        //}
-
-            //        //if (isLocalPlayer)
-            //        //{
-            //            //ally.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.green);
-            //            //ally.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
-
-            //            //enemy.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.red);
-            //            //enemy.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetFloat("_RimStrength", 2.0f);
-            //        //}
-            //    }
-        } catch (System.IndexOutOfRangeException e)
-        {
-            //uncomment after
-            //print("One of the players does not exist (in OverseerControl): " + e.Message);
         }
 
         //theCanvasManager.PrintCode(theRoomManager.ObjectiveLength());
@@ -444,60 +391,64 @@ public class OverSeerControl : NetworkBehaviour {
                 break;
         }
 
-        if (!Input.GetKey(KeyCode.P) || !doNotMove)
+        
+        if (controller.connected)
         {
-            if (controller.connected)
+            if (controllerX.Value < .49f || controllerX.Value > .51f)
+                cameraLook.x = (controllerX.Value - .5f) * 2f;
+            else
+                cameraLook.x = 0;
+        
+            if (controllerY.Value < .48f || controllerY.Value > .52f)
+                cameraLook.y = (controllerY.Value - .5f) * 2f;
+            else
+                cameraLook.y = 0;
+        
+            if (controllerZ.Value < .48f || controllerZ.Value > .52f)
+                zAxis = (controllerZ.Value - .5f) * 2f;
+            else
+                zAxis = 0;
+        
+            if (trapButton.Value == true)
+                trapPress = true;
+            if (leftButton.Value == true)
+                leftPress = true;
+            if (rightButton.Value == true)
+                rightPress = true;
+        
+        }
+        else
+        {
+            if (XBoxInput.GetConnected())
             {
-                if (controllerX.Value < .49f || controllerX.Value > .51f)
-                    cameraLook.x = (controllerX.Value - .5f) * 2f;
+
+                if (!doNotMove)
+                {
+                    cameraLook.x = lookSpeed * XBoxInput.GetRightX();
+                    cameraLook.y = lookSpeed * XBoxInput.GetRightY() * -1;
+                    zAxis = XBoxInput.GetLeftY() * -1f;
+                }
                 else
+                {
                     cameraLook.x = 0;
-
-                if (controllerY.Value < .48f || controllerY.Value > .52f)
-                    cameraLook.y = (controllerY.Value - .5f) * 2f;
-                else
                     cameraLook.y = 0;
-
-                if (controllerZ.Value < .48f || controllerZ.Value > .52f)
-                    zAxis = (controllerZ.Value - .5f) * 2f;
-                else
                     zAxis = 0;
-
-                if (trapButton.Value == true)
+                }
+        
+                if (XBoxInput.GetKeyPressed(0, (int)Buttons.A))
                     trapPress = true;
-                if (leftButton.Value == true)
+                if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
                     leftPress = true;
-                if (rightButton.Value == true)
-                    rightPress = true;
-
+                if (XBoxInput.GetKeyPressed(0, (int)Buttons.RB))
+                    ohmygoodness = true;
             }
             else
             {
-                if (XBoxInput.GetConnected())
-                {
-
-                    
-                    cameraLook.x = lookSpeed * XBoxInput.GetRightX();
-                    cameraLook.y = lookSpeed * XBoxInput.GetRightY() * -1;
-                    
-                    
-
-                    zAxis = XBoxInput.GetLeftY() * -1f;
-
-                    if (XBoxInput.GetKeyPressed(0, (int)Buttons.A))
-                        trapPress = true;
-                    if (XBoxInput.GetKeyPressed(0, (int)Buttons.LB))
-                        leftPress = true;
-                    if (XBoxInput.GetKeyPressed(0, (int)Buttons.RB))
-                        ohmygoodness = true;
-                }
-                else
-                {
-                    cameraLook.x += Input.GetAxis(mouseX);
-                    cameraLook.y += Input.GetAxis(mouseY);
-                }
+                cameraLook.x += Input.GetAxis(mouseX);
+                cameraLook.y += Input.GetAxis(mouseY);
             }
         }
+        
 
         //clamp the camera's y rotation to prevent weird camera angles
         cameraLook.y = Mathf.Clamp(cameraLook.y, CAM_Y_MIN, CAM_Y_MAX);
@@ -511,9 +462,8 @@ public class OverSeerControl : NetworkBehaviour {
 
         //https://answers.unity.com/questions/615771/how-to-check-if-click-mouse-on-object.html
         //to activate trap
-        if (!Input.GetKey(KeyCode.P))
+        if (!Input.GetMouseButton(1))
         {
-            trapPress = false;
             clickRay = totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter);
             //print(clickRay + " other ver " + totalCamera[currentCamera].GetComponentInChildren<Camera>().ViewportPointToRay(viewportCenter));
 
@@ -540,14 +490,14 @@ public class OverSeerControl : NetworkBehaviour {
                     AbuttonHintUI.SetActive(false);
             }
 
-            
+            trapPress = false;    
         }
 
         for (int i = 0; i < totalCamera.Count; i++)
         {
             findFOV(i);
 
-            if (Input.GetKeyUp(KeyCode.LeftArrow) || (leftPress && leftButton.Value == false))
+            if (Input.GetKeyUp(KeyCode.A) || (leftPress && leftButton.Value == false))
             {
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                 {
@@ -581,7 +531,7 @@ public class OverSeerControl : NetworkBehaviour {
                 theCanvasManager.UpdateCanvasCamera(totalCamera[i].GetComponentInChildren<Camera>());
             }
 
-            if (Input.GetKeyUp(KeyCode.RightArrow) || (rightPress && rightButton.Value == false))
+            if (Input.GetKeyUp(KeyCode.D) || (rightPress && rightButton.Value == false))
             {
 
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
@@ -619,20 +569,32 @@ public class OverSeerControl : NetworkBehaviour {
                 if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                 {
                     float temp = totalCamera[i].GetComponentInChildren<Camera>().fieldOfView;
+                    float lookSens = temp;
 
-                    if (temp >= 30 && temp <= 70)
-                        temp += zAxis * zoomSpeed * Time.deltaTime;
-                    if (temp > 70)
-                        temp = 70;
-                    if (temp < 30)
-                        temp = 30;
+                    if (!radialPress)
+                    {
+                        if (temp < 50)
+                            lookSens = temp / 1.5f;
+                        if (temp >= 50)
+                            lookSens = temp * 1.3f;
+
+                        if (temp >= 30 && temp <= 70)
+                        {
+                            temp += zAxis * zoomSpeed * Time.deltaTime;
+                            lookSpeed = 2.0f * (lookSens * 0.01f);
+                        }
+                        if (temp > 70)
+                            temp = 70;
+                        if (temp < 30)
+                            temp = 30;
+                    }
 
                     totalCamera[i].GetComponentInChildren<Camera>().fieldOfView = temp;
                 }
             }
             else
             {
-                if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.P))
+                if (Input.GetKey(KeyCode.W) && !Input.GetMouseButton(1))
                 {
                     if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                     {
@@ -646,7 +608,7 @@ public class OverSeerControl : NetworkBehaviour {
                 }
 
 
-                if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.P))
+                if (Input.GetKey(KeyCode.S) && !Input.GetMouseButton(1))
                 {
                     if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
                     {
@@ -662,9 +624,9 @@ public class OverSeerControl : NetworkBehaviour {
 
             if (totalCamera[i].GetComponentInChildren<Camera>().enabled)
             {
-                if (!Input.GetKey(KeyCode.P))
+                if (!Input.GetMouseButton(1))
                 {
-                    if (controller.connected || XBoxInput.GetConnected() && !doNotMove)
+                    if (controller.connected || XBoxInput.GetConnected() /*&& !doNotMove*/)
                     {
                         float controllerRotX = totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.x + cameraLook.y;
                         totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles = new Vector3(Mathf.Clamp(controllerRotX, 1, 85), Mathf.Clamp(totalCamera[i].GetComponentInChildren<Camera>().transform.eulerAngles.y, 0, 359) + cameraLook.x, 0);
@@ -689,7 +651,7 @@ public class OverSeerControl : NetworkBehaviour {
                 radialHintUI.SetActive(true);
         }
 
-        if (Input.GetKey(KeyCode.P) || radialPress)
+        if (Input.GetMouseButton(1) || radialPress)
         {
             doNotMove = true;
             Cursor.lockState = CursorLockMode.None;
@@ -702,13 +664,19 @@ public class OverSeerControl : NetworkBehaviour {
                 radialHintUI.SetActive(false);
             
         }
-        else if (XBoxInput.GetKeyReleased(0, (int)Buttons.RB) || Input.GetKeyUp(KeyCode.P))
+        else if (XBoxInput.GetKeyReleased(0, (int)Buttons.RB) || Input.GetMouseButtonUp(1))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            radialCamSelect.SetActive(false);
             radialPress = false;
             doNotMove = false;
+            
+        }
+
+        if (switchCameras)
+        {
+            radialCamSelect.SetActive(false);
+            switchCameras = false;
         }
 
 
@@ -854,6 +822,7 @@ public class OverSeerControl : NetworkBehaviour {
         currentCamera = theValue;
         trapSelect = theValue;
         theCanvasManager.SwitchCameras(currentCamera, totalCamera[currentCamera].GetComponentInChildren<Camera>());
+        switchCameras = true;
         //camRoomName = 
     }
 

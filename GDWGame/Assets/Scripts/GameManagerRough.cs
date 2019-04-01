@@ -23,6 +23,9 @@ public class GameManagerRough : NetworkBehaviour {
     int gameTimeLimit = -1;
     bool theGameOver = false;
 
+    //restart button
+    public GameObject restart;
+
     // Use this for initialization
     void Start () {
         theTimer = 4;
@@ -127,5 +130,8 @@ public class GameManagerRough : NetworkBehaviour {
         }
         else
             WinningText.text = Tie;
+
+        if (RunnerOne.isServer || RunnerTwo.isServer || OverseerOne.isServer || OverseerTwo.isServer)
+            restart.SetActive(true);
     }
 }

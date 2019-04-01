@@ -29,7 +29,6 @@ public class RadialButton : MonoBehaviour {
 
     void Update()
     {
-        print(XBoxInput.GetRightX());
         //want to gather the overseer joystick axis and have that value determine which radial button is selected
         if (XBoxInput.GetRightY() <= rotationSelectVal.y + 0.15 && XBoxInput.GetRightY() >= rotationSelectVal.y - 0.15 && XBoxInput.GetRightX() <= rotationSelectVal.x + 0.15 && XBoxInput.GetRightX() >= rotationSelectVal.x - 0.15)
         {
@@ -41,6 +40,14 @@ public class RadialButton : MonoBehaviour {
         if (select == true)
         {
             radialSystem.SetSelectedGameObject(gameObject);
+        }
+
+        if (buttonCam.gameObject == radialSystem.currentSelectedGameObject)
+        {
+            if (XBoxInput.GetKeyReleased(0, (int)Buttons.RB))
+            {
+                switchToCam();
+            }
         }
     }
 }

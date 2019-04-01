@@ -566,7 +566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1252298035934470
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,7 +866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1329433591920554
 GameObject:
   m_ObjectHideFlags: 1
@@ -2015,7 +2015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1747052529939282
 GameObject:
   m_ObjectHideFlags: 1
@@ -5881,28 +5881,28 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1433151877654200}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81108627489079952
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1998643749844964}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81142272246215816
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1472727959156358}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81148510482802592
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1459016493809006}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81192357894433348
 AudioListener:
   m_ObjectHideFlags: 1
@@ -5916,7 +5916,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1553631325045474}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81238476182571804
 AudioListener:
   m_ObjectHideFlags: 1
@@ -5930,14 +5930,14 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1612657697158394}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81371184770909460
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1588246004085072}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81394009106175926
 AudioListener:
   m_ObjectHideFlags: 1
@@ -5972,7 +5972,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1649200139660092}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81486292289115102
 AudioListener:
   m_ObjectHideFlags: 1
@@ -5986,7 +5986,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1083164338675194}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81519867771996324
 AudioListener:
   m_ObjectHideFlags: 1
@@ -6000,14 +6000,14 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1758499135939392}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81563802721786538
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1814682364836610}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81583576084340948
 AudioListener:
   m_ObjectHideFlags: 1
@@ -6021,28 +6021,28 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1820092554589406}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81662604905971752
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1020652865670790}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81683850610171702
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1572579838568248}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81775848995590314
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1535601230365984}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81785286927815040
 AudioListener:
   m_ObjectHideFlags: 1
@@ -6070,7 +6070,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1514297468539608}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81863451297487012
 AudioListener:
   m_ObjectHideFlags: 1
@@ -6091,7 +6091,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1810319015525020}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81947011442015854
 AudioListener:
   m_ObjectHideFlags: 1
@@ -6105,7 +6105,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1593418126607892}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81976206990530652
 AudioListener:
   m_ObjectHideFlags: 1
@@ -13805,7 +13805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.32000002, y: 0.19100001}
   m_AnchorMax: {x: 0.58000004, y: 0.24153282}
-  m_AnchoredPosition: {x: 25.999924, y: -3.2999992}
+  m_AnchoredPosition: {x: 25.999924, y: -3.2999954}
   m_SizeDelta: {x: 134, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224387461976465530

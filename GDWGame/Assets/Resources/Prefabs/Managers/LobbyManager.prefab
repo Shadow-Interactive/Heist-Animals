@@ -20,7 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4610749736142536}
   - component: {fileID: 114305234094714504}
-  - component: {fileID: 114758906811748756}
+  - component: {fileID: 82838637367134824}
+  - component: {fileID: 114962585500580786}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -41,6 +42,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &82838637367134824
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1293601528548864}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 045d5a2da7a3ede4d9aef0b403f1e715, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1.0010529
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &114305234094714504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,7 +152,7 @@ MonoBehaviour:
   showGUI: 0
   offsetX: 0
   offsetY: 0
---- !u!114 &114758906811748756
+--- !u!114 &114962585500580786
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,7 +160,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1293601528548864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89e919249248b6347a0a56b814c0d8a8, type: 3}
+  m_Script: {fileID: 11500000, guid: a2ec08d6a80ef1d4999ff880f44bd8b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
@@ -82,10 +178,10 @@ MonoBehaviour:
   m_OfflineScene: LobbyScene
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1665447700083700, guid: 2f5c459dbb4d612478a4d1d078f9fea9, type: 2}
-  - {fileID: 1296392377317146, guid: 939c5960d6a4624449857eb4a7f39a41, type: 2}
-  - {fileID: 0}
-  m_CustomConfig: 1
+  - {fileID: 1753631877794904, guid: 939c5960d6a4624449857eb4a7f39a41, type: 2}
+  - {fileID: 1779606154133522, guid: 2f5c459dbb4d612478a4d1d078f9fea9, type: 2}
+  - {fileID: 1697641045874260, guid: 97b8106be9325a446a284a195854dd00, type: 2}
+  m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1440
@@ -127,7 +223,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 0500000005000000
+  m_Channels: 
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -150,12 +246,14 @@ MonoBehaviour:
   m_LobbyScene: LobbyScene
   m_PlayScene: SampleScene
   lobbySlots: []
-  runner: {fileID: 114327088882521172, guid: 5e3a1868c4a39584d9e92241ad6ff50e, type: 2}
+  runner: {fileID: 0}
   overseer: {fileID: 0}
   Spawn: {fileID: 4572195713969698, guid: eb00a210de8b3554aaf5cc124aa9715d, type: 2}
   choice: 0
   run2mat: {fileID: 2100000, guid: dd4aa6a8d66202d48a680a643d24e378, type: 2}
   charSelectPrefab: {fileID: 1138297359506834, guid: 69dc15d998b53a242a105a2a635c7828,
     type: 2}
+  id: 0
   theLobbyManager: {fileID: 0}
   characterSelect: {fileID: 0}
+  IPAddress: {fileID: 0}
