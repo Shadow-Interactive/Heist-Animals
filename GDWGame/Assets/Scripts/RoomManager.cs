@@ -120,6 +120,7 @@ public class RoomManager : NetworkBehaviour
         //print("drop position at first" + dropPosition);
 
         position = teleportPositions[temp].transform.position;
+        teleportPositions[temp].GetComponent<AudioSource>().Play();
         roomInt = temp;
 
         if (pickedUpObjectives.Count > 0)

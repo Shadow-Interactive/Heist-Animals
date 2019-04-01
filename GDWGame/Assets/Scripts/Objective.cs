@@ -74,6 +74,8 @@ public class Objective : NetworkBehaviour {
     {
         if (minigameActivated == true)
             minigameActivated = false;
+
+        //GetComponent<AudioSource>().Stop(); //Hacking Overlay Sound
     }
 
     public void Reshuffle(RoomManager theRoomManager)
@@ -113,6 +115,8 @@ public class Objective : NetworkBehaviour {
     {
         minigameActivated = true;
         theTrapType.Execute(activePlayer);
+
+        //GetComponent<AudioSource>().Play(); //hacking overlay sound
     }
 
     public void ActivateObject(OverSeerControl activeO, RoomManager theRoomManager)
