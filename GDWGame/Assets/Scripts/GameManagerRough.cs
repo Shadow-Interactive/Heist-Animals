@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 
 public class GameManagerRough : NetworkBehaviour {
@@ -186,5 +187,16 @@ public class GameManagerRough : NetworkBehaviour {
         }
 
         initGM = false;
+    }
+
+    public void callRestart()
+    {
+        RpcRestart();
+    }
+
+    [ClientRpc]
+    public void RpcRestart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
