@@ -217,6 +217,8 @@ public class CustomSpawn : NetworkLobbyManager
                 //ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player2.chosenCharacter);
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
 
+
+
             }
 
             player2.DisableCharacterSelect();
@@ -253,6 +255,8 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                 ourPlayer.GetComponent<OverSeerControl>().OverID = team;
                 ourPlayer.GetComponent<OverSeerControl>().SetChosenTeam(teamChoice);
+
+
                 print("does get here");
             }
             else
@@ -260,8 +264,9 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 //ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player3.chosenCharacter);
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
+
             }
-           
+
             player3.DisableCharacterSelect();
             player3.inCharacterSelect = false;
             
@@ -297,6 +302,7 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<OverseerCanvasManager>().overseerID = team;
                 ourPlayer.GetComponent<OverSeerControl>().OverID = team;
                 ourPlayer.GetComponent<OverSeerControl>().SetChosenTeam(teamChoice);
+               
                 print("does get here");
             }
             else
@@ -304,8 +310,9 @@ public class CustomSpawn : NetworkLobbyManager
                 ourPlayer.GetComponent<PlayerLogic>().runID = team;
                 //ourPlayer.GetComponent<PlayerLogic>().SetChosenCharacter((int)player4.chosenCharacter);
                 ourPlayer.GetComponent<PlayerLogic>().SetChosenTeam(teamChoice);
+
             }
-            
+
             player4.DisableCharacterSelect();
             player4.inCharacterSelect = false;
             

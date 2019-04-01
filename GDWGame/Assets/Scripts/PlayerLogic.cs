@@ -127,7 +127,7 @@ public class PlayerLogic : NetworkBehaviour {
     [HideInInspector] public GameObject pDUI, eDUI; //to update the two ui positions.... odear
 
     public Collider[] colliders;
-
+    
     // Use this for initialization
     void Start () {
         zapUI = 0;
@@ -200,6 +200,7 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (!initRM)
         {
+            
             theRoomManager = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<RoomManager>();
             gameObject.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial.SetColor("_RimLight", Color.grey);
             theAnimator = GetComponent<Animator>();
@@ -228,7 +229,7 @@ public class PlayerLogic : NetworkBehaviour {
         }
 
         //tutorial thing
-       if (tutorialCounter < 8)
+        if (tutorialCounter < 8)
         {
             tutorialCounter += Time.deltaTime;
             if (tutorialCounter >= 8)
@@ -359,7 +360,7 @@ public class PlayerLogic : NetworkBehaviour {
                 break;
         }
 	}
-
+    
     void UpdateOverseerUI()
     {
         if (hasAuthority)

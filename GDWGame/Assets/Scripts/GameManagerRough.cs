@@ -12,7 +12,7 @@ public class GameManagerRough : NetworkBehaviour {
     int theTimer = 4;
     bool gameOver = false;
     public GameObject gameoverScreen;
-    public Text timerText;
+    public Text timerText, hackyOverseerText;
     string NoDecimals = "F0", withZero = ":0", withoutZero = ":", UserTeamWins = "Your team won!", EnemyTeamWins = "Enemy team won...", Tie = "It's a tie!";
     PlayerLogic RunnerOne, RunnerTwo;
     OverSeerControl OverseerOne, OverseerTwo;
@@ -22,6 +22,7 @@ public class GameManagerRough : NetworkBehaviour {
 
     int gameTimeLimit = -1;
     bool theGameOver = false;
+    bool initGM = true;
 
     //restart button
     public GameObject restart;
@@ -34,10 +35,15 @@ public class GameManagerRough : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (initGM)
+        {
+            LoadProperties();
+        }
         
-
         if (!theGameOver)
         { 
+
+
             if (theTimerSeconds <= 0)
             {
                 theTimer--;
@@ -45,9 +51,15 @@ public class GameManagerRough : NetworkBehaviour {
             }
 
             if (theTimerSeconds < 9)
+            {
+                hackyOverseerText.text = theTimer.ToString(NoDecimals) + withZero + theTimerSeconds.ToString(NoDecimals);
                 timerText.text = theTimer.ToString(NoDecimals) + withZero + theTimerSeconds.ToString(NoDecimals);
+            }
             else
-            timerText.text = theTimer.ToString(NoDecimals) + withoutZero + theTimerSeconds.ToString(NoDecimals);
+            {
+                hackyOverseerText.text = theTimer.ToString(NoDecimals) + withoutZero + theTimerSeconds.ToString(NoDecimals);
+                timerText.text = theTimer.ToString(NoDecimals) + withoutZero + theTimerSeconds.ToString(NoDecimals);
+            }
 
             theTimerSeconds -= 1 * Time.deltaTime;
 
@@ -65,32 +77,20 @@ public class GameManagerRough : NetworkBehaviour {
 
     }
 
+    public void SetRunnerUIActive(bool active)
+    {
+        timerText.gameObject.SetActive(active);
+    }
+
+    public void SetOverseerUIActive(bool active)
+    {
+        hackyOverseerText.gameObject.SetActive(active);
+    }
+
     public void GameOver()
     {
         gameoverScreen.SetActive(true);
-
-        if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == 0)
-            RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
-        else if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == 0)
-            RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
-        //print("ffs");
-
-        if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == 2)
-            RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
-        else if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == 2)
-            RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
-        //print("ffs2");
-
-        if (GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>().team == 0)
-            OverseerOne = GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>();
-        else if (GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>().team == 0)
-            OverseerOne = GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>();
-
-        if (GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>().team == 2)
-            OverseerTwo = GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>();
-        else if (GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>().team == 2)
-            OverseerTwo = GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>();
-        //print("ffs");
+        
 
         //   if (isServer)
         //{
@@ -133,5 +133,57 @@ public class GameManagerRough : NetworkBehaviour {
 
         if (RunnerOne.isServer || RunnerTwo.isServer || OverseerOne.isServer || OverseerTwo.isServer)
             restart.SetActive(true);
+    }
+
+    void LoadProperties()
+    {
+        try
+        {
+            if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == 0)
+                RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+            else if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == 0)
+                RunnerOne = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+            //print("ffs");
+
+            if (GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>().team == 2)
+                RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+            else if (GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>().team == 2)
+                RunnerTwo = GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+            //print("ffs2");
+
+            if (GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>().team == 0)
+                OverseerOne = GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>();
+            else if (GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>().team == 0)
+                OverseerOne = GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>();
+
+            if (GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>().team == 2)
+                OverseerTwo = GameObject.FindGameObjectsWithTag("Overseer")[1].GetComponent<OverSeerControl>();
+            else if (GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>().team == 2)
+                OverseerTwo = GameObject.FindGameObjectsWithTag("Overseer")[0].GetComponent<OverSeerControl>();
+        }
+        catch {
+            print("Some players missing");
+        }
+        //print("ffs");
+        if (RunnerOne != null && RunnerOne.isLocalPlayer)
+        {
+            hackyOverseerText.gameObject.SetActive(false);
+        }
+        if (RunnerTwo != null && RunnerTwo.isLocalPlayer)
+        {
+            hackyOverseerText.gameObject.SetActive(false);
+
+        }
+
+        if (OverseerOne != null && OverseerOne.isLocalPlayer)
+        {
+            timerText.gameObject.SetActive(false);
+        }
+        if (OverseerTwo != null && OverseerTwo.isLocalPlayer)
+        {
+            timerText.gameObject.SetActive(false);
+        }
+
+        initGM = false;
     }
 }
