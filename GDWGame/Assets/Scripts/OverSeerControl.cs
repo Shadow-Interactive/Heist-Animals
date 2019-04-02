@@ -683,6 +683,12 @@ public class OverSeerControl : NetworkBehaviour {
 
         try
         {
+            if (run1 == null)
+                GameObject.FindGameObjectsWithTag("Runner")[0].GetComponent<PlayerLogic>();
+
+            if (run2 == null)
+                GameObject.FindGameObjectsWithTag("Runner")[1].GetComponent<PlayerLogic>();
+
             if (run1 == null || run2 == null)
             {
                 theCanvasManager.T3.text = "SOMETHINGS NULL BITCHHHHH";
@@ -697,7 +703,7 @@ public class OverSeerControl : NetworkBehaviour {
                     theCanvasManager.newConsoleMessage(eventConsole.repetitiveshit());
                     print("it gets to this point FUUUCk");
                     print(run1.currstate.ToString());
-                    theCanvasManager.T5.text = "d " + eventConsole.repetitiveshit();
+                    theCanvasManager.T5.text = eventConsole.repetitiveshit();
                     run1.currstate = 0;
                     run2.currstate = 0;
                 }

@@ -30,19 +30,19 @@ public class GameManagerRough : NetworkBehaviour {
     // Use this for initialization
     void Start () {
         theTimer = 4;
+        LoadProperties();
 	}
 
     // Update is called once per frame
     void Update()
     {
-        if (initGM)
-        {
-            LoadProperties();
-        }
-        
         if (!theGameOver)
         { 
 
+        if (initGM)
+            {
+                LoadProperties();
+            }
 
             if (theTimerSeconds <= 0)
             {
@@ -90,7 +90,8 @@ public class GameManagerRough : NetworkBehaviour {
     public void GameOver()
     {
         gameoverScreen.SetActive(true);
-        
+
+        LoadProperties();
 
         //   if (isServer)
         //{
