@@ -68,7 +68,6 @@ public class PlayerLogic : NetworkBehaviour {
     float smokeCooldownTime = 0.0f;
     float shieldCooldownTime = 0.0f;
     float shieldActiveTime = 0.0f;
-    float tutorialCounter = 0.0f;
     [SyncVar] bool shieldActive = false;
     List<int> pickedUpObjectives = new List<int>(); //the reason why im using ints instead of gameobjects is cuz
     //each objective has a tag associated with it, instead of potentially wasting memory by keeping a list of ints, i can save that memory by keeping track of the tags for the objective
@@ -227,18 +226,7 @@ public class PlayerLogic : NetworkBehaviour {
             theHealthUI[zapUI].SetActive(true);
 
         }
-
-        //tutorial thing
-        if (tutorialCounter < 8)
-        {
-            tutorialCounter += Time.deltaTime;
-            if (tutorialCounter >= 8)
-            {
-                timerImage.texture = tutorialOff;
-                tutorial.gameObject.SetActive(false);
-            }
-        }
-       
+        
         UpdateOverseerUI();
 
         if (theRoomManager == null)

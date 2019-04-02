@@ -12,6 +12,9 @@ public class OverseerCanvasManager : NetworkBehaviour
     bool EMP = false;
     float empTimer = 0;
 
+    //tutorial shtuff
+    public RawImage tutorial;
+
     //all the juicy ui stuff
     public Canvas trapCanvas, regularCanvas;
     private List<GameObject> codeVisuals = new List<GameObject>();
@@ -58,8 +61,12 @@ public class OverseerCanvasManager : NetworkBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-       
-	}
+        //the tutorial toggle
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            tutorial.gameObject.SetActive(!tutorial.gameObject.activeSelf);
+        }
+    }
 
     //for ui icons to show up
     public void FindPlayer(int currentTeam, int runnerIndex, ref bool foundPlayer, ref bool foundEnemy)

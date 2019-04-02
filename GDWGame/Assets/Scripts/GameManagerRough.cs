@@ -19,6 +19,7 @@ public class GameManagerRough : NetworkBehaviour {
     public Text Score1, Score2, WinningText;
     int player1Score = 0;
     int player2Score = 0; //this specifically is to make it easier to test
+    float hackyTimer = 0; // a last minute solution :'( 
 
     int gameTimeLimit = -1;
     bool theGameOver = false;
@@ -39,9 +40,19 @@ public class GameManagerRough : NetworkBehaviour {
         if (!theGameOver)
         { 
 
-        if (initGM)
+            if (initGM)
             {
                 LoadProperties();
+            }
+
+            //this is a hacky way of getting the timer positions correct
+            if (hackyTimer < 15)
+            {
+                hackyTimer += (1 * Time.deltaTime);
+                if (hackyTimer >= 15)
+                {
+                    LoadProperties();
+                }
             }
 
             if (theTimerSeconds <= 0)
