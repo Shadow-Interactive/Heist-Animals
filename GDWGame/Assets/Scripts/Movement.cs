@@ -142,9 +142,15 @@ public class Movement : NetworkBehaviour {
 
         //this is so we don't go to idle when switching between horizontal and vertical inputs
         if (moveInput.x == 0 && moveInput.y == 0)
+        {
+            GetComponent<AudioSource>().volume = 0.0f;
             idleTime += Time.deltaTime;
+        }
         else
+        {
+            GetComponent<AudioSource>().volume = 0.15f;
             idleTime = 0;
+        }
 
         if (idleTime >= 0.1)
             theAnimator.SetBool("Moving", false);
