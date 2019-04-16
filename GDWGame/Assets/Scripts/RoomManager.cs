@@ -172,17 +172,18 @@ public class RoomManager : NetworkBehaviour
         //THIS IS BECUZ WE COULDN'T FIX THE TRAP ACTIVATION IN OTHER WAYS TOT
         //WILL HOPEFULLY GET CLEANED UP SOON
         //ASK ATIYA FOR DETAILS
-       //if (usingTimer == true)
-       //{
-       //    deactivateTimer += Time.deltaTime;
-       //
-       //    if (deactivateTimer > 1)
-       //    {
-       //        DeactivateTraps();
-       //        usingTimer = false;
-       //        deactivateTimer = 0;
-       //    }
-       //}
+       if (usingTimer == true)
+       {
+           deactivateTimer += Time.deltaTime;
+       
+           if (deactivateTimer > 1)
+           {
+               DeactivateTraps(false);
+               usingTimer = false;
+               deactivateTimer = 0;
+                DeactivateTraps(true);
+           }
+       }
 
         if (activateReshuffle == true)
         {
@@ -252,19 +253,19 @@ public class RoomManager : NetworkBehaviour
         return theImages[index7];
     }
 
-    public void DeactivateTraps()
+    public void DeactivateTraps(bool temp)
     {
         for (int i = 0; i < theObjectives.Length; i++)
         {
-            theObjectives[i].trapActive = false;
-            theObjectives[i].GameObjectVisible(false);
+            theObjectives[i].trapActive = temp;
+            theObjectives[i].GameObjectVisible(temp);
             
         }
     }
 
     private void OnApplicationQuit()
     {
-        DeactivateTraps();
+        DeactivateTraps(false);
     }
 
     public void ObjectiveDrop(int index, Vector3 position)
