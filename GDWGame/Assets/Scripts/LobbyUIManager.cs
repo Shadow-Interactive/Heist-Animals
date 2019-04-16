@@ -202,6 +202,8 @@ public class LobbyUIManager : NetworkBehaviour
                         actualPlayers[i].SetRole(1);  
                     else
                         actualPlayers[i].SetRole(0);
+
+                    actualPlayers[i].NotReady(); 
                 }
             }
         }

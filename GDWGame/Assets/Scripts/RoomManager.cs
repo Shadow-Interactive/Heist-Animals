@@ -172,17 +172,17 @@ public class RoomManager : NetworkBehaviour
         //THIS IS BECUZ WE COULDN'T FIX THE TRAP ACTIVATION IN OTHER WAYS TOT
         //WILL HOPEFULLY GET CLEANED UP SOON
         //ASK ATIYA FOR DETAILS
-        if (usingTimer == true)
-        {
-            deactivateTimer += Time.deltaTime;
-
-            if (deactivateTimer > 1)
-            {
-                DeactivateTraps();
-                usingTimer = false;
-                deactivateTimer = 0;
-            }
-        }
+       //if (usingTimer == true)
+       //{
+       //    deactivateTimer += Time.deltaTime;
+       //
+       //    if (deactivateTimer > 1)
+       //    {
+       //        DeactivateTraps();
+       //        usingTimer = false;
+       //        deactivateTimer = 0;
+       //    }
+       //}
 
         if (activateReshuffle == true)
         {

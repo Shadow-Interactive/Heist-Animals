@@ -112,7 +112,6 @@ public class CharacterSelect : NetworkBehaviour {
 
             gameObject.name = gameobjectName;
             notLocalPlayer.transform.position = uiPosition;
-
         }
         else
         {
@@ -251,7 +250,7 @@ public class CharacterSelect : NetworkBehaviour {
         newteam = theLobbyManager.AvailableTeam(playerIndex, desiredTeam);
         ThisIsADisasterTeam(newteam);
         SetTeamUI();
-        theCustomLobbyPlayer.ButtonLeave();
+        NotReady();
     }
 
     void ThisIsADisasterTeam(int num)
@@ -334,8 +333,7 @@ public class CharacterSelect : NetworkBehaviour {
 
             newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
             SetRole(newRole);
-            theCustomLobbyPlayer.ButtonLeave();
-
+            NotReady();
         }
 
     }
@@ -411,8 +409,7 @@ public class CharacterSelect : NetworkBehaviour {
         if (theLobbyManager != null)
             theCharacter.texture = theLobbyManager.characterTextures[(int)chosenCharacter];
 
-        theCustomLobbyPlayer.ButtonLeave();
-
+        NotReady();
     }
 
     public void SetBaseActive(bool active)
@@ -455,7 +452,7 @@ public class CharacterSelect : NetworkBehaviour {
         team = nullNumber;
         btnReady.gameObject.SetActive(false); //it's setting it to null so automatically ready should disappear
         charArrowActive.gameObject.SetActive(false);
-        theCustomLobbyPlayer.ButtonLeave();
+        NotReady();
     }
 
     public void ClearRole()
@@ -478,7 +475,8 @@ public class CharacterSelect : NetworkBehaviour {
         btnReady.gameObject.SetActive(false); //it's setting it to null so automatically ready should disappear
         imgNullRole.gameObject.SetActive(true); //shows the role stuff
         charArrowActive.gameObject.SetActive(false);
-        theCustomLobbyPlayer.ButtonLeave();
+        NotReady();
+
     }
 
     public void SetRole(int newRole)
@@ -560,5 +558,24 @@ public class CharacterSelect : NetworkBehaviour {
         else
             btnReady.gameObject.SetActive(true);
     }
-    
+
+    public void NotReady()
+    {
+        if (isServer) RpcNotReady();
+        else CmdNotReady(); 
+    }
+
+    [Command]
+    void CmdNotReady()
+    {
+        RpcNotReady();
+    }
+
+    [ClientRpc]
+    void RpcNotReady()
+    {
+        theCustomLobbyPlayer.ButtonLeave();
+        theCustomLobbyPlayer.readyImage.gameObject.SetActive(false);
+    }
+
 }
