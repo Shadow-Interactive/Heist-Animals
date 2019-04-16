@@ -38,7 +38,7 @@ public class CharacterSelect : NetworkBehaviour {
 
     //other ui stuff
     public RawImage theCharacter, background, imgNullRole;
-    public GameObject notLocalPlayer, localPlayer, currentPlayer;
+    public GameObject notLocalPlayer, currentPlayer;
     public RawImage[] tutorials = new RawImage[2];
     //Color[] theCharacterColors = new Color[4];
 
@@ -57,6 +57,10 @@ public class CharacterSelect : NetworkBehaviour {
     //stupid proofing
     public Button btnReady;
 
+    //Additional quality of life variables
+    public GameObject charArrowActive;
+    public CustomLobbyPlayer theCustomLobbyPlayer;
+
     // Use this for initialization
     void Start() {
         btnReady.gameObject.SetActive(false); //wouldn't be active to start with
@@ -70,6 +74,8 @@ public class CharacterSelect : NetworkBehaviour {
             buttonObjects.SetActive(false);
             currentPlayer.SetActive(false);
         }
+
+        charArrowActive.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -106,14 +112,12 @@ public class CharacterSelect : NetworkBehaviour {
 
             gameObject.name = gameobjectName;
             notLocalPlayer.transform.position = uiPosition;
-            localPlayer.transform.position = uiPosition;
 
         }
         else
         {
             inCharacterSelect = false;
             notLocalPlayer.SetActive(false);
-            localPlayer.SetActive(false);
         }
 
         //print(chosenTeamText.text);
@@ -134,7 +138,7 @@ public class CharacterSelect : NetworkBehaviour {
     {
         inCharacterSelect = false;
         notLocalPlayer.SetActive(false);
-        localPlayer.SetActive(false);
+
         if (isServer)
             RpcSettingPositions();
         else
@@ -147,7 +151,6 @@ public class CharacterSelect : NetworkBehaviour {
     {
         inCharacterSelect = false;
         notLocalPlayer.SetActive(false);
-        localPlayer.SetActive(false);
         RpcDisableCharacterSelect();
     }
 
@@ -156,7 +159,6 @@ public class CharacterSelect : NetworkBehaviour {
     {
         inCharacterSelect = false;
         notLocalPlayer.SetActive(false);
-        localPlayer.SetActive(false);
     }
 
     [Command]
@@ -171,7 +173,6 @@ public class CharacterSelect : NetworkBehaviour {
         if (theLobbyManager != null)
         {
             notLocalPlayer.transform.position = theLobbyManager.uiPositions[playerIndex];
-            localPlayer.transform.position = theLobbyManager.uiPositions[playerIndex];
             uiPosition = theLobbyManager.uiPositions[playerIndex];
             setPositions = true;
         }
@@ -250,7 +251,7 @@ public class CharacterSelect : NetworkBehaviour {
         newteam = theLobbyManager.AvailableTeam(playerIndex, desiredTeam);
         ThisIsADisasterTeam(newteam);
         SetTeamUI();
-        
+        theCustomLobbyPlayer.ButtonLeave();
     }
 
     void ThisIsADisasterTeam(int num)
@@ -333,8 +334,10 @@ public class CharacterSelect : NetworkBehaviour {
 
             newRole = theLobbyManager.AvailableRole(playerIndex, team, desiredRole);
             SetRole(newRole);
+            theCustomLobbyPlayer.ButtonLeave();
+
         }
-        
+
     }
 
     public void CharacterIncrementerRight()
@@ -367,6 +370,7 @@ public class CharacterSelect : NetworkBehaviour {
         }
 
         UpdateCharacter();
+
     }
 
     public void CharacterIncrementerLeft()
@@ -406,11 +410,9 @@ public class CharacterSelect : NetworkBehaviour {
         chosenCharacter = (Characters)characterCounter;
         if (theLobbyManager != null)
             theCharacter.texture = theLobbyManager.characterTextures[(int)chosenCharacter];
-    }
 
-    public void SetLocalActive(bool active)
-    {
-        localPlayer.SetActive(active);
+        theCustomLobbyPlayer.ButtonLeave();
+
     }
 
     public void SetBaseActive(bool active)
@@ -452,6 +454,8 @@ public class CharacterSelect : NetworkBehaviour {
     {
         team = nullNumber;
         btnReady.gameObject.SetActive(false); //it's setting it to null so automatically ready should disappear
+        charArrowActive.gameObject.SetActive(false);
+        theCustomLobbyPlayer.ButtonLeave();
     }
 
     public void ClearRole()
@@ -473,6 +477,8 @@ public class CharacterSelect : NetworkBehaviour {
         role = nullNumber;
         btnReady.gameObject.SetActive(false); //it's setting it to null so automatically ready should disappear
         imgNullRole.gameObject.SetActive(true); //shows the role stuff
+        charArrowActive.gameObject.SetActive(false);
+        theCustomLobbyPlayer.ButtonLeave();
     }
 
     public void SetRole(int newRole)
@@ -529,6 +535,8 @@ public class CharacterSelect : NetworkBehaviour {
 
         if (isServer) RpcNullRole(false);
         else CmdNullRole(false);
+
+        charArrowActive.gameObject.SetActive(true);
     }
 
     [Command]
@@ -552,9 +560,5 @@ public class CharacterSelect : NetworkBehaviour {
         else
             btnReady.gameObject.SetActive(true);
     }
-
-    void CheckRole()
-    {
-
-    }
+    
 }
