@@ -12,13 +12,13 @@ public class UICompassScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        compassDirection = Vector3.zero;
+        compassDirection = new Vector3(0, 0, 180);
 	}
 	
 	// Update is called once per frame
 	void Update () {
         //we only change one of the axis 
-        compassDirection.z = thePlayer.eulerAngles.y; //this is based off of where the runner is looking
+        compassDirection.z = thePlayer.eulerAngles.y + 180; //this is based off of where the runner is looking
         transform.localEulerAngles = compassDirection; //we need to set it like this
 	}
 }
