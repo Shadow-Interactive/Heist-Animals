@@ -733,13 +733,13 @@ public class OverSeerControl : NetworkBehaviour {
     {
         timer += Time.deltaTime;
 
-        if (timer < 1 && XBoxInput.GetKeyReleased(0, (int)Buttons.RB))
+        if (timer < 0.5f && XBoxInput.GetKeyReleased(0, (int)Buttons.RB))
         {
             rightPress = true;
             ohmygoodness = false;
             timer = 0;
         }
-        else if (timer >= 1)
+        else if (timer >= 0.5f)
         {
             radialPress = true;
             ohmygoodness = false;

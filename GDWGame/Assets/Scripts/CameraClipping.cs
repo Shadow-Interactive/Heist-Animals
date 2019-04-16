@@ -36,11 +36,11 @@ public class CameraClipping : MonoBehaviour {
         ADS = transform.parent.localPosition; // + new Vector3(1.5f, -3f, 8f);
         ADSnormalized = ADS.normalized * -1;
         ADSnormalized += new Vector3(0.5f, 0, 0);
-        ADS += new Vector3(2.5f, -2f, -10f);
+        ADS += new Vector3(3f, -2f, -5f);
     }
 	
 	// Update is called once per frame
-	void LateUpdate () {
+	void FixedUpdate () {
 
         //destination our camera raycast will go
         //camPos = transform.localPosition.normalized;
@@ -97,7 +97,7 @@ public class CameraClipping : MonoBehaviour {
             rightRay = false;
             behind = false;
             if (!Aim)
-                transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.deltaTime * 15.0f);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, originalPos, Time.fixedDeltaTime * 15.0f);
             
             //transform.localPosition = originalPos;
             //clipPos = cameraDistance;
@@ -107,7 +107,7 @@ public class CameraClipping : MonoBehaviour {
         {
             Aim = true;
             reticle.SetActive(true);
-            transform.localPosition = Vector3.Lerp(transform.localPosition, ADS, Time.deltaTime * 2.0f);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, ADS, Time.fixedDeltaTime * 2.0f);
         }
         else
         {

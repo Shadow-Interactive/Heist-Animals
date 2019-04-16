@@ -409,10 +409,13 @@ public class PlayerLogic : NetworkBehaviour {
 
         if (Input.GetAxis(strMouseScrollWheel) > 0)
         {
-            //AbilityAnim.SetBool("SelSmokeUp", true);
-            if ((int)theCurrentAbility > 0 && (int)theCurrentAbility <= 2)
+            AbilityAnim.SetBool("SelSmokeUp", true);
+            if ((int)theCurrentAbility >= 0 && (int)theCurrentAbility <= 2)
             {
-                theCurrentAbility--;
+                if ((int)theCurrentAbility == 0)
+                    theCurrentAbility = CurrentAbility.smokebomb;
+                else
+                    theCurrentAbility--;
                 //print(theCurrentAbility);
                 ActivateSpecificUI((int)theCurrentAbility);
             }
@@ -423,9 +426,12 @@ public class PlayerLogic : NetworkBehaviour {
         if (Input.GetAxis(strMouseScrollWheel) < 0)
         {
             AbilityAnim.SetBool("SelShieldDown", true);
-            if ((int)theCurrentAbility < 2 && (int)theCurrentAbility >= 0)
+            if ((int)theCurrentAbility <= 2 && (int)theCurrentAbility >= 0)
             {
-                theCurrentAbility++;
+                if ((int)theCurrentAbility == 2)
+                    theCurrentAbility = 0;
+                else
+                    theCurrentAbility++;
                 //    print(theCurrentAbility);
                 ActivateSpecificUI((int)theCurrentAbility);
             }

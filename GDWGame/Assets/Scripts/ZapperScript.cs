@@ -11,6 +11,7 @@ public class ZapperScript : NetworkBehaviour {
     public string zapperTag;
     [SyncVar] public int zapperID;
     bool active;
+    bool spawn;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +22,12 @@ public class ZapperScript : NetworkBehaviour {
     void Update () {
         if (active)
         {
-            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 80f;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.transform.forward * 100f;
+            if (!GetComponent<AudioSource>().isPlaying && spawn)
+            {
+                GetComponent<AudioSource>().Play();
+                spawn = false;
+            }
         }
     }
 
@@ -29,6 +35,7 @@ public class ZapperScript : NetworkBehaviour {
     {
         active = temp;
         gameObject.SetActive(temp);
+        spawn = true;
 
         if (temp)
             GetComponent<AudioSource>().Play();
