@@ -38,7 +38,7 @@ public class CharacterSelect : NetworkBehaviour {
 
     //other ui stuff
     public RawImage theCharacter, background, imgNullRole;
-    public GameObject notLocalPlayer, currentPlayer;
+    public GameObject notLocalPlayer, currentPlayer, tutorial;
     public RawImage[] tutorials = new RawImage[2];
     //Color[] theCharacterColors = new Color[4];
 
@@ -428,7 +428,12 @@ public class CharacterSelect : NetworkBehaviour {
         {
             int whichTutorial = role;
             tutorials[role].gameObject.SetActive(!tutorials[role].IsActive());
+            tutorial.gameObject.SetActive(!tutorial.gameObject.activeSelf);
+        }
 
+        if (Input.GetKeyDown("t") && tutorial.gameObject.activeSelf)
+        {
+            tutorial.gameObject.SetActive(false);
         }
     }
 
