@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Linq;
+using XBOX;
 
 public class OverseerCanvasManager : NetworkBehaviour
 {
@@ -62,7 +63,7 @@ public class OverseerCanvasManager : NetworkBehaviour
 	// Update is called once per frame
 	void Update () {
         //the tutorial toggle
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || XBoxInput.GetKeyPressed(0, (int)Buttons.Start))
         {
             tutorial.gameObject.SetActive(!tutorial.gameObject.activeSelf);
         }

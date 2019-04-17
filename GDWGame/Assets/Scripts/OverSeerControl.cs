@@ -654,8 +654,8 @@ public class OverSeerControl : NetworkBehaviour {
         if (Input.GetMouseButton(1) || radialPress)
         {
             doNotMove = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            //Cursor.lockState = CursorLockMode.None;
+            //Cursor.visible = true;
             radialCamSelect.SetActive(true);
             radialNeverTriggered = false;
             radialPress = false;
@@ -666,8 +666,8 @@ public class OverSeerControl : NetworkBehaviour {
         }
         else if (XBoxInput.GetKeyReleased(0, (int)Buttons.RB) || Input.GetMouseButtonUp(1))
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
             radialPress = false;
             doNotMove = false;
             

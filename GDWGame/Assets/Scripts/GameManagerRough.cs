@@ -105,6 +105,9 @@ public class GameManagerRough : NetworkBehaviour {
 
         LoadProperties();
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         //   if (isServer)
         //{
         if (RunnerOne != null)
